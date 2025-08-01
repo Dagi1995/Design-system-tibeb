@@ -1,35 +1,23 @@
 import type { StorybookConfig } from "@storybook/nextjs-vite";
-import path from "path";
 
 const config: StorybookConfig = {
   stories: [
     "../design-system/src/stories/**/*.mdx",
-    "../design-system/src/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+    "../design-system/src/stories/**/*.stories.@(js|jsx|ts|tsx)",
   ],
   addons: [
-    "@chromatic-com/storybook",
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
     "@storybook/addon-vitest",
+    "@chromatic-com/storybook",
+    "storybook-addon-next-router",
   ],
   framework: {
     name: "@storybook/nextjs-vite",
-    options: {}
+    options: {},
   },
-  viteFinal(config) {
-    config.resolve = {
-      ...config.resolve,
-      alias: {
-        ...(config.resolve?.alias || {}),
-        // Make sure the relative path here correctly points to your mock file
-        "next/navigation": path.resolve(__dirname, "./next-navigation-mock.ts"),
-      },
-    };
-    return config;
-  },
-  staticDirs: [
-    "../public" // cross-platform compatibility with forward slash is good
-  ]
+  staticDirs: ["../public"],
+ 
 };
 
 export default config;

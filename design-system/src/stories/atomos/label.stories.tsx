@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Label } from "../../components/atoms/label";
+import { Label } from "../../components/atoms/Label";
 
 const meta: Meta<typeof Label> = {
   title: "Design-system/Components/Atoms/Label",

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useForm, Controller } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
 
 import {
   Card,
@@ -13,10 +14,11 @@ import {
   CardDescription,
   CardContent,
 } from "../molocules/card"
-import { Label } from "../atoms/label"
-import { Input } from "../atoms/input"
-import { Checkbox } from "../atoms/checkbox"
-import { Button } from "../atoms/button"
+import { Label } from "../atoms/Label"
+import { Input } from "../atoms/Input"
+import { Checkbox } from "../atoms/Checkbox"
+import { Button } from "../atoms/Button"
+import { ErrorMessage } from "../atoms/ErrorMessage"
 
 const registerSchema = z
   .object({
@@ -50,18 +52,38 @@ export function RegisterForm() {
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      terms: false, // ✅ important!
+      terms: false,
     },
   })
 
-  const onSubmit = (data: RegisterFormValues) => {
-    console.log("Register Data:", data)
+  const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true)
 
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        toast.success("Account created successfully!")
+        setTimeout(() => {
+          router.push("/login")
+        }, 1500)
+      } else {
+        toast.error(result.message || "Something went wrong")
+      }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Failed to connect to server")
+    } finally {
       setIsLoading(false)
-      router.push("/login")
-    }, 1500)
+    }
   }
 
   return (
@@ -79,12 +101,12 @@ export function RegisterForm() {
             <div className="space-y-1">
               <Label htmlFor="firstname">First Name</Label>
               <Input id="firstname" {...register("firstname")} placeholder="John" />
-              {errors.firstname && <p className="text-sm text-destructive">{errors.firstname.message}</p>}
+              <ErrorMessage message={errors.firstname?.message} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="lastname">Last Name</Label>
               <Input id="lastname" {...register("lastname")} placeholder="Doe" />
-              {errors.lastname && <p className="text-sm text-destructive">{errors.lastname.message}</p>}
+              <ErrorMessage message={errors.lastname?.message} />
             </div>
           </div>
 
@@ -92,35 +114,34 @@ export function RegisterForm() {
             <div className="space-y-1">
               <Label htmlFor="email">Email Address</Label>
               <Input id="email" type="email" {...register("email")} placeholder="you@example.com" />
-              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+              <ErrorMessage message={errors.email?.message} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="phone">Phone Number</Label>
               <Input id="phone" type="tel" {...register("phone")} placeholder="+251 924 567 901" />
-              {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
+              <ErrorMessage message={errors.phone?.message} />
             </div>
           </div>
 
           <div className="space-y-1">
             <Label htmlFor="department">Department</Label>
             <Input id="department" {...register("department")} placeholder="Engineering, Marketing, etc." />
-            {errors.department && <p className="text-sm text-destructive">{errors.department.message}</p>}
+            <ErrorMessage message={errors.department?.message} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" {...register("password")} placeholder="••••••••" />
-              {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
+              <ErrorMessage message={errors.password?.message} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input id="confirmPassword" type="password" {...register("confirmPassword")} placeholder="••••••••" />
-              {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>}
+              <ErrorMessage message={errors.confirmPassword?.message} />
             </div>
           </div>
 
-          {/* ✅ Fixed Checkbox */}
           <div className="flex items-start gap-2">
             <Controller
               name="terms"
@@ -137,7 +158,7 @@ export function RegisterForm() {
               I agree to the <a href="#" className="underline hover:text-primary">terms and conditions</a>.
             </Label>
           </div>
-          {errors.terms && <p className="text-sm text-destructive">{errors.terms.message}</p>}
+          <ErrorMessage message={errors.terms?.message} />
 
           <Button type="submit" className="w-full flex items-center justify-center gap-2" disabled={isLoading}>
             {isLoading && (
@@ -145,15 +166,13 @@ export function RegisterForm() {
             )}
             {isLoading ? "Creating Account..." : "Create Account"}
           </Button>
+
           <div className="mt-4 text-center text-sm text-muted-foreground">
-          Already have an account?
-          <a
-            href="/login"
-            className="ml-1 text-primary font-semibold underline hover:text-blue-600"
-          >
-            Login
-          </a>
-        </div>
+            Already have an account?
+            <a href="/login" className="ml-1 text-primary font-semibold underline hover:text-blue-600">
+              Login
+            </a>
+          </div>
         </form>
       </CardContent>
     </Card>
