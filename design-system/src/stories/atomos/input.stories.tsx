@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Input } from "../../components/atoms/input";
+import { Input } from "../../components/atoms/Input";
 
 const meta: Meta<typeof Input> = {
   title: "Design-system/Components/Atoms/Input",
