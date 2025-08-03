@@ -1,0 +1,16 @@
+
+{
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstname": { "type": "string" ,"required": true },
+          "lastname": { "type": "string","required": false },
+          "email": { "type": "string", "format": "email" ,"required": true },
+          "phone": { "type": "string", "nullable": true ,"required": false },
+          "password": { "type": "string","required": true }
+         }
+       }
+    }
+}

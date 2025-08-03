@@ -13,7 +13,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../molocules/card"
+} from "../molocules/Card"
 import { Label } from "../atoms/Label"
 import { Input } from "../atoms/Input"
 import { Button } from "../atoms/Button"
@@ -42,10 +42,12 @@ export function ForgotPasswordForm() {
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     setIsLoading(true)
+    
 
     // Fake async delay to simulate request
     setTimeout(() => {
       toast.success("Mock: Password reset link sent!")
+    
 
       // Redirect to OTP with email as query
       router.push("/otp")

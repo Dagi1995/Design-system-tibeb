@@ -1,99 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { toast } from 'sonner';
-import { ToastProvider } from '../../components/atoms/ToastProvider';
-import { Button } from "../../components/atoms/Button"; // Adjust path as needed
+import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { Toaster } from "../../components/atoms/Sonner"
+import { toast } from "sonner"
+import { Button } from "../../components/atoms/Button"
 
-const meta: Meta<typeof ToastProvider> = {
-  title: 'Design-system/Components/Atoms/ToastProvider',
-  component: ToastProvider,
-  tags: ['autodocs'],
+const meta: Meta<typeof Toaster> = {
+  title: "Design-system/Components/Atoms/Toaster",
+  component: Toaster,
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  decorators: [
-    (Story) => (
-      <div>
-        <Story />
-      </div>
-    ),
-  ],
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof ToastProvider>;
+export default meta
+type Story = StoryObj<typeof Toaster>
 
 export const Default: Story = {
   render: () => (
     <>
-      <ToastProvider />
-      <Button variant="primary" onClick={() => toast('This is a default toast')}>
-        Show Default Toast
-      </Button>
-    </>
-  ),
-};
-
-export const Success: Story = {
-  render: () => (
-    <>
-      <ToastProvider />
-      <Button variant="primary" onClick={() => toast.success('Operation completed successfully')}>
-        Show Success Toast
-      </Button>
-    </>
-  ),
-};
-
-export const Error: Story = {
-  render: () => (
-    <>
-      <ToastProvider />
-      <Button variant="primary" onClick={() => toast.error('Something went wrong')}>
-        Show Error Toast
-      </Button>
-    </>
-  ),
-};
-
-export const WithAction: Story = {
-  render: () => (
-    <>
-      <ToastProvider />
-      <Button 
-        variant="primary"
-        onClick={() =>
-          toast('Item deleted', {
-            action: {
-              label: 'Undo',
-              onClick: () => alert('Undo clicked'),
-            },
-            cancel: {
-              label: 'Cancel',
-              onClick: () => alert('Cancel clicked'),
-            },
-          })
-        }
-      >
-        Show Toast with Action
-      </Button>
-    </>
-  ),
-};
-
-export const WithDescription: Story = {
-  render: () => (
-    <>
-      <ToastProvider />
       <Button
-        variant="primary"
         onClick={() =>
-          toast('Profile updated', {
-            description: 'Your changes have been saved successfully.',
+          toast("Notification sent!", {
+            description: "This is a Sonner toast.",
           })
         }
       >
-        Show Toast with Description
+        Show Toast
       </Button>
+      <Toaster />
     </>
   ),
-};
+}

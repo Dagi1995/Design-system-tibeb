@@ -2,11 +2,15 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { ErrorMessage } from "../../components/atoms/ErrorMessage"
 
 const meta: Meta<typeof ErrorMessage> = {
-  title: "Design-System/Components/Atoms/ErrorMessage",
+  title: "Design-system/Components/Atoms/ErrorMessage",
   component: ErrorMessage,
   tags: ["autodocs"],
   args: {
-    message: "Something went wrong. Please try again.",
+    children: "This field is required.",
+    showIcon: true,
+  },
+  parameters: {
+    layout: "centered",
   },
 }
 
@@ -15,9 +19,15 @@ type Story = StoryObj<typeof ErrorMessage>
 
 export const Default: Story = {}
 
-export const CustomClass: Story = {
+export const NoIcon: Story = {
   args: {
-    message: "Email is required",
-    className: "text-base text-red-600",
+    showIcon: false,
+  },
+}
+
+export const CustomStyle: Story = {
+  args: {
+    className: "text-red-500 italic",
+    children: "Invalid input format",
   },
 }

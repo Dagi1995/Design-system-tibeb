@@ -7,7 +7,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../molocules/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../molocules/Card"
 import { Input } from "../atoms/Input"
 import { Button } from "../atoms/Button"
 import { ErrorMessage } from "../atoms/ErrorMessage"
@@ -28,7 +28,7 @@ type ResetPasswordFormValues = z.infer<typeof resetSchema>
 export function ResetPasswordForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const token = searchParams.get("token") // assuming token in query param
+  const token = searchParams.get("token") // assuming token in query param 
 
   const {
     register,

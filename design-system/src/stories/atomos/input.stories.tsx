@@ -1,14 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Input } from "../../components/atoms/Input";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { Input } from "../../components/atoms/Input"
 
 const meta: Meta<typeof Input> = {
-  title: "Design-system/Components/Atoms/Input",
+  title: "Design-System/Components/Atoms/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {
     type: {
-      control: "select",
-      options: ["text", "email", "password", "number", "tel", "url"],
+      control: "text",
     },
     placeholder: {
       control: "text",
@@ -16,31 +15,51 @@ const meta: Meta<typeof Input> = {
     disabled: {
       control: "boolean",
     },
-    className: {
-      control: "text",
+    "aria-invalid": {
+      control: "boolean",
+      description: "Simulates invalid input state",
     },
   },
-};
-export default meta;
-type Story = StoryObj<typeof Input>;
-
-export const Default: Story = {
   args: {
     type: "text",
-    placeholder: "Type here...",
+    placeholder: "Enter text...",
+    disabled: false,
+    "aria-invalid": false,
   },
-};
+  parameters: {
+    layout: "centered",
+  },
+}
 
-export const Email: Story = {
+export default meta
+type Story = StoryObj<typeof Input>
+
+export const Default: Story = {}
+
+export const WithPlaceholder: Story = {
   args: {
-    type: "email",
     placeholder: "you@example.com",
+    type: "email",
   },
-};
+}
 
 export const Password: Story = {
   args: {
     type: "password",
-    placeholder: "••••••••",
+    placeholder: "Enter your password",
   },
-};
+}
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    placeholder: "Disabled input",
+  },
+}
+
+export const Invalid: Story = {
+  args: {
+    placeholder: "Invalid input",
+    "aria-invalid": true,
+  },
+}

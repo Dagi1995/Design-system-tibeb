@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import {
   Card,
   CardHeader,
@@ -6,67 +6,43 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../../components/molocules/card";
+  CardAction,
+} from "../../components/molocules/Card"
+import { Button } from "../../components/atoms/Button"
 
 const meta: Meta<typeof Card> = {
   title: "Design-system/Components/Molecules/Card",
   component: Card,
+  tags: ["autodocs"],
   parameters: {
-    docs: {
-      description: {
-        component:
-          "A Primer-style Card container with Header, Content and Footer slots.",
-      },
-    },
+    layout: "centered",
   },
-};
-export default meta;
+}
 
-type Story = StoryObj<typeof Card>;
+export default meta
+type Story = StoryObj<typeof Card>
 
 export const Default: Story = {
   render: () => (
-    <Card className="max-w-md mx-auto">
+    <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>This is a description for the card.</CardDescription>
+        <CardTitle>Subscription</CardTitle>
+        <CardDescription>Manage your subscription plan</CardDescription>
+        <CardAction>
+          <Button size="sm" variant="ghost">
+            Edit
+          </Button>
+        </CardAction>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600">
-          This is the card content area. Add any elements here.
+        <p className="text-sm text-muted-foreground">
+          You are currently on the <strong>Free</strong> plan. Upgrade to access
+          more features.
         </p>
       </CardContent>
-      <CardFooter>
-        <button className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-          Action
-        </button>
+      <CardFooter className="justify-end">
+        <Button variant="default">Upgrade</Button>
       </CardFooter>
     </Card>
   ),
-};
-
-export const WithForm: Story = {
-  render: () => (
-    <Card className="max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Join our platform today.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-3">
-          <label className="text-sm font-medium">Email</label>
-          <input
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
-            type="email"
-            placeholder="you@example.com"
-          />
-        </div>
-      </CardContent>
-      <CardFooter>
-        <button className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-          Register
-        </button>
-      </CardFooter>
-    </Card>
-  ),
-};
+}

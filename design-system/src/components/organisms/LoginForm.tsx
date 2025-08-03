@@ -12,7 +12,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../molocules/card"
+} from "../molocules/Card"
 import { Label } from "../atoms/Label"
 import { Input } from "../atoms/Input"
 import { Checkbox } from "../atoms/Checkbox"

@@ -1,0 +1,148 @@
+"use client"
+
+import * as React from "react"
+import { useRouter } from "next/navigation"
+import { useForm, Controller } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
+
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "../molecules/card"
+import { Label } from "../atoms/Label"
+import { Input } from "../atoms/Input"
+import { Checkbox } from "../atoms/Checkbox"
+import { Button } from "../atoms/Button"
+import { ErrorMessage } from "../atoms/ErrorMessage"
+
+const {{name}}Schema = z
+  .object({
+    {{#each fields}}
+    {{name}}: z.string(){{#if required}}.min(1, "{{label}} is required"){{else}}.optional(){{/if}},
+    {{/each}}
+    {{#if checkbox}}
+    {{checkbox.name}}: z.boolean().refine((val) => val === true, {
+      message: "{{checkbox.label}}",
+    }),
+    {{/if}}
+  })
+  {{#if zodRefinements}}
+  .refine((data) => data.{{zodRefinements.[0].fields.[0]}} === data.{{zodRefinements.[0].fields.[1]}}, {
+    message: "{{zodRefinements.[0].message}}",
+    path: ["{{zodRefinements.[0].path}}"],
+  })
+  {{/if}}
+
+type {{name}}FormValues = z.infer<typeof {{name}}Schema>
+
+export function {{name}}Form() {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<{{name}}FormValues>({
+    resolver: zodResolver({{name}}Schema),
+    defaultValues: {
+      {{#if checkbox}}
+      {{checkbox.name}}: false,
+      {{/if}}
+    },
+  })
+
+  const onSubmit = async (data: {{name}}FormValues) => {
+    setIsLoading(true)
+
+    try {
+      const response = await fetch("{{apiPath}}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        toast.success("Account created successfully!")
+        setTimeout(() => {
+          router.push("{{successRedirect}}")
+        }, 1500)
+      } else {
+        toast.error(result.message || "Something went wrong")
+      }
+    } catch (error) {
+      toast.error("Failed to connect to server")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto shadow-lg rounded-lg border border-muted bg-background">
+      <CardHeader className="text-center space-y-1">
+        <CardTitle className="text-2xl font-semibold">{{title}}</CardTitle>
+        <CardDescription className="text-sm text-muted-foreground">
+          {{description}}
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {{#each fields}}
+            <div className="space-y-1">
+              <Label htmlFor="{{name}}">{{label}}</Label>
+              <Input id="{{name}}" type="{{type}}" placeholder="{{placeholder}}" {...register("{{name}}")} />
+              <ErrorMessage message={errors.{{name}}?.message} />
+            </div>
+            {{/each}}
+          </div>
+
+          {{#if checkbox}}
+          <div className="flex items-start gap-2">
+            <Controller
+              name="{{checkbox.name}}"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  id="{{checkbox.name}}"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              )}
+            />
+            <Label htmlFor="{{checkbox.name}}" className="text-sm leading-snug">
+              {{checkbox.label}}
+            </Label>
+          </div>
+          <ErrorMessage message={errors.{{checkbox.name}}?.message} />
+          {{/if}}
+
+          <Button type="submit" className="w-full flex items-center justify-center gap-2" disabled={isLoading}>
+            {isLoading && (
+              <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            )}
+            {isLoading ? "Submitting..." : "{{submitText}}"}
+          </Button>
+
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            Already have an account?
+            <a href="{{successRedirect}}" className="ml-1 text-primary font-semibold underline hover:text-blue-600">
+              Login
+            </a>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  )
+}

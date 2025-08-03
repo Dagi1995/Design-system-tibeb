@@ -1,80 +1,90 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Button } from "../../components/atoms/Button"; // Adjust path as needed
+import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { Button } from "../../components/atoms/Button"
+import { PlusIcon } from "lucide-react"
 
 const meta: Meta<typeof Button> = {
-  title: "Design-system/Components/Atoms/Button",
+  title: "Design-System/Components/Atoms/Button",
   component: Button,
   tags: ["autodocs"],
+  args: {
+    children: "Click me",
+    variant: "default",
+    size: "default",
+    disabled: false,
+  },
   argTypes: {
     variant: {
-      control: { type: "select" },
-      options: ["primary", "secondary", "outline", "danger", "link"],
+      control: "select",
+      options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
     },
     size: {
-      control: { type: "select" },
-      options: ["sm", "md", "lg"],
+      control: "select",
+      options: ["default", "sm", "lg", "icon"],
     },
-    children: {
-      control: "text",
+    disabled: {
+      control: "boolean",
+    },
+    asChild: {
+      control: "boolean",
     },
   },
-  args: {
-    variant: "primary",
-    size: "md",
-    children: "Button",
-  },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof Button>;
+export default meta
+type Story = StoryObj<typeof Button>
 
-export const Primary: Story = {
-  args: {
-    variant: "primary",
-    children: "Primary Button",
-  },
-};
+export const Default: Story = {}
 
-export const Secondary: Story = {
+export const WithIcon: Story = {
   args: {
-    variant: "secondary",
-    children: "Secondary Button",
+    children: (
+      <>
+        <PlusIcon className="size-4" />
+        Add Item
+      </>
+    ),
   },
-};
+}
+
+export const Destructive: Story = {
+  args: {
+    variant: "destructive",
+    children: "Delete",
+  },
+}
 
 export const Outline: Story = {
   args: {
     variant: "outline",
-    children: "Outline Button",
+    children: "Outline",
   },
-};
+}
 
-export const Danger: Story = {
+export const Secondary: Story = {
   args: {
-    variant: "danger",
-    children: "Danger Button",
+    variant: "secondary",
+    children: "Secondary",
   },
-};
+}
+
+export const Ghost: Story = {
+  args: {
+    variant: "ghost",
+    children: "Ghost",
+  },
+}
 
 export const Link: Story = {
   args: {
     variant: "link",
-    children: "Link Button",
+    children: "Link",
   },
-};
+}
 
-export const Small: Story = {
+export const IconOnly: Story = {
   args: {
-    variant: "primary",
-    size: "sm",
-    children: "Small Button",
+    size: "icon",
+    children: <PlusIcon className="size-4" />,
+    "aria-label": "Add",
   },
-};
-
-export const Large: Story = {
-  args: {
-    variant: "primary",
-    size: "lg",
-    children: "Large Button",
-  },
-};
+}
