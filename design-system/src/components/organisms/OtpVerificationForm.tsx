@@ -17,7 +17,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../molocules/card"
+} from "../molocules/Card"
 import { ErrorMessage } from "../atoms/ErrorMessage"
 import { Button } from "../atoms/Button"
 import { useRouter } from "next/navigation"

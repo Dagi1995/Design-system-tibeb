@@ -1,25 +1,56 @@
 import * as React from "react"
-import { AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { CircleAlert } from "lucide-react"
 
-export interface ErrorMessageProps {
+interface ErrorMessageProps extends React.HTMLAttributes<HTMLParagraphElement> {
   message?: string
-  className?: string
+  showIcon?: boolean
+  duration?: number
 }
 
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, className }) => {
-  if (!message) return null
+const ErrorMessage = React.forwardRef<HTMLParagraphElement, ErrorMessageProps>(
+  ({ message, className, showIcon = true, duration = 5000, ...props }, ref) => {
+    const [visible, setVisible] = React.useState(false)
+    const [internalKey, setInternalKey] = React.useState(0)
 
-  return (
-    <div
-      role="alert"
-      className={cn(
-        "flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/30 px-3 py-2 rounded-md",
-        className
-      )}
-    >
-      <AlertCircle className="h-4 w-4" />
-      <span>{message}</span>
-    </div>
-  )
-}
+    // Trigger visibility every time the message is updated (even if same text)
+    React.useEffect(() => {
+      if (message) {
+        setVisible(true)
+        setInternalKey((prev) => prev + 1)
+      }
+    }, [message])
+
+    // Auto-hide after duration
+    React.useEffect(() => {
+      if (!visible) return
+
+      const timer = setTimeout(() => {
+        setVisible(false)
+      }, duration)
+
+      return () => clearTimeout(timer)
+    }, [visible, duration, internalKey])
+
+    if (!visible || !message) return null
+
+    return (
+      <p
+        ref={ref}
+        data-slot="error-message"
+        className={cn(
+          "text-sm font-medium text-destructive flex items-center gap-2",
+          className
+        )}
+        {...props}
+      >
+        {showIcon && <CircleAlert className="size-4" aria-hidden="true" />}
+        {message}
+      </p>
+    )
+  }
+)
+
+ErrorMessage.displayName = "ErrorMessage"
+
+export { ErrorMessage }

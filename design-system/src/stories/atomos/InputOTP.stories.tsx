@@ -7,9 +7,26 @@ import {
   InputOTPSeparator,
 } from "../../components/atoms/InputOTP"
 
+
 const meta: Meta<typeof InputOTP> = {
   title: "Design-system/Components/Atoms/InputOTP",
   component: InputOTP,
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
+  argTypes: {
+    disabled: {
+      control: "boolean",
+    },
+    maxLength: {
+      control: { type: "number", min: 4, max: 8, step: 1 },
+    },
+  },
+  args: {
+    disabled: false,
+    maxLength: 6,
+  },
 }
 
 export default meta

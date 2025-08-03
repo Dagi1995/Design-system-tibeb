@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/nextjs-vite"; // Changed to @storybook/react for Meta/StoryObj types
-import { expect, userEvent, within, fn } from 'storybook/test';
+import { expect, userEvent, within} from 'storybook/test';
 import { getRouter } from '@storybook/nextjs-vite/navigation.mock';
 
 import { OtpVerificationForm } from "../../components/organisms/OtpVerificationForm"; // Adjust path as needed
