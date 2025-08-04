@@ -1,4 +1,3 @@
-// Temporarily simplify design-system/src/stories/organisms/login.stories.tsx
 import { Meta, StoryObj } from "@storybook/nextjs-vite"; // Ensure this is @storybook/react
 import { LoginForm } from "../../components/organisms/LoginForm"; // Verify this path is correct
 
