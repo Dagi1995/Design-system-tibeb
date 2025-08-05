@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { useForm, Controller } from "react-hook-form"
+import { useForm, Controller, ControllerRenderProps } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
@@ -19,7 +19,20 @@ import { Input } from "../atoms/Input"
 import { Checkbox } from "../atoms/Checkbox"
 import { Button } from "../atoms/Button"
 import { ErrorMessage } from "../atoms/ErrorMessage"
+import { BirthdateInput } from "../molocules/BirthdateInput"
+import {
+  Select,
+  SelectContent,
+  SelectValue,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+} from "../atoms/Select"
+import { FileUpload } from "../molocules/FileUpload"
 
+// Fix birthday schema validation
 const registerSchema = z
   .object({
     firstname: z.string().min(1, "First name is required"),
@@ -27,6 +40,12 @@ const registerSchema = z
     email: z.string().email("Invalid email address"),
     phone: z.string().optional(),
     department: z.string().optional(),
+    birthday: z.date().refine((date) => !!date, { message: "Birthday is required" }),
+    role: z.string().min(1, "Role is required"),
+    file: z
+      .instanceof(File)
+      .optional()
+      .nullable(),
     password: z.string().min(6, "Password must be at least 6 characters long"),
     confirmPassword: z.string().min(6, "Confirm password is required"),
     terms: z.boolean().refine((val) => val === true, {
@@ -39,6 +58,10 @@ const registerSchema = z
   })
 
 type RegisterFormValues = z.infer<typeof registerSchema>
+
+type ControllerFieldProps<T extends keyof RegisterFormValues> = {
+  field: ControllerRenderProps<RegisterFormValues, T>
+}
 
 export function RegisterForm() {
   const router = useRouter()
@@ -53,6 +76,10 @@ export function RegisterForm() {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       terms: false,
+      department: "",
+      role: "",
+      birthday: undefined,
+      file: null,
     },
   })
 
@@ -122,11 +149,62 @@ export function RegisterForm() {
               <ErrorMessage message={errors.phone?.message} />
             </div>
           </div>
+          <div className=" grid grid-cols-1 sm:grid-cols-2 gap-4">
 
+            
+          {/* Birthday */}
           <div className="space-y-1">
-            <Label htmlFor="department">Department</Label>
-            <Input id="department" {...register("department")} placeholder="Engineering, Marketing, etc." />
-            <ErrorMessage message={errors.department?.message} />
+            <Controller
+              name="birthday"
+              control={control}
+              render={({ field }: ControllerFieldProps<"birthday">) => (
+                <BirthdateInput {...field} />
+              )}
+            />
+            <ErrorMessage message={errors.birthday?.message} />
+          </div>
+
+          {/* Department Select */}
+          <div className="space-y-1">
+            <Label htmlFor="role">Department</Label>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value || ""}>
+                  <SelectTrigger aria-label="Role">
+                    <SelectValue placeholder="Select a Department" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="user">User</SelectItem>
+                    <SelectItem value="moderator">Moderator</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <ErrorMessage message={errors.role?.message} />
+          </div>
+          </div>
+
+          
+
+
+          {/* File Upload */}
+          <div className="space-y-1">
+            <Label>Profile Picture (optional)</Label>
+            <Controller
+              name="file"
+              control={control}
+              render={({ field }) => (
+                <FileUpload
+                  onFileSelect={(file) => field.onChange(file ?? null)}
+                  accept="image/*"
+                  label="Upload File"
+                />
+              )}
+            />
+            <ErrorMessage message={errors.file?.message} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -137,7 +215,12 @@ export function RegisterForm() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input id="confirmPassword" type="password" {...register("confirmPassword")} placeholder="••••••••" />
+              <Input
+                id="confirmPassword"
+                type="password"
+                {...register("confirmPassword")}
+                placeholder="••••••••"
+              />
               <ErrorMessage message={errors.confirmPassword?.message} />
             </div>
           </div>
@@ -146,21 +229,25 @@ export function RegisterForm() {
             <Controller
               name="terms"
               control={control}
-              render={({ field }) => (
-                <Checkbox
-                  id="terms"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+              render={({ field }: ControllerFieldProps<"terms">) => (
+                <Checkbox id="terms" checked={field.value} onCheckedChange={field.onChange} />
               )}
             />
             <Label htmlFor="terms" className="text-sm leading-snug">
-              I agree to the <a href="#" className="underline hover:text-primary">terms and conditions</a>.
+              I agree to the{" "}
+              <a href="#" className="underline hover:text-primary">
+                terms and conditions
+              </a>
+              .
             </Label>
           </div>
           <ErrorMessage message={errors.terms?.message} />
 
-          <Button type="submit" className="w-full flex items-center justify-center gap-2" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2"
+            disabled={isLoading}
+          >
             {isLoading && (
               <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
             )}
@@ -169,7 +256,10 @@ export function RegisterForm() {
 
           <div className="mt-4 text-center text-sm text-muted-foreground">
             Already have an account?
-            <a href="/login" className="ml-1 text-primary font-semibold underline hover:text-blue-600">
+            <a
+              href="/login"
+              className="ml-1 text-primary font-semibold underline hover:text-blue-600"
+            >
               Login
             </a>
           </div>

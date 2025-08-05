@@ -1,29 +1,39 @@
 "use client"
 
 import { useState } from "react"
+import { format } from "date-fns"
 import { X } from "lucide-react"
+import { Calendar } from "../molocules/Calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../atoms/Select"
 import { Input } from "../atoms/Input"
 import { Button } from "../atoms/Button"
 import { FilterItem } from "../molocules/FilterItem"
-import { Popover, PopoverContent, PopoverTrigger } from "../atoms/popover"
 
 export interface FilterOption {
   label: string
   value: string
+  type: "text" | "date"
+}
+
+export interface DateRange {
+  from: Date
+  to?: Date
 }
 
 export interface Filter {
   field: string
   operator: string
-  value: string
+  value: string | DateRange | null
 }
+
+type FilterFieldType = "field" | "operator" | "value"
 
 interface DynamicFilterRowProps {
   filter: Filter
   fields: FilterOption[]
   operators: FilterOption[]
-  onChange: (type: "field" | "operator" | "value", value: string) => void
+  onChange: <T extends FilterFieldType>(type: T, value: Filter[T]) => void
   onRemove: () => void
 }
 
@@ -34,8 +44,10 @@ function DynamicFilterRow({
   onChange,
   onRemove,
 }: DynamicFilterRowProps) {
+  const fieldType = fields.find((f) => f.value === filter.field)?.type || "text"
+
   return (
-    <div className="flex items-end gap-2">
+    <div className="flex items-center gap-2 mt-2">
       <FilterItem label="Field">
         <Select value={filter.field} onValueChange={(val) => onChange("field", val)}>
           <SelectTrigger className="w-[140px]">
@@ -67,18 +79,52 @@ function DynamicFilterRow({
       </FilterItem>
 
       <FilterItem label="Value">
-        <Input
-          placeholder="Enter value"
-          value={filter.value}
-          onChange={(e) => onChange("value", e.target.value)}
-          className="w-[180px]"
-        />
+        {fieldType === "date" ? (
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-[220px] justify-start text-left font-normal"
+              >
+                {filter.value && typeof filter.value === "object" &&
+                "from" in filter.value &&
+                filter.value.from ? (
+                  filter.value.to ? (
+                    `${format(filter.value.from, "dd-MM-yyyy")} to ${format(
+                      filter.value.to,
+                      "dd-MM-yyyy"
+                    )}`
+                  ) : (
+                    format(filter.value.from, "dd-MM-yyyy")
+                  )
+                ) : (
+                  <span className="text-muted-foreground">Pick a date range</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="p-0" align="start">
+              <Calendar
+                mode="range"
+                selected={filter.value as DateRange | undefined}
+                onSelect={(range) => onChange("value", range as DateRange)}
+                numberOfMonths={1}
+              />
+            </PopoverContent>
+          </Popover>
+        ) : (
+          <Input
+            placeholder="Enter value"
+            value={filter.value as string}
+            onChange={(e) => onChange("value", e.target.value)}
+            className="w-[180px]"
+          />
+        )}
       </FilterItem>
 
       <Button
         variant="ghost"
         size="icon"
-        className="mb-2 text-muted-foreground hover:text-destructive"
+        className="text-muted-foreground hover:text-destructive"
         onClick={onRemove}
       >
         <X className="h-4 w-4" />
@@ -103,7 +149,7 @@ export function FiltersPanel({
   const [open, setOpen] = useState(false)
   const [filters, setFilters] = useState<Filter[]>(initialFilters)
 
-  const updateFilter = (index: number, type: "field" | "operator" | "value", val: string) => {
+  const updateFilter = <T extends FilterFieldType>(index: number, type: T, val: Filter[T]) => {
     const newFilters = [...filters]
     newFilters[index] = { ...newFilters[index], [type]: val }
     setFilters(newFilters)
@@ -153,7 +199,12 @@ export function FiltersPanel({
             <Button variant="outline" onClick={clearFilters}>
               Clear Filters
             </Button>
-            <Button onClick={applyFilters}>Apply Filters</Button>
+            <Button
+              onClick={applyFilters}
+              disabled={!filters.every((f) => f.field && f.operator && f.value)}
+            >
+              Apply Filters
+            </Button>
           </div>
         </div>
       </PopoverContent>
