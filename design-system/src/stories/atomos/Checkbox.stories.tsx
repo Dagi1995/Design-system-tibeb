@@ -4,7 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { Checkbox } from "../../components/atoms/Checkbox"
-import { Label } from "../../components/atoms/Label"
+import { Label } from "../../components/atoms/label"
 
 const meta: Meta<typeof Checkbox> = {
   title: "Design-system/Components/Atoms/Checkbox",

@@ -21,14 +21,18 @@ export const Default: Story = {
   render: () => (
     <FiltersPanel
       fieldOptions={[
-        { label: "Customer", value: "customer" },
-        { label: "ID", value: "id" },
-        { label: "Status", value: "status" },
+        { label: "Customer", value: "customer", type: "text" },
+        { label: "ID", value: "id", type: "text" },
+        { label: "Status", value: "status", type: "text" },
+        { label: "Created At", value: "createdAt", type: "date" },
       ]}
       operatorOptions={[
-        { label: "Equals", value: "equals" },
-        { label: "Not Equals", value: "not_equals" },
-        { label: "Contains", value: "contains" },
+        { label: "Equals", value: "equals", type: "text" },
+        { label: "Not Equals", value: "not_equals", type: "text" },
+        { label: "Contains", value: "contains", type: "text" },
+        { label: "Before", value: "before", type: "date" },
+        { label: "After", value: "after", type: "date" },
+        { label: "Between", value: "between", type: "date" },
       ]}
       onApply={(filters) => console.log("Applied Filters:", filters)}
     />
