@@ -1,7 +1,7 @@
 "use client"
 
 import { ReactNode } from "react"
-import { Label } from "../atoms/label"
+import { Label } from "../atoms/Label"
 
 interface FilterItemProps {
   label: string

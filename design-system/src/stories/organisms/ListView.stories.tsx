@@ -266,7 +266,7 @@ const ListView: React.FC<TableProps> = ({
                               <div className="flex items-center gap-2">
                                <div className="flex items-center gap-2">
                                   <span className="text-black font-medium ">
-                                    {collapsedGroups[group.group] ? "▼" : "▶"}
+                                    {collapsedGroups[group.group] ? "▶" : "▼"}
                                   </span>
                                   <span className="font-semibold text-gray-700">{group.group}</span>
                                 </div>
@@ -385,7 +385,7 @@ const ListView: React.FC<TableProps> = ({
 };
 
 const meta: Meta<typeof ListView> = {
-  title: "Design-system/Components/Atoms/ListView",
+  title: "Design-system/Components/Organisms/ListView",
   component: ListView,
   tags: ["autodocs"],
   argTypes: {

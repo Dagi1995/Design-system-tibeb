@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { HexColorPicker } from "react-colorful"
-import { Popover, PopoverContent, PopoverTrigger } from "../atoms/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/Popover"
 import { Button } from "../atoms/Button"
 import { Input } from "../atoms/Input"
 import { Copy, Check } from "lucide-react"

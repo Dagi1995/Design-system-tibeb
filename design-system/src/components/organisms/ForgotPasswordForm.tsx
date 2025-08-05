@@ -14,7 +14,7 @@ import {
   CardDescription,
   CardContent,
 } from "../molocules/Card"
-import { Label } from "../atoms/label"
+import { Label } from "../atoms/Label"
 import { Input } from "../atoms/Input"
 import { Button } from "../atoms/Button"
 import { ErrorMessage } from "../atoms/ErrorMessage"
