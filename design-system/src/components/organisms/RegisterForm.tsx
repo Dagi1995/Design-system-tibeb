@@ -24,10 +24,8 @@ import {
   Select,
   SelectContent,
   SelectValue,
-  SelectGroup,
+
   SelectItem,
-  SelectLabel,
-  SelectSeparator,
   SelectTrigger,
 } from "../atoms/Select"
 import { FileUpload } from "../molocules/FileUpload"
