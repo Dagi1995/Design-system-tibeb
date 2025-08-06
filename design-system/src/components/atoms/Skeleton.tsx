@@ -1,10 +1,31 @@
-import { cn } from "@/lib/utils"
+"use client"
 
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+import { cn } from "@/lib/utils"
+import * as React from "react"
+
+interface SkeletonProps extends React.ComponentProps<"div"> {
+  height?: string
+  width?: string
+  variant?: "light" | "dark"
+}
+
+function Skeleton({
+  className,
+  height = "h-8",
+  width = "w-48",
+  variant = "dark",
+  ...props
+}: SkeletonProps) {
   return (
     <div
       data-slot="skeleton"
-      className={cn("h-8 w-48 bg-gray-600 animate-pulse", className)}
+      className={cn(
+        "animate-pulse rounded-md",
+        variant === "dark" ? "bg-gray-600" : "bg-gray-300",
+        height,
+        width,
+        className
+      )}
       {...props}
     />
   )
