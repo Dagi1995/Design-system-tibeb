@@ -6,6 +6,19 @@ const meta: Meta<typeof Skeleton> = {
   component: Skeleton,
   tags: ["autodocs"],
   argTypes: {
+    height: {
+      control: "text",
+      defaultValue: "h-8",
+    },
+    width: {
+      control: "text",
+      defaultValue: "w-48",
+    },
+    variant: {
+      control: "inline-radio",
+      options: ["light", "dark"],
+      defaultValue: "dark",
+    },
     className: { control: false },
   },
   parameters: {
@@ -24,23 +37,37 @@ export default meta
 type Story = StoryObj<typeof Skeleton>
 
 export const Default: Story = {
-  render: () => (
-    <Skeleton className="h-8 w-48 bg-gray-300 animate-pulse" />
-  ),
+  args: {
+    height: "h-8",
+    width: "w-48",
+    variant: "dark",
+  },
 }
 
 export const Circle: Story = {
-  render: () => (
-    <Skeleton className="h-10 w-10 rounded-full bg-gray-300 animate-pulse" />
-  ),
+  args: {
+    height: "h-10",
+    width: "w-10",
+    variant: "light",
+    className: "rounded-full",
+  },
 }
 
 export const TextBlock: Story = {
   render: () => (
     <div className="space-y-2">
-      <Skeleton className="h-4 w-full rounded bg-gray-300 animate-pulse" />
-      <Skeleton className="h-4 w-5/6 rounded bg-gray-300 animate-pulse" />
-      <Skeleton className="h-4 w-4/6 rounded bg-gray-300 animate-pulse" />
+      <Skeleton height="h-10" width="w-60" variant="dark" />
+      <Skeleton height="h-10" width="w-5/6" variant="light" />
+      <Skeleton height="h-5" width="w-4/6" variant="light" />
     </div>
   ),
 }
+export const CircleWithText: Story = {
+  render: () => (
+    <div className="space-y-2 flex items-center justify-center gap-4">
+      <Skeleton className="rounded-full" height="h-15"   width= "w-15"variant="dark" />
+      <Skeleton height="h-10" width="w-50" variant="light" />
+    </div>
+  ),
+}
+

@@ -20,7 +20,7 @@ type Story = StoryObj<typeof Avatar>
 export const Default: Story = {
   render: () => (
     <Avatar>
-      <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
+      <AvatarImage src="https://github.com/shadcn.png" alt="shadcn"/>
       <AvatarFallback>SC</AvatarFallback>
     </Avatar>
   ),
@@ -37,7 +37,7 @@ export const NoImage: Story = {
 
 export const CustomSize: Story = {
   render: () => (
-    <Avatar className="size-16">
+    <Avatar className="size-16"> 
       <AvatarImage src="https://i.pravatar.cc/300" alt="User" />
       <AvatarFallback className="text-lg">U</AvatarFallback>
     </Avatar>

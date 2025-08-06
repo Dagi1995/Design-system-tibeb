@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 "use client"
 
 import React, { useRef, useState } from "react"
@@ -70,9 +71,9 @@ export function FileUpload({
       {progress === 100 && fileName && (
         <div className="mt-2 text-sm text-muted-foreground break-all">
           {fileType?.startsWith("image/") ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={fileURL!}
-              alt="preview"
               className="mt-2 max-w-[200px] rounded border"
             />
           ) : (

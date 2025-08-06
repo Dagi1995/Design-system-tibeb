@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { FileUpload } from "../../components/molocules/FileUpload"
 
 const meta: Meta<typeof FileUpload> = {
-  title: "Molecules/FileUpload",
+  title: "Design-system/Components/Molecules/FileUpload",
   component: FileUpload,
   tags: ["autodocs"],
   args: {
