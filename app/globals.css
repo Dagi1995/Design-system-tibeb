@@ -10,7 +10,6 @@ body {
   font-family: 'Sansation', sans-serif;
 }
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
