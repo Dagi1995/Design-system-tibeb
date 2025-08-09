@@ -15,4 +15,4 @@ const meta: Meta<typeof LoginForm> = {
 export default meta;
 type Story = StoryObj<typeof LoginForm>;
 
-export const Default: Story = {}; // Remove play function temporarily
+export const Default: Story = {};
