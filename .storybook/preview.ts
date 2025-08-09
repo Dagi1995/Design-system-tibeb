@@ -14,6 +14,7 @@ const preview: Preview = {
     }
   },
   decorators: [
+    
     // If you have other decorators, you can add them here as well.
   ],
 };

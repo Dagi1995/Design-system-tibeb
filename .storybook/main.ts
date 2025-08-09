@@ -14,7 +14,11 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: "@storybook/nextjs-vite",
-    options: {},
+    options: {
+      // @ts-expect-error strictMode not typed yet
+
+       strictMode: false,
+    },
   },
   staticDirs: ["../public"],
  
