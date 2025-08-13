@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { toast } from "sonner"
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import {
   Card,
@@ -13,21 +13,21 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../molocules/Card"
-import { Label } from "../atoms/Label"
-import { Input } from "../atoms/Input"
-import { Button } from "../atoms/Button"
-import { ErrorMessage } from "../atoms/ErrorMessage"
+} from "../molecules/Card";
+import { Label } from "../atoms/Label";
+import { Input } from "../atoms/Input";
+import { Button } from "../atoms/Button";
+import { ErrorMessage } from "../atoms/ErrorMessage";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
-})
+});
 
-type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>
+type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export function ForgotPasswordForm() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = React.useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const {
     register,
@@ -38,21 +38,19 @@ export function ForgotPasswordForm() {
     defaultValues: {
       email: "",
     },
-  })
+  });
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
-    setIsLoading(true)
-    
+    setIsLoading(true);
 
     // Fake async delay to simulate request
     setTimeout(() => {
-      toast.success("Mock: Password reset link sent!")
-    
+      toast.success("Mock: Password reset link sent!");
 
       // Redirect to OTP with email as query
-      router.push("/otp")
-    }, 1500)
-  }
+      router.push("/otp");
+    }, 1500);
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto shadow-md border-muted rounded-lg bg-background">
@@ -89,5 +87,5 @@ export function ForgotPasswordForm() {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

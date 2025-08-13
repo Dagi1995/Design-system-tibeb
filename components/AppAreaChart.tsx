@@ -6,9 +6,9 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/src/components/molocules/Chart";
+} from "@/design-system/src/components/molecules/Chart";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { type ChartConfig } from "@/design-system/src/components/molocules/Chart";
+import { type ChartConfig } from "@/design-system/src/components/molecules/Chart";
 
 const chartConfig = {
   desktop: {
@@ -46,21 +46,21 @@ const AppAreaChart = () => {
           <ChartTooltip content={<ChartTooltipContent />} />
           <ChartLegend content={<ChartLegendContent />} />
           <Area
-              dataKey="mobile"
-              type="natural"
-              fill="var(--color-mobile)"
-              fillOpacity={0.4}
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
-            <Area
-              dataKey="desktop"
-              type="natural"
-              fill="var(--color-desktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
+            dataKey="mobile"
+            type="natural"
+            fill="var(--color-mobile)"
+            fillOpacity={0.4}
+            stroke="var(--color-mobile)"
+            stackId="a"
+          />
+          <Area
+            dataKey="desktop"
+            type="natural"
+            fill="var(--color-desktop)"
+            fillOpacity={0.4}
+            stroke="var(--color-desktop)"
+            stackId="a"
+          />
         </AreaChart>
       </ChartContainer>
     </div>

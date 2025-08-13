@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import * as React from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import {
   SidebarProvider,
@@ -15,7 +15,7 @@ import {
   SidebarTrigger,
   SidebarInset,
   SidebarSeparator,
-} from "../../components/organisms/SideBar"
+} from "../../components/organisms/SideBar";
 
 import {
   NavigationMenu,
@@ -24,14 +24,14 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
-} from "../../components/molocules/NavigationMenu"
+} from "../../components/molecules/NavigationMenu";
 
-import { Skeleton } from "../../components/atoms/Skeleton"
+import { Skeleton } from "../../components/atoms/Skeleton";
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
-} from "../../components/atoms/Collapsible"
+} from "../../components/atoms/Collapsible";
 
 import {
   Home,
@@ -40,9 +40,13 @@ import {
   ChevronDown,
   ChevronRight,
   Folder,
-} from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/atoms/Avatar"
-import { Separator } from "../../components/atoms/Separator"
+} from "lucide-react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/atoms/Avatar";
+import { Separator } from "../../components/atoms/Separator";
 
 const meta: Meta = {
   title: "Design-system/Components/Organisms/SidebarWithNavbar",
@@ -50,9 +54,9 @@ const meta: Meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => {
-      const [collapsed, setCollapsed] = React.useState(false)
-      const [projectsOpen, setProjectsOpen] = React.useState(false)
-      const [nestedOpen, setNestedOpen] = React.useState(false)
+      const [collapsed, setCollapsed] = React.useState(false);
+      const [projectsOpen, setProjectsOpen] = React.useState(false);
+      const [nestedOpen, setNestedOpen] = React.useState(false);
 
       return (
         <SidebarProvider defaultOpen>
@@ -66,11 +70,13 @@ const meta: Meta = {
               }`}
             >
               <SidebarHeader className="flex items-center justify-between px-4 py-3 border-b">
-               
-               <Avatar>
-                 <AvatarImage src="https://github.com/shadcn.png" alt="shadcn"/>
-                      <AvatarFallback>SC</AvatarFallback>
-                </Avatar> 
+                <Avatar>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="shadcn"
+                  />
+                  <AvatarFallback>SC</AvatarFallback>
+                </Avatar>
               </SidebarHeader>
 
               <SidebarContent className="px-1 py-2">
@@ -85,29 +91,37 @@ const meta: Meta = {
 
                   {/* Projects with Collapsible */}
                   <SidebarMenuItem>
-                    <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
+                    <Collapsible
+                      open={projectsOpen}
+                      onOpenChange={setProjectsOpen}
+                    >
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton>
                           <Folder className="size-5" />
                           {!collapsed && <span>Projects</span>}
-                          {!collapsed && (
-                            projectsOpen ? (
+                          {!collapsed &&
+                            (projectsOpen ? (
                               <ChevronDown className="ml-auto size-4" />
                             ) : (
                               <ChevronRight className="ml-auto size-4" />
-                            )
-                          )}
+                            ))}
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
 
                       {!collapsed && (
                         <CollapsibleContent className="ml-6 flex flex-col gap-1 mt-1">
-                            <Separator orientation="vertical" className="absolute py-5"></Separator>
+                          <Separator
+                            orientation="vertical"
+                            className="absolute py-5"
+                          ></Separator>
                           <SidebarMenuButton>
                             <span className="text-sm">Project A</span>
                           </SidebarMenuButton>
 
-                          <Collapsible open={nestedOpen} onOpenChange={setNestedOpen}>
+                          <Collapsible
+                            open={nestedOpen}
+                            onOpenChange={setNestedOpen}
+                          >
                             <CollapsibleTrigger asChild>
                               <SidebarMenuButton>
                                 <span className="text-sm">Project B</span>
@@ -120,7 +134,10 @@ const meta: Meta = {
                             </CollapsibleTrigger>
 
                             <CollapsibleContent className="ml-6 flex flex-col gap-1">
-                             <Separator orientation="vertical" className="absolute py-5"></Separator>
+                              <Separator
+                                orientation="vertical"
+                                className="absolute py-5"
+                              ></Separator>
 
                               <SidebarMenuButton>
                                 <span className="text-sm">Subtask 1</span>
@@ -199,19 +216,19 @@ const meta: Meta = {
             </SidebarInset>
           </div>
         </SidebarProvider>
-      )
+      );
     },
   ],
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Sidebar>
+type Story = StoryObj<typeof Sidebar>;
 
 export const Default: Story = {
   args: {
     side: "left",
     collapsible: "none",
-    variant: "inset"
+    variant: "inset",
   },
-}
+};

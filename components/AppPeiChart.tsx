@@ -11,13 +11,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/design-system/src/components/molocules/Card";
+} from "@/design-system/src/components/molecules/Card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/src/components/molocules/Chart";
+} from "@/design-system/src/components/molecules/Chart";
 
 export const description = "A donut chart with text";
 

@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { NotificationItem } from "../../components/molocules/NotificationItem"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { NotificationItem } from "../../components/molecules/NotificationItem";
 
 const meta: Meta<typeof NotificationItem> = {
   title: "Design-system/Components/Molecules/NotificationItem",
   component: NotificationItem,
   tags: ["autodocs"],
-}
+};
 
-export default meta
-type Story = StoryObj<typeof NotificationItem>
+export default meta;
+type Story = StoryObj<typeof NotificationItem>;
 
 export const Default: Story = {
   args: {
@@ -19,4 +19,4 @@ export const Default: Story = {
     timeRelative: "2 hours ago",
     unread: true,
   },
-}
+};

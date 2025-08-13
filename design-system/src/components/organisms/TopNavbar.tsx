@@ -1,33 +1,29 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { Menu, Bell } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Sheet, SheetContent, SheetTrigger } from "../molocules/Sheet"
-import { Button } from "../atoms/Button"
-import { Input } from "../atoms/Input"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../atoms/Avatar"
+import * as React from "react";
+import Link from "next/link";
+import { Menu, Bell } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger } from "../molecules/Sheet";
+import { Button } from "../atoms/Button";
+import { Input } from "../atoms/Input";
+import { Avatar, AvatarFallback, AvatarImage } from "../atoms/Avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../molocules/DropdownMenu"
+} from "../molecules/DropdownMenu";
 
 interface TopNavbarProps {
-  logo?: React.ReactNode
-  links?: { label: string; href: string }[]
-  rightContent?: React.ReactNode 
-  className?: string
+  logo?: React.ReactNode;
+  links?: { label: string; href: string }[];
+  rightContent?: React.ReactNode;
+  className?: string;
 }
 
 export function TopNavbar({ logo, links = [], className }: TopNavbarProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   return (
     <header className={cn("w-full border-b bg-white", className)}>
@@ -104,5 +100,5 @@ export function TopNavbar({ logo, links = [], className }: TopNavbarProps) {
         </div>
       </div>
     </header>
-  )
+  );
 }

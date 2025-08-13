@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   Card,
   CardHeader,
@@ -7,8 +7,8 @@ import {
   CardContent,
   CardFooter,
   CardAction,
-} from "../../components/molocules/Card"
-import { Button } from "../../components/atoms/Button"
+} from "../../components/molecules/Card";
+import { Button } from "../../components/atoms/Button";
 
 const meta: Meta<typeof Card> = {
   title: "Design-system/Components/Molecules/Card",
@@ -17,10 +17,10 @@ const meta: Meta<typeof Card> = {
   parameters: {
     layout: "centered",
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof Card>
+export default meta;
+type Story = StoryObj<typeof Card>;
 
 export const Default: Story = {
   render: () => (
@@ -45,4 +45,4 @@ export const Default: Story = {
       </CardFooter>
     </Card>
   ),
-}
+};

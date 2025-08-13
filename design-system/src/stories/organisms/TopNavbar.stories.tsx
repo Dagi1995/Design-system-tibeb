@@ -13,7 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../../components/molocules/DropdownMenu";
+} from "../../components/molecules/DropdownMenu";
 
 const meta: Meta<typeof TopNavbar> = {
   title: "Design-system/Components/Organisms/TopNavbar",

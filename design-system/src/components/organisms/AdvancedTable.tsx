@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useState } from "react"
+import * as React from "react";
+import { useState } from "react";
 
 import {
   useReactTable,
@@ -13,9 +13,8 @@ import {
   SortingState,
   ColumnResizeMode,
   getPaginationRowModel,
-  ColumnFiltersState 
-  
-} from "@tanstack/react-table"
+  ColumnFiltersState,
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -24,19 +23,19 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "../molocules/Table" // Your Table atoms/molecules
-import { Checkbox } from "../atoms/Checkbox"
-import { Input } from "../atoms/Input"
-import { Button } from "../atoms/Button"
-import { Edit, Trash } from "lucide-react"
+} from "../molecules/Table"; // Your Table atoms/molecules
+import { Checkbox } from "../atoms/Checkbox";
+import { Input } from "../atoms/Input";
+import { Button } from "../atoms/Button";
+import { Edit, Trash } from "lucide-react";
 
 type Person = {
-  id: number
-  name: string
-  email: string
-  role: string
-  status: "active" | "inactive"
-}
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: "active" | "inactive";
+};
 
 export function AdvancedTable() {
   const [data, setData] = React.useState<Person[]>([
@@ -61,16 +60,18 @@ export function AdvancedTable() {
       role: "Support",
       status: "active",
     },
-  ])
+  ]);
 
-  const [rowSelection, setRowSelection] = React.useState<Record<string, boolean>>({})
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnResizeMode] = React.useState<ColumnResizeMode>("onChange")
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [rowSelection, setRowSelection] = React.useState<
+    Record<string, boolean>
+  >({});
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnResizeMode] = React.useState<ColumnResizeMode>("onChange");
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   // Inline editing state
-  const [editingRowId, setEditingRowId] = React.useState<number | null>(null)
-  const [editedRow, setEditedRow] = React.useState<Partial<Person>>({})
+  const [editingRowId, setEditingRowId] = React.useState<number | null>(null);
+  const [editedRow, setEditedRow] = React.useState<Partial<Person>>({});
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
@@ -80,7 +81,9 @@ export function AdvancedTable() {
           <Checkbox
             aria-label="Select all rows"
             checked={table.getIsAllPageRowsSelected()}
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
           />
         ),
         cell: ({ row }) => (
@@ -100,23 +103,22 @@ export function AdvancedTable() {
         header: "ID",
         size: 50,
         enableResizing: true,
-        
       },
       {
         accessorKey: "name",
         header: "Name",
         cell: ({ row, getValue }) => {
-          const isEditing = editingRowId === row.original.id
-          if (!isEditing) return <span>{getValue<string>()}</span>
+          const isEditing = editingRowId === row.original.id;
+          if (!isEditing) return <span>{getValue<string>()}</span>;
 
           return (
             <Input
-              value={(editedRow.name ?? "")}
+              value={editedRow.name ?? ""}
               onChange={(e) =>
                 setEditedRow((prev) => ({ ...prev, name: e.target.value }))
               }
             />
-          )
+          );
         },
         enableResizing: true,
         enableSorting: true,
@@ -127,8 +129,8 @@ export function AdvancedTable() {
         accessorKey: "email",
         header: "Email",
         cell: ({ row, getValue }) => {
-          const isEditing = editingRowId === row.original.id
-          if (!isEditing) return <span>{getValue<string>()}</span>
+          const isEditing = editingRowId === row.original.id;
+          if (!isEditing) return <span>{getValue<string>()}</span>;
 
           return (
             <Input
@@ -137,7 +139,7 @@ export function AdvancedTable() {
                 setEditedRow((prev) => ({ ...prev, email: e.target.value }))
               }
             />
-          )
+          );
         },
         enableResizing: true,
         enableSorting: true,
@@ -148,8 +150,8 @@ export function AdvancedTable() {
         accessorKey: "role",
         header: "Role",
         cell: ({ row, getValue }) => {
-          const isEditing = editingRowId === row.original.id
-          if (!isEditing) return <span>{getValue<string>()}</span>
+          const isEditing = editingRowId === row.original.id;
+          if (!isEditing) return <span>{getValue<string>()}</span>;
 
           return (
             <Input
@@ -158,7 +160,7 @@ export function AdvancedTable() {
                 setEditedRow((prev) => ({ ...prev, role: e.target.value }))
               }
             />
-          )
+          );
         },
         enableResizing: true,
         enableSorting: true,
@@ -169,7 +171,7 @@ export function AdvancedTable() {
         accessorKey: "status",
         header: "Status",
         cell: ({ row, getValue }) => {
-          const isEditing = editingRowId === row.original.id
+          const isEditing = editingRowId === row.original.id;
           if (!isEditing)
             return (
               <span
@@ -181,7 +183,7 @@ export function AdvancedTable() {
               >
                 {getValue<string>()}
               </span>
-            )
+            );
 
           return (
             <select
@@ -197,7 +199,7 @@ export function AdvancedTable() {
               <option value="active">active</option>
               <option value="inactive">inactive</option>
             </select>
-          )
+          );
         },
         enableResizing: true,
         enableSorting: true,
@@ -208,7 +210,7 @@ export function AdvancedTable() {
         id: "actions",
         header: "Actions",
         cell: ({ row }) => {
-          const isEditing = editingRowId === row.original.id
+          const isEditing = editingRowId === row.original.id;
           if (isEditing) {
             return (
               <>
@@ -216,8 +218,8 @@ export function AdvancedTable() {
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    setEditingRowId(null)
-                    setEditedRow({})
+                    setEditingRowId(null);
+                    setEditedRow({});
                   }}
                   className="mr-2"
                 >
@@ -231,15 +233,15 @@ export function AdvancedTable() {
                       old.map((d) =>
                         d.id === row.original.id ? { ...d, ...editedRow } : d
                       )
-                    )
-                    setEditingRowId(null)
-                    setEditedRow({})
+                    );
+                    setEditingRowId(null);
+                    setEditedRow({});
                   }}
                 >
                   Save
                 </Button>
               </>
-            )
+            );
           }
 
           return (
@@ -248,8 +250,8 @@ export function AdvancedTable() {
                 size="sm"
                 variant="outline"
                 onClick={() => {
-                  setEditingRowId(row.original.id)
-                  setEditedRow(row.original)
+                  setEditingRowId(row.original.id);
+                  setEditedRow(row.original);
                 }}
                 className="mr-2"
               >
@@ -259,15 +261,13 @@ export function AdvancedTable() {
                 size="sm"
                 variant="destructive"
                 onClick={() => {
-                  setData((old) =>
-                    old.filter((d) => d.id !== row.original.id)
-                  )
+                  setData((old) => old.filter((d) => d.id !== row.original.id));
                 }}
               >
                 <Trash></Trash>
               </Button>
             </>
-          )
+          );
         },
         enableSorting: false,
         enableColumnFilter: false,
@@ -276,7 +276,7 @@ export function AdvancedTable() {
       },
     ],
     [editingRowId, editedRow]
-  )
+  );
 
   const table = useReactTable({
     data,
@@ -295,14 +295,14 @@ export function AdvancedTable() {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     columnResizeMode,
-  })
+  });
 
   return (
     <div className="p-4 space-y-4">
       {/* Filters */}
-    <div className="flex flex-wrap gap-5 mb-2">
-          {table.getAllLeafColumns().map((column) => {
-          if (!column.getCanFilter()) return null
+      <div className="flex flex-wrap gap-5 mb-2">
+        {table.getAllLeafColumns().map((column) => {
+          if (!column.getCanFilter()) return null;
           return (
             <div key={column.id}>
               <input
@@ -313,12 +313,12 @@ export function AdvancedTable() {
                 className="border rounded px-1 py-1 text-sm"
               />
             </div>
-          )
+          );
         })}
       </div>
 
       {/* Table */}
-      <Table >
+      <Table>
         <TableHeader className="bg-gray-100">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow className="" key={headerGroup.id}>
@@ -377,9 +377,16 @@ export function AdvancedTable() {
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell className="px-4 py-2" key={cell.id} style={{ width: cell.column.getSize() }}>
+                  <TableCell
+                    className="px-4 py-2"
+                    key={cell.id}
+                    style={{ width: cell.column.getSize() }}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -441,7 +448,7 @@ export function AdvancedTable() {
         <select
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
-            table.setPageSize(Number(e.target.value))
+            table.setPageSize(Number(e.target.value));
           }}
           className="border rounded p-1"
         >
@@ -463,5 +470,5 @@ export function AdvancedTable() {
         }
       `}</style>
     </div>
-  )
+  );
 }

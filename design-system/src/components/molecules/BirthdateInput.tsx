@@ -1,20 +1,20 @@
 // components/custom/birthdate-input.tsx
-"use client"
+"use client";
 
-import * as React from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "../atoms/Popover"
-import { Button } from "../atoms/Button"
-import { Calendar } from "../molocules/Calendar"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import * as React from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/Popover";
+import { Button } from "../atoms/Button";
+import { Calendar } from "./Calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 interface BirthdateInputProps {
-  label?: string
-  placeholder?: string
-  description?: string
-  onChange?: (date: Date | undefined) => void
-  className?: string
+  label?: string;
+  placeholder?: string;
+  description?: string;
+  onChange?: (date: Date | undefined) => void;
+  className?: string;
 }
 
 export function BirthdateInput({
@@ -24,12 +24,12 @@ export function BirthdateInput({
   onChange,
   className,
 }: BirthdateInputProps) {
-  const [date, setDate] = React.useState<Date | undefined>(undefined)
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   const handleSelect = (selected: Date | undefined) => {
-    setDate(selected)
-    onChange?.(selected)
-  }
+    setDate(selected);
+    onChange?.(selected);
+  };
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -64,5 +64,5 @@ export function BirthdateInput({
         <p className="text-sm text-muted-foreground">{description}</p>
       )}
     </div>
-  )
+  );
 }

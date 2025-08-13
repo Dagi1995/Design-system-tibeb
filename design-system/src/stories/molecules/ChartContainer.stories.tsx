@@ -1,31 +1,41 @@
-import * as React from "react"
-import { Meta, StoryObj } from "@storybook/nextjs-vite"
+import * as React from "react";
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
-} from "../../components/molocules/Chart"
+} from "../../components/molecules/Chart";
 
 import {
-  LineChart, Line,
-  BarChart, Bar,
-  AreaChart, Area,
-  PieChart, Pie, Cell,
-  RadialBarChart, RadialBar,
-  CartesianGrid, XAxis, YAxis, Tooltip, Legend,
-  PolarAngleAxis, 
-} from "recharts"
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  RadialBarChart,
+  RadialBar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  PolarAngleAxis,
+} from "recharts";
 
 const meta: Meta<typeof ChartContainer> = {
   title: "Design-system/Components/Molecules/Charts",
   component: ChartContainer,
   tags: ["autodocs"],
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof ChartContainer>
+type Story = StoryObj<typeof ChartContainer>;
 
 const sampleData = [
   { name: "Jan", sales: 2400, revenue: 4000 },
@@ -34,25 +44,25 @@ const sampleData = [
   { name: "Apr", sales: 3908, revenue: 4700 },
   { name: "May", sales: 4800, revenue: 6000 },
   { name: "Jun", sales: 3800, revenue: 5200 },
-]
+];
 
 const pieData = [
   { name: "Sales", value: 400 },
   { name: "Revenue", value: 300 },
   { name: "Cost", value: 300 },
   { name: "Profit", value: 200 },
-]
+];
 
 const radialData = [
   { name: "Sales", value: 85, fill: "#3b82f6" },
   { name: "Revenue", value: 65, fill: "#10b981" },
   { name: "Cost", value: 50, fill: "#facc15" },
-]
+];
 
 const chartConfig = {
-  sales: { label: "Sales", color: "#3b82f0" },     // blue-500
+  sales: { label: "Sales", color: "#3b82f0" }, // blue-500
   revenue: { label: "Revenue", color: "#10b981" }, // emerald-500
-}
+};
 
 // Line Chart
 export const LineChartStory: Story = {
@@ -70,7 +80,7 @@ export const LineChartStory: Story = {
       </LineChart>
     </ChartContainer>
   ),
-}
+};
 
 // Bar Chart
 export const BarChartStory: Story = {
@@ -88,7 +98,7 @@ export const BarChartStory: Story = {
       </BarChart>
     </ChartContainer>
   ),
-}
+};
 
 // Area Chart
 export const AreaChartStory: Story = {
@@ -101,12 +111,24 @@ export const AreaChartStory: Story = {
         <YAxis />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
-        <Area type="monotone" dataKey="sales" stroke="var(--color-sales)" fill="var(--color-sales)" fillOpacity={0.3} />
-        <Area type="monotone" dataKey="revenue" stroke="var(--color-revenue)" fill="var(--color-revenue)" fillOpacity={0.3} />
+        <Area
+          type="monotone"
+          dataKey="sales"
+          stroke="var(--color-sales)"
+          fill="var(--color-sales)"
+          fillOpacity={0.3}
+        />
+        <Area
+          type="monotone"
+          dataKey="revenue"
+          stroke="var(--color-revenue)"
+          fill="var(--color-revenue)"
+          fillOpacity={0.3}
+        />
       </AreaChart>
     </ChartContainer>
   ),
-}
+};
 
 // Pie Chart
 export const PieChartStory: Story = {
@@ -126,13 +148,16 @@ export const PieChartStory: Story = {
           dataKey="value"
         >
           {pieData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={["#3b82f6", "#10b981", "#facc15", "#f472b6"][index % 4]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={["#3b82f6", "#10b981", "#facc15", "#f472b6"][index % 4]}
+            />
           ))}
         </Pie>
       </PieChart>
     </ChartContainer>
   ),
-}
+};
 
 // Radial Bar Chart
 export const RadialBarChartStory: Story = {
@@ -150,17 +175,15 @@ export const RadialBarChartStory: Story = {
         height={300}
       >
         <Tooltip />
-        <PolarAngleAxis
-    type="number"
-    domain={[0, 100]}
-  />
-        <RadialBar
-          background
-          dataKey="value"
-          cornerRadius={6}
+        <PolarAngleAxis type="number" domain={[0, 100]} />
+        <RadialBar background dataKey="value" cornerRadius={6} />
+        <Legend
+          iconSize={10}
+          layout="horizontal"
+          verticalAlign="bottom"
+          align="center"
         />
-        <Legend iconSize={10} layout="horizontal" verticalAlign="bottom" align="center" />
       </RadialBarChart>
     </ChartContainer>
   ),
-}
+};

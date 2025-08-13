@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import { useForm, Controller, ControllerRenderProps } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { toast } from "sonner"
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import { useForm, Controller, ControllerRenderProps } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import {
   Card,
@@ -13,22 +13,21 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../molocules/Card"
-import { Label } from "../atoms/Label"
-import { Input } from "../atoms/Input"
-import { Checkbox } from "../atoms/Checkbox"
-import { Button } from "../atoms/Button"
-import { ErrorMessage } from "../atoms/ErrorMessage"
-import { BirthdateInput } from "../molocules/BirthdateInput"
+} from "../molecules/Card";
+import { Label } from "../atoms/Label";
+import { Input } from "../atoms/Input";
+import { Checkbox } from "../atoms/Checkbox";
+import { Button } from "../atoms/Button";
+import { ErrorMessage } from "../atoms/ErrorMessage";
+import { BirthdateInput } from "../molecules/BirthdateInput";
 import {
   Select,
   SelectContent,
   SelectValue,
-
   SelectItem,
   SelectTrigger,
-} from "../atoms/Select"
-import { FileUpload } from "../molocules/FileUpload"
+} from "../atoms/Select";
+import { FileUploader } from "../molecules/FileUpload";
 
 // Fix birthday schema validation
 const registerSchema = z
@@ -38,12 +37,11 @@ const registerSchema = z
     email: z.string().email("Invalid email address"),
     phone: z.string().optional(),
     department: z.string().optional(),
-    birthday: z.date().refine((date) => !!date, { message: "Birthday is required" }),
+    birthday: z
+      .date()
+      .refine((date) => !!date, { message: "Birthday is required" }),
     role: z.string().min(1, "Role is required"),
-    file: z
-      .instanceof(File)
-      .optional()
-      .nullable(),
+    file: z.instanceof(File).nullable().optional(),
     password: z.string().min(6, "Password must be at least 6 characters long"),
     confirmPassword: z.string().min(6, "Confirm password is required"),
     terms: z.boolean().refine((val) => val === true, {
@@ -53,17 +51,17 @@ const registerSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
-  })
+  });
 
-type RegisterFormValues = z.infer<typeof registerSchema>
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
 type ControllerFieldProps<T extends keyof RegisterFormValues> = {
-  field: ControllerRenderProps<RegisterFormValues, T>
-}
+  field: ControllerRenderProps<RegisterFormValues, T>;
+};
 
 export function RegisterForm() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = React.useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const {
     register,
@@ -79,42 +77,55 @@ export function RegisterForm() {
       birthday: undefined,
       file: null,
     },
-  })
+  });
 
   const onSubmit = async (data: RegisterFormValues) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
+      // Note: Sending File as JSON won't work properly
+      // You may want to handle file upload separately (e.g. FormData)
+      // Here just for demonstration:
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
-      })
+        body: JSON.stringify({
+          ...data,
+          file: data.file
+            ? {
+                name: data.file.name,
+                size: data.file.size,
+                type: data.file.type,
+              }
+            : null,
+        }),
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (response.ok && result.success) {
-        toast.success("Account created successfully!")
+        toast.success("Account created successfully!");
         setTimeout(() => {
-          router.push("/login")
-        }, 1500)
+          router.push("/login");
+        }, 1500);
       } else {
-        toast.error(result.message || "Something went wrong")
+        toast.error(result.message || "Something went wrong");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("Failed to connect to server")
+      toast.error("Failed to connect to server");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg rounded-lg border border-muted bg-background">
       <CardHeader className="text-center space-y-1">
-        <CardTitle className="text-2xl font-semibold">Create an Account</CardTitle>
+        <CardTitle className="text-2xl font-semibold">
+          Create an Account
+        </CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
           Start your journey with us by filling out the details below.
         </CardDescription>
@@ -125,12 +136,20 @@ export function RegisterForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label htmlFor="firstname">First Name</Label>
-              <Input id="firstname" {...register("firstname")} placeholder="John" />
+              <Input
+                id="firstname"
+                {...register("firstname")}
+                placeholder="John"
+              />
               <ErrorMessage message={errors.firstname?.message} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="lastname">Last Name</Label>
-              <Input id="lastname" {...register("lastname")} placeholder="Doe" />
+              <Input
+                id="lastname"
+                {...register("lastname")}
+                placeholder="Doe"
+              />
               <ErrorMessage message={errors.lastname?.message} />
             </div>
           </div>
@@ -138,55 +157,64 @@ export function RegisterForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label htmlFor="email">Email Address</Label>
-              <Input id="email" type="email" {...register("email")} placeholder="you@example.com" />
+              <Input
+                id="email"
+                type="email"
+                {...register("email")}
+                placeholder="you@example.com"
+              />
               <ErrorMessage message={errors.email?.message} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="phone">Phone Number</Label>
-              <Input id="phone" type="tel" {...register("phone")} placeholder="+251 924 567 901" />
+              <Input
+                id="phone"
+                type="tel"
+                {...register("phone")}
+                placeholder="+251 924 567 901"
+              />
               <ErrorMessage message={errors.phone?.message} />
             </div>
           </div>
-          <div className=" grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-            
-          {/* Birthday */}
-          <div className="space-y-1">
-            <Controller
-              name="birthday"
-              control={control}
-              render={({ field }: ControllerFieldProps<"birthday">) => (
-                <BirthdateInput {...field} />
-              )}
-            />
-            <ErrorMessage message={errors.birthday?.message} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Birthday */}
+            <div className="space-y-1">
+              <Controller
+                name="birthday"
+                control={control}
+                render={({ field }: ControllerFieldProps<"birthday">) => (
+                  <BirthdateInput {...field} />
+                )}
+              />
+              <ErrorMessage message={errors.birthday?.message} />
+            </div>
+
+            {/* Department Select */}
+            <div className="space-y-1">
+              <Label htmlFor="role">Department</Label>
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || ""}
+                  >
+                    <SelectTrigger aria-label="Role">
+                      <SelectValue placeholder="Select a Department" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="user">User</SelectItem>
+                      <SelectItem value="moderator">Moderator</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              <ErrorMessage message={errors.role?.message} />
+            </div>
           </div>
-
-          {/* Department Select */}
-          <div className="space-y-1">
-            <Label htmlFor="role">Department</Label>
-            <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value || ""}>
-                  <SelectTrigger aria-label="Role">
-                    <SelectValue placeholder="Select a Department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="user">User</SelectItem>
-                    <SelectItem value="moderator">Moderator</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            <ErrorMessage message={errors.role?.message} />
-          </div>
-          </div>
-
-          
-
 
           {/* File Upload */}
           <div className="space-y-1">
@@ -195,10 +223,17 @@ export function RegisterForm() {
               name="file"
               control={control}
               render={({ field }) => (
-                <FileUpload
-                  onFileSelect={(file) => field.onChange(file ?? null)}
-                  accept="image/*"
-                  label="Upload File"
+                <FileUploader
+                  value={field.value ? [field.value] : []}
+                  onValueChange={(files) => {
+                    field.onChange(files && files.length > 0 ? files[0] : null);
+                  }}
+                  dropzoneOptions={{
+                    accept: { "image/*": [".jpeg", ".jpg", ".png", ".gif"] },
+                    maxFiles: 1,
+                    maxSize: 4 * 1024 * 1024, // 4MB
+                    multiple: false,
+                  }}
                 />
               )}
             />
@@ -208,7 +243,12 @@ export function RegisterForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" {...register("password")} placeholder="••••••••" />
+              <Input
+                id="password"
+                type="password"
+                {...register("password")}
+                placeholder="••••••••"
+              />
               <ErrorMessage message={errors.password?.message} />
             </div>
             <div className="space-y-1">
@@ -228,7 +268,11 @@ export function RegisterForm() {
               name="terms"
               control={control}
               render={({ field }: ControllerFieldProps<"terms">) => (
-                <Checkbox id="terms" checked={field.value} onCheckedChange={field.onChange} />
+                <Checkbox
+                  id="terms"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               )}
             />
             <Label htmlFor="terms" className="text-sm leading-snug">
@@ -264,5 +308,5 @@ export function RegisterForm() {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

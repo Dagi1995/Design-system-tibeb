@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { Alert, AlertTitle, AlertDescription } from "../../components/molocules/Alert"
-import { AlertCircle } from "lucide-react"
-
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from "../../components/molecules/Alert";
+import { AlertCircle } from "lucide-react";
 
 const meta: Meta<typeof Alert> = {
   title: "Design-system/Components/Molecules/Alert",
@@ -26,10 +29,10 @@ const meta: Meta<typeof Alert> = {
   args: {
     variant: "default",
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof Alert>
+export default meta;
+type Story = StoryObj<typeof Alert>;
 
 /**
  * Default alert with title, description, and icon.
@@ -42,7 +45,7 @@ export const Default: Story = {
       <AlertDescription>This is a simple alert message.</AlertDescription>
     </Alert>
   ),
-}
+};
 
 /**
  * Destructive variant alert showing error state.
@@ -57,4 +60,4 @@ export const Destructive: Story = {
       </AlertDescription>
     </Alert>
   ),
-}
+};

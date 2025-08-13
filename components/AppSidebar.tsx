@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/design-system/src/components/molocules/DropdownMenu";
+} from "@/design-system/src/components/molecules/DropdownMenu";
 import {
   Sidebar,
   SidebarContent,
@@ -73,7 +73,7 @@ const items = [
 ];
 const AppSidebar = () => {
   return (
-    <Sidebar collapsible="icon" >
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs"
+import * as React from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 import {
   DropdownMenu,
@@ -17,24 +17,24 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from "../../components/molocules/DropdownMenu"
+} from "../../components/molecules/DropdownMenu";
 
-import { Button } from "../../components/atoms/Button"
+import { Button } from "../../components/atoms/Button";
 
 const meta: Meta<typeof DropdownMenu> = {
   title: "Design-system/Components/Molecules/DropdownMenu",
   component: DropdownMenu,
   tags: ["autodocs"],
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof DropdownMenu>
+type Story = StoryObj<typeof DropdownMenu>;
 
 export const Default: Story = {
   render: () => {
-    const [showBookmarks, setShowBookmarks] = React.useState(true)
-    const [selectedFramework, setSelectedFramework] = React.useState("next")
+    const [showBookmarks, setShowBookmarks] = React.useState(true);
+    const [selectedFramework, setSelectedFramework] = React.useState("next");
 
     return (
       <DropdownMenu>
@@ -84,6 +84,6 @@ export const Default: Story = {
           <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    )
+    );
   },
-}
+};

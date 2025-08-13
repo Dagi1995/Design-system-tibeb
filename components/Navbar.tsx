@@ -12,8 +12,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/design-system/src/components/molocules/DropdownMenu";
-import { SearchInput } from "@/design-system/src/components/molocules/SearchInput";
+} from "@/design-system/src/components/molecules/DropdownMenu";
+import { SearchInput } from "@/design-system/src/components/molecules/SearchInput";
 import { SidebarTrigger } from "@/design-system/src/components/organisms/SideBar";
 import { LogOut, Moon, Settings, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";

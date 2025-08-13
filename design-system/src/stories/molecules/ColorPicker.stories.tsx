@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { ColorPicker } from "../../components/molocules/ColorPicker"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { ColorPicker } from "../../components/molecules/ColorPicker";
 
 const meta: Meta<typeof ColorPicker> = {
   title: "Design-system/Components/Molecules/ColorPicker",
@@ -7,14 +7,14 @@ const meta: Meta<typeof ColorPicker> = {
   parameters: {
     layout: "centered",
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof ColorPicker>
+type Story = StoryObj<typeof ColorPicker>;
 
 export const Default: Story = {
   args: {
     value: "#8b5cf6",
   },
-}
+};

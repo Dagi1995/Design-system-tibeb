@@ -3,7 +3,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "../../components/atoms/popover"
+} from "../../components/atoms/Popover"
 import { Button } from "../../components/atoms/Button"
 
 const meta: Meta<typeof Popover> = {

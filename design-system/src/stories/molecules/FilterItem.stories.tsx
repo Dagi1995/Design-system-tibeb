@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { FilterItem } from "../../components/molocules/FilterItem"
-import { Input } from "../../components/atoms/Input"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { FilterItem } from "../../components/molecules/FilterItem";
+import { Input } from "../../components/atoms/Input";
 
 const meta: Meta<typeof FilterItem> = {
   title: "Design System/Components/Molecules/FilterItem",
@@ -12,10 +12,10 @@ const meta: Meta<typeof FilterItem> = {
       defaultValue: "Search",
     },
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof FilterItem>
+export default meta;
+type Story = StoryObj<typeof FilterItem>;
 
 export const Default: Story = {
   render: (args) => (
@@ -23,4 +23,4 @@ export const Default: Story = {
       <Input placeholder="Type something..." className="w-56" />
     </FilterItem>
   ),
-}
+};

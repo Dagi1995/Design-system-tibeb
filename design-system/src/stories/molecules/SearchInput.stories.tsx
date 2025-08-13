@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import React, { useState } from "react"
-import { SearchInput } from "../../components/molocules/SearchInput"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React, { useState } from "react";
+import { SearchInput } from "../../components/molecules/SearchInput";
 
 const meta: Meta<typeof SearchInput> = {
   title: "Design-system/Components/Molecules/SearchInput",
@@ -14,14 +14,14 @@ const meta: Meta<typeof SearchInput> = {
       },
     },
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof SearchInput>
+export default meta;
+type Story = StoryObj<typeof SearchInput>;
 
 export const Default: Story = {
   render: () => {
-    const [value, setValue] = useState("")
+    const [value, setValue] = useState("");
 
     return (
       <div className="max-w-sm">
@@ -31,6 +31,6 @@ export const Default: Story = {
           placeholder="Search something..."
         />
       </div>
-    )
+    );
   },
-}
+};
