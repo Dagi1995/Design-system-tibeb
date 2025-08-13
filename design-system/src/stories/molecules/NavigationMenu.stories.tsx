@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -8,8 +8,8 @@ import {
   NavigationMenuLink,
   NavigationMenuIndicator,
   NavigationMenuViewport,
-} from "../../components/molocules/NavigationMenu"
-import { BookAIcon, Goal } from "lucide-react"
+} from "../../components/molecules/NavigationMenu";
+import { BookAIcon, Goal } from "lucide-react";
 
 const meta: Meta<typeof NavigationMenu> = {
   title: "Design-system/Components/Molecules/NavigationMenu",
@@ -18,9 +18,9 @@ const meta: Meta<typeof NavigationMenu> = {
   parameters: {
     layout: "centered",
   },
-}
-export default meta
-type Story = StoryObj<typeof NavigationMenu>
+};
+export default meta;
+type Story = StoryObj<typeof NavigationMenu>;
 
 export const Default: Story = {
   render: () => (
@@ -48,10 +48,21 @@ export const Default: Story = {
           <NavigationMenuContent>
             <ul className="grid gap-1 p-2 md:w-[200px]">
               <li>
-                <NavigationMenuLink href="#" className="flex flex-row items-center gap-2"><BookAIcon></BookAIcon>Docs</NavigationMenuLink>
+                <NavigationMenuLink
+                  href="#"
+                  className="flex flex-row items-center gap-2"
+                >
+                  <BookAIcon></BookAIcon>Docs
+                </NavigationMenuLink>
               </li>
               <li>
-                <NavigationMenuLink href="#" className="flex flex-row items-center gap-2"> <Goal></Goal> Community</NavigationMenuLink>
+                <NavigationMenuLink
+                  href="#"
+                  className="flex flex-row items-center gap-2"
+                >
+                  {" "}
+                  <Goal></Goal> Community
+                </NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
@@ -66,4 +77,4 @@ export const Default: Story = {
       <NavigationMenuViewport />
     </NavigationMenu>
   ),
-}
+};

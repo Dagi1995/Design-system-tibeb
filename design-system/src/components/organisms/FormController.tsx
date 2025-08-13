@@ -1,20 +1,26 @@
 // components/forms/RegisterForm.tsx
-"use client"
+"use client";
 
-import React from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-import { Input } from "../atoms/Input"
-import { Button } from "../atoms/Button"
-import { Checkbox } from "../atoms/Checkbox"
-import { Calendar } from "../molocules/Calendar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../atoms/Select"
-import { ErrorMessage } from "../atoms/ErrorMessage"
-import { Spinner } from "../atoms/Spinner"
+import { Input } from "../atoms/Input";
+import { Button } from "../atoms/Button";
+import { Checkbox } from "../atoms/Checkbox";
+import { Calendar } from "../molecules/Calendar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../atoms/Select";
+import { ErrorMessage } from "../atoms/ErrorMessage";
+import { Spinner } from "../atoms/Spinner";
 
 // Schema
 const formSchema = z.object({
@@ -28,12 +34,12 @@ const formSchema = z.object({
   file: z
     .instanceof(FileList)
     .refine((fileList) => fileList.length > 0, { message: "File is required" }),
-})
+});
 
-type FormValues = z.infer<typeof formSchema>
+type FormValues = z.infer<typeof formSchema>;
 
 export function RegisterForm() {
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -52,7 +58,7 @@ export function RegisterForm() {
       birthDate: null,
       file: undefined,
     },
-  })
+  });
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -60,21 +66,21 @@ export function RegisterForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      })
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (response.ok && result.success) {
-        toast.success("Account created successfully!")
-        setTimeout(() => router.push("/login"), 1500)
+        toast.success("Account created successfully!");
+        setTimeout(() => router.push("/login"), 1500);
       } else {
-        toast.error(result.message || "Something went wrong")
+        toast.error(result.message || "Something went wrong");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("Failed to connect to server")
+      toast.error("Failed to connect to server");
     }
-  }
+  };
 
   return (
     <form
@@ -87,12 +93,20 @@ export function RegisterForm() {
       </div>
 
       <div>
-        <Input type="email" {...register("email")} placeholder="Email address" />
+        <Input
+          type="email"
+          {...register("email")}
+          placeholder="Email address"
+        />
         <ErrorMessage message={errors.email?.message} />
       </div>
 
       <div>
-        <Select onValueChange={(val) => setValue("role", val, { shouldValidate: true })}>
+        <Select
+          onValueChange={(val) =>
+            setValue("role", val, { shouldValidate: true })
+          }
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select role" />
           </SelectTrigger>
@@ -108,7 +122,9 @@ export function RegisterForm() {
         <Calendar
           mode="single"
           selected={watch("birthDate") ?? undefined}
-          onSelect={(date) => setValue("birthDate", date ?? null, { shouldValidate: true })}
+          onSelect={(date) =>
+            setValue("birthDate", date ?? null, { shouldValidate: true })
+          }
         />
         <ErrorMessage message={errors.birthDate?.message} />
       </div>
@@ -131,9 +147,13 @@ export function RegisterForm() {
           Reset
         </Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner className="h-4 w-4 animate-spin" /> : "Submit"}
+          {isSubmitting ? (
+            <Spinner className="h-4 w-4 animate-spin" />
+          ) : (
+            "Submit"
+          )}
         </Button>
       </div>
     </form>
-  )
+  );
 }

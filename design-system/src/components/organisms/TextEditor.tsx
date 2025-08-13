@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EditorContent, useEditor, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
@@ -29,12 +29,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../molocules/DropdownMenu";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "../atoms/Tooltip";
+} from "../molecules/DropdownMenu";
+import { Tooltip, TooltipTrigger, TooltipContent } from "../atoms/Tooltip";
 
 // Icons
 import {
@@ -46,7 +42,6 @@ import {
   List,
   ListOrdered,
   Strikethrough,
-  Palette,
   Code,
   Table as TableIcon,
   Heading1,
@@ -123,6 +118,7 @@ export function TextEditor({
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
+    immediatelyRender: false,
   });
 
   const handleSave = () => {
@@ -141,7 +137,7 @@ export function TextEditor({
         <MenuBar editor={editor} />
         <EditorContent editor={editor} />
       </div>
-      
+
       {showSubmitButton && (
         <div className="flex justify-end">
           <Button onClick={handleSave} className="gap-2">
@@ -233,10 +229,7 @@ function MenuBar({ editor }: MenuBarProps) {
               Paragraph
             </DropdownMenuItem>
             {([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => (
-              <DropdownMenuItem
-                key={level}
-                onClick={() => setHeading(level)}
-              >
+              <DropdownMenuItem key={level} onClick={() => setHeading(level)}>
                 {level === 1 && <Heading1 className="w-4 h-4 mr-2" />}
                 {level === 2 && <Heading2 className="w-4 h-4 mr-2" />}
                 {level === 3 && <Heading3 className="w-4 h-4 mr-2" />}
@@ -303,7 +296,9 @@ function MenuBar({ editor }: MenuBarProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().setTextAlign("left").run()}
+                onClick={() =>
+                  editor.chain().focus().setTextAlign("left").run()
+                }
                 active={editor.isActive({ textAlign: "left" })}
               >
                 <AlignLeft className="w-4 h-4" />
@@ -317,7 +312,9 @@ function MenuBar({ editor }: MenuBarProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().setTextAlign("center").run()}
+                onClick={() =>
+                  editor.chain().focus().setTextAlign("center").run()
+                }
                 active={editor.isActive({ textAlign: "center" })}
               >
                 <AlignCenter className="w-4 h-4" />
@@ -331,7 +328,9 @@ function MenuBar({ editor }: MenuBarProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().setTextAlign("right").run()}
+                onClick={() =>
+                  editor.chain().focus().setTextAlign("right").run()
+                }
                 active={editor.isActive({ textAlign: "right" })}
               >
                 <AlignRight className="w-4 h-4" />
@@ -442,55 +441,27 @@ function MenuBar({ editor }: MenuBarProps) {
         {/* Table controls (shown when in table) */}
         {selectionInTable && (
           <div className="flex items-center gap-1 ml-2 pl-2 border-l">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={addColumnBefore}
-            >
+            <Button variant="ghost" size="sm" onClick={addColumnBefore}>
               +Col ←
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={addColumnAfter}
-            >
+            <Button variant="ghost" size="sm" onClick={addColumnAfter}>
               +Col →
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={deleteColumn}
-            >
+            <Button variant="ghost" size="sm" onClick={deleteColumn}>
               -Col
             </Button>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={addRowBefore}
-            >
+            <Button variant="ghost" size="sm" onClick={addRowBefore}>
               +Row ↑
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={addRowAfter}
-            >
+            <Button variant="ghost" size="sm" onClick={addRowAfter}>
               +Row ↓
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={deleteRow}
-            >
+            <Button variant="ghost" size="sm" onClick={deleteRow}>
               -Row
             </Button>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleHeaderRow}
-            >
+            <Button variant="ghost" size="sm" onClick={toggleHeaderRow}>
               Toggle Header
             </Button>
 

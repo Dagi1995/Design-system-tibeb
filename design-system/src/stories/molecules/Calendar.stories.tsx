@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Calendar } from "../../components/molocules/Calendar"
+import { Calendar } from "../../components/molecules/Calendar";
 
 const meta: Meta<typeof Calendar> = {
   title: "Design-system/Components/Molecules/Calendar",
@@ -10,13 +10,13 @@ const meta: Meta<typeof Calendar> = {
     mode: "single", // react-day-picker prop
     selected: new Date(),
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Calendar>
+type Story = StoryObj<typeof Calendar>;
 
-export const Default: Story = {}
+export const Default: Story = {};
 
 export const WithRangeSelection: Story = {
   args: {
@@ -26,4 +26,4 @@ export const WithRangeSelection: Story = {
       to: new Date(new Date().setDate(new Date().getDate() + 5)),
     },
   },
-}
+};

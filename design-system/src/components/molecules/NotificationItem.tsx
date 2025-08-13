@@ -1,15 +1,15 @@
-import * as React from "react"
-import { Avatar, AvatarImage, AvatarFallback } from "../../components/atoms/Avatar"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { Avatar, AvatarImage, AvatarFallback } from "../atoms/Avatar";
+import { cn } from "@/lib/utils";
 
 export interface NotificationItemProps {
-  avatarUrl: string
-  username: string
-  action: string
-  timeAbsolute: string
-  timeRelative: string
-  unread?: boolean
-  className?: string
+  avatarUrl: string;
+  username: string;
+  action: string;
+  timeAbsolute: string;
+  timeRelative: string;
+  unread?: boolean;
+  className?: string;
 }
 
 export const NotificationItem: React.FC<NotificationItemProps> = ({
@@ -51,5 +51,5 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         {unread && <span className="size-2 rounded-full bg-blue-500" />}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -6,9 +6,9 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/src/components/molocules/Chart";
+} from "@/design-system/src/components/molecules/Chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { type ChartConfig } from "@/design-system/src/components/molocules/Chart";
+import { type ChartConfig } from "@/design-system/src/components/molecules/Chart";
 
 const chartConfig = {
   desktop: {

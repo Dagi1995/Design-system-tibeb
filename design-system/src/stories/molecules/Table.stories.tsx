@@ -1,5 +1,5 @@
-import * as React from "react"
-import { Meta, StoryObj } from "@storybook/nextjs-vite"
+import * as React from "react";
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import {
   Table,
@@ -8,16 +8,16 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "../../components/molocules/Table"
+} from "../../components/molecules/Table";
 
 const meta: Meta<typeof Table> = {
   title: "Design-system/Components/Molecules/Table",
   component: Table,
   tags: ["autodocs"],
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Table>
+type Story = StoryObj<typeof Table>;
 
 export const Simple: Story = {
   render: () => (
@@ -43,4 +43,4 @@ export const Simple: Story = {
       </TableBody>
     </Table>
   ),
-}
+};

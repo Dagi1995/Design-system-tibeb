@@ -13,7 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../../components/molocules/DropdownMenu";
+} from "../../components/molecules/DropdownMenu";
 
 const meta: Meta<typeof TopNavbar> = {
   title: "Design-system/Components/Organisms/TopNavbar",
@@ -43,7 +43,7 @@ export const Default: Story = {
         />
 
         {/* Notification icon */}
-        <Button size="icon" variant="ghost">
+        <Button size="sm" variant="ghost">
           <Bell className="w-5 h-5" />
         </Button>
 

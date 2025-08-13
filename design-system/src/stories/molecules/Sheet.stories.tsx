@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import {
   Sheet,
@@ -9,21 +9,21 @@ import {
   SheetTitle,
   SheetDescription,
   SheetClose,
-} from "../../components/molocules/Sheet"
+} from "../../components/molecules/Sheet";
 
-import { Button } from "../../components/atoms/Button" 
-import { Label } from "../../components/atoms/Label"
-import { Input } from "../../components/atoms/Input"
+import { Button } from "../../components/atoms/Button";
+import { Label } from "../../components/atoms/Label";
+import { Input } from "../../components/atoms/Input";
 
 const meta: Meta<typeof Sheet> = {
   title: "Design-system/Components/Molecules/Sheet",
   component: Sheet,
   tags: ["autodocs"],
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Sheet>
+type Story = StoryObj<typeof Sheet>;
 
 export const Default: Story = {
   render: () => (
@@ -57,4 +57,4 @@ export const Default: Story = {
       </SheetContent>
     </Sheet>
   ),
-}
+};

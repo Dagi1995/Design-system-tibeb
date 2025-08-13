@@ -1,5 +1,5 @@
-import React from "react"
-import { Meta, StoryObj } from "@storybook/nextjs-vite"
+import React from "react";
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import {
   Breadcrumb,
@@ -9,16 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
-} from "../../components/molocules/Breadcrumb"
+} from "../../components/molecules/Breadcrumb";
 
 const meta: Meta = {
   title: "Design-system/Components/Molecules/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
-}
+};
 
-export default meta
-type Story = StoryObj
+export default meta;
+type Story = StoryObj;
 
 export const Default: Story = {
   render: () => (
@@ -38,7 +38,7 @@ export const Default: Story = {
       </BreadcrumbList>
     </Breadcrumb>
   ),
-}
+};
 
 export const WithEllipsis: Story = {
   render: () => (
@@ -60,4 +60,4 @@ export const WithEllipsis: Story = {
       </BreadcrumbList>
     </Breadcrumb>
   ),
-}
+};

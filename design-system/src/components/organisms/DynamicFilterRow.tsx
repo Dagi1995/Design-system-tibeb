@@ -1,40 +1,46 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { format } from "date-fns"
-import { X } from "lucide-react"
-import { Calendar } from "../molocules/Calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "../atoms/Popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../atoms/Select"
-import { Input } from "../atoms/Input"
-import { Button } from "../atoms/Button"
-import { FilterItem } from "../molocules/FilterItem"
+import { useState } from "react";
+import { format } from "date-fns";
+import { X } from "lucide-react";
+import { Calendar } from "../molecules/Calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/Popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../atoms/Select";
+import { Input } from "../atoms/Input";
+import { Button } from "../atoms/Button";
+import { FilterItem } from "../molecules/FilterItem";
 
 export interface FilterOption {
-  label: string
-  value: string
-  type: "text" | "date"
+  label: string;
+  value: string;
+  type: "text" | "date";
 }
 
 export interface DateRange {
-  from: Date
-  to?: Date
+  from: Date;
+  to?: Date;
 }
 
 export interface Filter {
-  field: string
-  operator: string
-  value: string | DateRange | null
+  field: string;
+  operator: string;
+  value: string | DateRange | null;
 }
 
-type FilterFieldType = "field" | "operator" | "value"
+type FilterFieldType = "field" | "operator" | "value";
 
 interface DynamicFilterRowProps {
-  filter: Filter
-  fields: FilterOption[]
-  operators: FilterOption[]
-  onChange: <T extends FilterFieldType>(type: T, value: Filter[T]) => void
-  onRemove: () => void
+  filter: Filter;
+  fields: FilterOption[];
+  operators: FilterOption[];
+  onChange: <T extends FilterFieldType>(type: T, value: Filter[T]) => void;
+  onRemove: () => void;
 }
 
 function DynamicFilterRow({
@@ -44,12 +50,16 @@ function DynamicFilterRow({
   onChange,
   onRemove,
 }: DynamicFilterRowProps) {
-  const fieldType = fields.find((f) => f.value === filter.field)?.type || "text"
+  const fieldType =
+    fields.find((f) => f.value === filter.field)?.type || "text";
 
   return (
     <div className="flex items-center gap-2 mt-2">
       <FilterItem label="Field">
-        <Select value={filter.field} onValueChange={(val) => onChange("field", val)}>
+        <Select
+          value={filter.field}
+          onValueChange={(val) => onChange("field", val)}
+        >
           <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Select field" />
           </SelectTrigger>
@@ -64,7 +74,10 @@ function DynamicFilterRow({
       </FilterItem>
 
       <FilterItem label="Operator">
-        <Select value={filter.operator} onValueChange={(val) => onChange("operator", val)}>
+        <Select
+          value={filter.operator}
+          onValueChange={(val) => onChange("operator", val)}
+        >
           <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Select operator" />
           </SelectTrigger>
@@ -86,7 +99,8 @@ function DynamicFilterRow({
                 variant="outline"
                 className="w-[220px] justify-start text-left font-normal"
               >
-                {filter.value && typeof filter.value === "object" &&
+                {filter.value &&
+                typeof filter.value === "object" &&
                 "from" in filter.value &&
                 filter.value.from ? (
                   filter.value.to ? (
@@ -98,7 +112,9 @@ function DynamicFilterRow({
                     format(filter.value.from, "dd-MM-yyyy")
                   )
                 ) : (
-                  <span className="text-muted-foreground">Pick a date range</span>
+                  <span className="text-muted-foreground">
+                    Pick a date range
+                  </span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -130,14 +146,14 @@ function DynamicFilterRow({
         <X className="h-4 w-4" />
       </Button>
     </div>
-  )
+  );
 }
 
 interface FiltersPanelProps {
-  fieldOptions: FilterOption[]
-  operatorOptions: FilterOption[]
-  initialFilters?: Filter[]
-  onApply?: (filters: Filter[]) => void
+  fieldOptions: FilterOption[];
+  operatorOptions: FilterOption[];
+  initialFilters?: Filter[];
+  onApply?: (filters: Filter[]) => void;
 }
 
 export function FiltersPanel({
@@ -146,31 +162,35 @@ export function FiltersPanel({
   initialFilters = [{ field: "", operator: "", value: "" }],
   onApply,
 }: FiltersPanelProps) {
-  const [open, setOpen] = useState(false)
-  const [filters, setFilters] = useState<Filter[]>(initialFilters)
+  const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useState<Filter[]>(initialFilters);
 
-  const updateFilter = <T extends FilterFieldType>(index: number, type: T, val: Filter[T]) => {
-    const newFilters = [...filters]
-    newFilters[index] = { ...newFilters[index], [type]: val }
-    setFilters(newFilters)
-  }
+  const updateFilter = <T extends FilterFieldType>(
+    index: number,
+    type: T,
+    val: Filter[T]
+  ) => {
+    const newFilters = [...filters];
+    newFilters[index] = { ...newFilters[index], [type]: val };
+    setFilters(newFilters);
+  };
 
   const removeFilter = (index: number) => {
-    setFilters(filters.filter((_, i) => i !== index))
-  }
+    setFilters(filters.filter((_, i) => i !== index));
+  };
 
   const addFilter = () => {
-    setFilters([...filters, { field: "", operator: "", value: "" }])
-  }
+    setFilters([...filters, { field: "", operator: "", value: "" }]);
+  };
 
   const clearFilters = () => {
-    setFilters([])
-  }
+    setFilters([]);
+  };
 
   const applyFilters = () => {
-    onApply?.(filters)
-    setOpen(false)
-  }
+    onApply?.(filters);
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -209,5 +229,5 @@ export function FiltersPanel({
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
