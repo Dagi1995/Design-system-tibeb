@@ -31,7 +31,7 @@ import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
-} from "../../components/atoms/Collapsible";
+} from "../../components/atoms/Collapsible"
 
 import {
   Home,

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../../components/atoms/Collapsible';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../../components/atoms/Collapser';
 import { ChevronDownIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const meta: Meta<typeof Collapsible> = {
   title: "Design-System/Components/Atoms/Collapsible",
@@ -30,11 +31,6 @@ const meta: Meta<typeof Collapsible> = {
           "A collapsible component using Radix UI primitives. It toggles content visibility with accessibility and animation support.",
       },
     },
-  },
-  argTypes: {
-    defaultOpen: { control: "boolean" },
-    disabled: { control: "boolean" },
-    open: { control: "boolean" },
   },
 }
 export default meta

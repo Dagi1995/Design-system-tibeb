@@ -1,15 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-import Calendar from "../../components/organisms/Calander";
-import {
-  PhoneCall,
-  Users,
-  Book,
-  Video,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import { Button } from "../../components/atoms/Button";
-import { CalendarContext } from "../../components/organisms/Calander";
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import Calendar from '../../components/organisms/Calander';
+import { PhoneCall, Users, Book, Video, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '../../components//atoms/Button';
+import { CalendarContext } from '../../components/organisms/Calander';
 
 const meta: Meta<typeof Calendar> = {
   title: "Design-system/Components/Organisms/Calander",
