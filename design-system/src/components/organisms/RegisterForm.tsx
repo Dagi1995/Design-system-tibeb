@@ -19,7 +19,7 @@ import { Input } from "../atoms/Input";
 import { Checkbox } from "../atoms/Checkbox";
 import { Button } from "../atoms/Button";
 import { ErrorMessage } from "../atoms/ErrorMessage";
-import { BirthdateInput } from "../molecules/BirthdateInput";
+import { BirthdateInput } from "../molecules/DateInput";
 import {
   Select,
   SelectContent,

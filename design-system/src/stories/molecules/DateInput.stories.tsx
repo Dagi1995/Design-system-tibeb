@@ -1,7 +1,7 @@
 // components/custom/birthdate-input.stories.tsx
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { BirthdateInput } from "../../components/molecules/BirthdateInput";
+import { BirthdateInput } from "../../components/molecules/DateInput";
 
 const meta: Meta<typeof BirthdateInput> = {
   title: "Design-system/Components/Molecules/BirthdateInput",

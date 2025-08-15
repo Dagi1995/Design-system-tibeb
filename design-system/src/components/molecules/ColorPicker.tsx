@@ -50,7 +50,7 @@ export function ColorPicker({ value = "#1d4ed8", onChange }: ColorPickerProps) {
 
       <Button
         variant="ghost"
-        size="icon"
+        size="sm"
         onClick={copyToClipboard}
         className="text-muted-foreground"
       >

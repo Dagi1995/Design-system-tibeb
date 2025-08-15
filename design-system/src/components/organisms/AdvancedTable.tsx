@@ -23,7 +23,7 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "../molecules/Table"; // Your Table atoms/molecules
+} from "../molecules/Table"; 
 import { Checkbox } from "../atoms/Checkbox";
 import { Input } from "../atoms/Input";
 import { Button } from "../atoms/Button";

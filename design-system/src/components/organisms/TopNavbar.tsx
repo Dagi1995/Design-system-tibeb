@@ -54,7 +54,7 @@ export function TopNavbar({ logo, links = [], className }: TopNavbarProps) {
           />
 
           {/* Notification */}
-          <Button size="icon" variant="ghost">
+          <Button size="sm" variant="ghost">
             <Bell className="w-5 h-5" />
           </Button>
 
@@ -77,7 +77,7 @@ export function TopNavbar({ logo, links = [], className }: TopNavbarProps) {
           {links.length > 0 && (
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <Button variant="ghost" size="sm" className="md:hidden">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
