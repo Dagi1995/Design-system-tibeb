@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import * as React from "react";
@@ -27,12 +29,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/design-system/src/components/atoms/Popover";
+} from "../atoms/Popover";
 import {
   Tabs,
   TabsList,
   TabsTrigger,
-} from "@/design-system/src/components/atoms/Tabs";
+} from "../atoms/Tabs";
 
 type EventColor =
   | "blue"

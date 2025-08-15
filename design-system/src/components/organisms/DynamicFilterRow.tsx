@@ -139,7 +139,7 @@ function DynamicFilterRow({
 
       <Button
         variant="ghost"
-        size="icon"
+        size="sm"
         className="text-muted-foreground hover:text-destructive"
         onClick={onRemove}
       >
