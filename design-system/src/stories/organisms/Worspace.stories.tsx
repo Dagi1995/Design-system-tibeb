@@ -27,7 +27,7 @@ const meta: Meta<typeof Workspace> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Abebe: Story = {
     args: {
         name: "Workspace",
         description: "Workspace",
@@ -106,6 +106,10 @@ export const Default: Story = {
                         }
                       }
                     },
+                ]
+            },
+            {
+                contents: [
                     {
                         type: "Link",
                         name: "Link",
@@ -128,7 +132,10 @@ export const Default: Story = {
                         type: "Cards",
                         name: "Cards",
                         description: "Cards",
-                        value: "Cards"
+                        value: [
+                          "lorem ipsum dolor sit amet consectetur adipiscing elit continue ipsum dolor sit amet consectetur adipiscing elit",
+                          
+                        ]
                     }
                 ]
             }

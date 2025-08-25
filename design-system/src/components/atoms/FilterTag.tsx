@@ -14,7 +14,7 @@ export function FilterTag({ label, onRemove }: FilterTagProps) {
       <span>{label}</span>
       <Button
         variant="ghost"
-        size="icon"
+        size="sm"
         className="h-4 w-4 p-0 text-muted-foreground hover:text-destructive"
         onClick={onRemove}
       >

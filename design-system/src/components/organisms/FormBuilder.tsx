@@ -164,18 +164,7 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({ initialFields, fieldTy
     <div className="flex h-screen bg-gray-50">
       {/* Main Content */}
       <div className={`flex-1 flex flex-col overflow-hidden ${isSidebarOpen ? 'mr-80' : ''} transition-all duration-300`}>
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200 p-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold text-gray-900">Form Builder</h1>
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
-                Preview
-              </Button>
-              <Button size="sm">Save</Button>
-            </div>
-          </div>
-        </header>
+
 
         {/* Main Content Area */}
         <div className="flex-1 overflow-auto">
@@ -195,10 +184,7 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({ initialFields, fieldTy
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    <Button size="sm" onClick={handleAddField}>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Field
-                    </Button>
+                    <Button size="sm">Save</Button>
                   </div>
                 </div>
 
@@ -301,7 +287,14 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({ initialFields, fieldTy
                   </div>
                 )}
               </div>
+              
             </div>
+            <div className='flex justify-end '>
+                      <Button size="sm" onClick={handleAddField}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Field
+                      </Button>
+                    </div>
           </div>
         </div>
       </div>
