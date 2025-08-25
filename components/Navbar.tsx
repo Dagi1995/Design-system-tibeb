@@ -19,6 +19,7 @@ import { LogOut, Moon, Settings, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useState } from "react";
 
+
 const Navbar = () => {
   const { setTheme } = useTheme();
   const [value, setValue] = useState("");

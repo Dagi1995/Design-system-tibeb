@@ -24,9 +24,6 @@ const meta: Meta<typeof Button> = {
     disabled: {
       control: "boolean",
     },
-    asChild: {
-      control: "boolean",
-    },
   },
 }
 
@@ -83,7 +80,7 @@ export const Link: Story = {
 
 export const IconOnly: Story = {
   args: {
-    size: "icon",
+    size: "sm",
     children: <PlusIcon className="size-4" />,
     "aria-label": "Add",
   },
