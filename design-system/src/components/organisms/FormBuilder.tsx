@@ -3,9 +3,9 @@ import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../atoms/Table';
 import { FieldPropertiesPanel } from '../molocules/FieldPropertiesPanel';
-import { Plus, Search, ChevronLeft, ChevronRight, Save, Trash2, GripVertical, MoreHorizontal, Pencil } from 'lucide-react';
+import { Plus, Search, Save, Trash2, Pencil } from 'lucide-react';
 
-type FieldType = 'Text' | 'Number' | 'Date' | 'Select' | 'Checkbox' | 'Email' | 'Phone' | 'URL' | 'Custom';
+type FieldType = 'Text' | 'Number' | 'Date' | 'Select' | 'Option'| 'Checkbox' | 'Email' | 'Phone' | 'URL' | 'Custom';
 
 interface FormField {
   id: string;
@@ -20,53 +20,13 @@ interface FormField {
   isActive?: boolean;
 }
 
-const defaultFields: FormField[] = [
-  {
-    id: '1',
-    name: 'id',
-    label: 'ID',
-    type: 'Number',
-    mandatory: true,
-    readOnly: true,
-    description: 'Unique identifier',
-    isActive: false
-  },
-  {
-    id: '2',
-    name: 'created_at',
-    label: 'Created At',
-    type: 'Date',
-    mandatory: true,
-    readOnly: true,
-    description: 'Record creation timestamp',
-    isActive: false
-  },
-  {
-    id: '3',
-    name: 'updated_at',
-    label: 'Updated At',
-    type: 'Date',
-    mandatory: true,
-    readOnly: true,
-    description: 'Record last update timestamp',
-    isActive: false
-  }
-];
+interface FormBuilderProps {
+  initialFields: FormField[];
+  fieldTypes: { value: FieldType; label: string }[];
+}
 
-const fieldTypes: { value: FieldType; label: string }[] = [
-  { value: 'Text', label: 'Text' },
-  { value: 'Number', label: 'Number' },
-  { value: 'Date', label: 'Date' },
-  { value: 'Select', label: 'Select' },
-  { value: 'Checkbox', label: 'Checkbox' },
-  { value: 'Email', label: 'Email' },
-  { value: 'Phone', label: 'Phone' },
-  { value: 'URL', label: 'URL' },
-  { value: 'Custom', label: 'Custom' },
-];
-
-export const FormBuilder: React.FC = () => {
-  const [fields, setFields] = useState<FormField[]>(defaultFields);
+export const FormBuilder: React.FC<FormBuilderProps> = ({ initialFields, fieldTypes }) => {
+  const [fields, setFields] = useState<FormField[]>(initialFields);
   const [selectedField, setSelectedField] = useState<FormField | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -77,10 +37,10 @@ export const FormBuilder: React.FC = () => {
       id: `field_${Date.now()}`,
       name: `field_${fields.length + 1}`,
       label: `Field ${fields.length + 1}`,
-      type: 'Text',
+      type: fieldTypes[0]?.value || 'Text', // Default to first field type
       mandatory: false,
       readOnly: false,
-      isActive: false
+      isActive: false,
     };
     setFields([...fields, newField]);
     setSelectedField(newField);
@@ -113,7 +73,7 @@ export const FormBuilder: React.FC = () => {
     
     const updatedField = {
       ...selectedField,
-      [property]: value
+      [property]: value,
     };
     
     setFields(fields.map(field => 
@@ -125,7 +85,7 @@ export const FormBuilder: React.FC = () => {
 
   const fieldProperties = selectedField ? [
     {
-      label: 'Field Name *',
+      label: 'Field Name',
       name: 'name',
       type: 'text' as const,
       value: selectedField.name,
@@ -133,7 +93,7 @@ export const FormBuilder: React.FC = () => {
       required: true,
     },
     {
-      label: 'Label *',
+      label: 'Label',
       name: 'label',
       type: 'text' as const,
       value: selectedField.label,
@@ -190,11 +150,12 @@ export const FormBuilder: React.FC = () => {
       'Number': 'Number',
       'Email': 'Email',
       'Select': 'Dropdown',
+      'Option': 'Option',
       'Checkbox': 'Checkbox',
       'Date': 'Date',
       'Phone': 'Phone',
       'URL': 'URL',
-      'Custom': 'Custom'
+      'Custom': 'Custom',
     };
     return typeMap[type] || type;
   };

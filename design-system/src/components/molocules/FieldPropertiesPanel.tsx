@@ -93,14 +93,14 @@ export const FieldPropertiesPanel: React.FC<FieldPropertiesPanelProps> = ({
   }
 
   return (
-    <div className="w-80 border-l border-gray-200 h-full overflow-y-auto bg-white">
-      <div className="sticky top青�0 bg-white border-b border-gray-200 p-4 z-10">
+    <div className="w-80 border-gray-200 h-full overflow-y-auto overflow-x-hidden bg-white">
+      <div className="sticky top-0 bg-white  px-4 z-10">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-medium text-gray-900">{title}</h3>
         </div>
       </div>
       
-      <div className="p-4 space-y-6">
+      <div className="px-4 space-y-6">
         {properties.map((prop) => (
           <div key={prop.name} className="space-y-2">
             <div className="flex items-center justify-between">
@@ -108,7 +108,7 @@ export const FieldPropertiesPanel: React.FC<FieldPropertiesPanelProps> = ({
                 {prop.label}
                 {prop.required && <span className="text-red-500 ml-1">*</span>}
               </Label>
-              {prop.name === 'options' && (
+              {prop.name === 'option' && (
                 <Button variant="ghost" size="sm" className="h-6 text-xs text-blue-600 hover:text-blue-800">
                   Add Option
                 </Button>
