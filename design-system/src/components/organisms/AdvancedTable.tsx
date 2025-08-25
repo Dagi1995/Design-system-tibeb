@@ -23,7 +23,7 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "../molecules/Table"; 
+} from "../molecules/Table";
 import { Checkbox } from "../atoms/Checkbox";
 import { Input } from "../atoms/Input";
 import { Button } from "../atoms/Button";
@@ -247,7 +247,7 @@ export function AdvancedTable() {
           return (
             <>
               <Button
-                size="sm"
+                size="icon"
                 variant="outline"
                 onClick={() => {
                   setEditingRowId(row.original.id);
@@ -255,16 +255,16 @@ export function AdvancedTable() {
                 }}
                 className="mr-2"
               >
-                <Edit></Edit>
+                <Edit className="h-4  w-4 text-blue-500"></Edit>
               </Button>
               <Button
-                size="sm"
-                variant="destructive"
+                size="icon"
+                variant="outline"
                 onClick={() => {
                   setData((old) => old.filter((d) => d.id !== row.original.id));
                 }}
               >
-                <Trash></Trash>
+                <Trash className="h-4  w-4 text-red-500"></Trash>
               </Button>
             </>
           );
