@@ -4,10 +4,10 @@ import * as React from 'react';
 import { format, addMonths, addWeeks, addDays, isSameDay, isSameMonth, isSameWeek, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import { ChevronLeft, ChevronRight, MoreVertical, X, Edit2, Trash2, PhoneCall, Users, Book, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/design-system/src/components/atoms/Popover';
-import { Tabs, TabsList, TabsTrigger } from '@/design-system/src/components/atoms/Tabs';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/design-system/src/components/atoms/Tooltip';
+import { Button } from '../atoms/Button';
+import { Popover, PopoverContent, PopoverTrigger } from '../atoms/Popover';
+import { Tabs, TabsList, TabsTrigger } from '../atoms/Tabs';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../atoms/Tooltip';
 
 type EventColor = "blue" | "green" | "red" | "orange" | "yellow" | "teal" | "violet" | "cyan" | "purple" | "pink" | "amber";
 
