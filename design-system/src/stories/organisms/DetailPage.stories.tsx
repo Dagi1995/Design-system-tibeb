@@ -1,4 +1,4 @@
-// components/DetailPage.stories.tsx
+// design-system/src/stories/organisms/DetailPage.stories.tsx
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Button } from "../../components/atoms/Button";
 import { TooltipProvider } from "../../components/atoms/Tooltip";
@@ -71,37 +71,44 @@ const meta: Meta<typeof DetailPage> = {
   title: "Design-system/Components/Organisms/DetailPage",
   component: DetailPage,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `DetailPage` component is a dynamic form builder with support for tabs, collapsible sections, fields, and even custom React components. Below are different usage examples.",
+      },
+    },
+  },
 };
 
 export default meta;
-
 type Story = StoryObj<typeof DetailPage>;
 
-// ✅ Coffee example
-export const CoffeeProductDetailPage: Story = {
+/* --------------------------------
+   1. Minimal Example
+-------------------------------- */
+export const Minimal: Story = {
   render: () => {
     const tabs: TabConfig[] = [
       {
-        id: "coffee",
-        label: "Coffee Info",
+        id: "basic",
+        label: "Basic",
         sections: [
           {
-            title: "Basic Information",
+            title: "Basic Info",
             columns: 2,
             fields: [
               {
                 type: "input",
-                name: "coffeeName",
-                label: "Coffee Name",
-                defaultValue: "Ethiopian Yirgacheffe",
-                required: true,
+                name: "name",
+                label: "Product Name",
+                defaultValue: "Sample Product",
               },
               {
-                type: "select",
-                name: "grade",
-                label: "Grade",
-                options: ["G1", "G2", "G3"],
-                defaultValue: "G1",
+                type: "checkbox",
+                name: "isActive",
+                label: "Is Active?",
+                defaultValue: true,
               },
             ],
           },
@@ -112,9 +119,9 @@ export const CoffeeProductDetailPage: Story = {
     return (
       <TooltipProvider>
         <DetailPage
-          title="Coffee-G1 Product Details"
+          title="Minimal Example"
           tabs={tabs}
-          onSave={(data) => console.log("Saving data:", data)}
+          onSave={(data) => console.log("Save:", data)}
           onCancel={() => console.log("Cancelled")}
         />
       </TooltipProvider>
@@ -122,8 +129,10 @@ export const CoffeeProductDetailPage: Story = {
   },
 };
 
-// ✅ All Features Story (with nested collapsible)
-export const AllFeatures: Story = {
+/* --------------------------------
+   2. Collapsible Section with Groups
+-------------------------------- */
+export const CollapsibleWithGroups: Story = {
   render: () => {
     const tabs: TabConfig[] = [
       {
@@ -131,65 +140,37 @@ export const AllFeatures: Story = {
         label: "General",
         sections: [
           {
-            title: "Basic Info",
+            title: "General Settings",
             collapsible: true,
             columns: 2,
             fields: [
               {
                 type: "input",
-                name: "productName",
-                label: "Product Name",
+                name: "title",
+                label: "Title",
                 defaultValue: "Super Widget",
-                required: true,
               },
               {
                 type: "select",
                 name: "category",
                 label: "Category",
                 options: ["Electronics", "Furniture", "Toys"],
-                defaultValue: "Electronics",
-                addable: true,
-              },
-              {
-                type: "checkbox",
-                name: "isActive",
-                label: "Is Active?",
-                defaultValue: true,
               },
             ],
             collapsibleGroups: [
               {
-                title: "Advanced Settings (Nested Collapsible)",
+                title: "Advanced Settings",
                 fields: [
-                  {
-                    type: "number",
-                    name: "minQty",
-                    label: "Minimum Quantity",
-                    defaultValue: 1,
-                    min: 0,
-                    tooltip: "Lowest allowed purchase quantity",
-                  },
-                  {
-                    type: "number",
-                    name: "maxQty",
-                    label: "Maximum Quantity",
-                    defaultValue: 100,
-                    min: 1,
-                    max: 1000,
-                    tooltip: "Highest allowed purchase quantity",
-                  },
                   {
                     type: "number",
                     name: "price",
                     label: "Price",
-                    defaultValue: 299.99,
-                    min: 0,
-                    step: 0.01,
+                    defaultValue: 199,
                   },
                   {
                     type: "checkbox",
-                    name: "allowDiscount",
-                    label: "Allow Discount",
+                    name: "discount",
+                    label: "Allow Discount?",
                     defaultValue: true,
                   },
                 ],
@@ -198,13 +179,98 @@ export const AllFeatures: Story = {
           },
         ],
       },
+    ];
+
+    return (
+      <TooltipProvider>
+        <DetailPage
+          title="Collapsible Section + Groups"
+          tabs={tabs}
+          onSave={(data) => console.log("Save:", data)}
+          onCancel={() => console.log("Cancelled")}
+        />
+      </TooltipProvider>
+    );
+  },
+};
+
+/* --------------------------------
+   3. Non-Collapsible Section with Groups
+-------------------------------- */
+export const NonCollapsibleWithGroups: Story = {
+  render: () => {
+    const tabs: TabConfig[] = [
+      {
+        id: "inventory",
+        label: "Inventory",
+        sections: [
+          {
+            title: "Stock Info (Always Open)",
+            collapsible: false,
+            columns: 2,
+            fields: [
+              {
+                type: "number",
+                name: "minQty",
+                label: "Minimum Qty",
+                defaultValue: 1,
+              },
+              {
+                type: "number",
+                name: "maxQty",
+                label: "Maximum Qty",
+                defaultValue: 500,
+              },
+            ],
+            collapsibleGroups: [
+              {
+                title: "Warehouse Settings",
+                fields: [
+                  {
+                    type: "checkbox",
+                    name: "trackStock",
+                    label: "Track Stock?",
+                    defaultValue: true,
+                  },
+                  {
+                    type: "checkbox",
+                    name: "backOrder",
+                    label: "Allow Back Order?",
+                    defaultValue: false,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    return (
+      <TooltipProvider>
+        <DetailPage
+          title="Non-Collapsible Section + Groups"
+          tabs={tabs}
+          onSave={(data) => console.log("Save:", data)}
+          onCancel={() => console.log("Cancelled")}
+        />
+      </TooltipProvider>
+    );
+  },
+};
+
+/* --------------------------------
+   4. With Custom Component Field
+-------------------------------- */
+export const WithCustomComponent: Story = {
+  render: () => {
+    const tabs: TabConfig[] = [
       {
         id: "custom",
-        label: "Custom Components",
+        label: "Custom",
         sections: [
           {
             title: "Custom Fields",
-            collapsible: true,
             columns: 1,
             fields: [
               {
@@ -217,8 +283,8 @@ export const AllFeatures: Story = {
                     <p className="text-sm text-muted-foreground">
                       You can inject any React component here.
                     </p>
-                    <Button variant="secondary" size="sm">
-                      Do Something
+                    <Button size="sm" variant="secondary">
+                      Click Me
                     </Button>
                   </div>
                 ),
@@ -232,9 +298,157 @@ export const AllFeatures: Story = {
     return (
       <TooltipProvider>
         <DetailPage
-          title="All Features Demo"
+          title="Custom Component Example"
           tabs={tabs}
-          onSave={(data) => console.log("Saving data:", data)}
+          onSave={(data) => console.log("Save:", data)}
+          onCancel={() => console.log("Cancelled")}
+        />
+      </TooltipProvider>
+    );
+  },
+};
+/* --------------------------------
+   5. Three Column Layout
+-------------------------------- */
+export const ThreeColumns: Story = {
+  render: () => {
+    const tabs: TabConfig[] = [
+      {
+        id: "layout3",
+        label: "3-Column",
+        sections: [
+          {
+            title: "Three Column Form",
+            columns: 3,
+            fields: [
+              {
+                type: "input",
+                name: "firstName",
+                label: "First Name",
+                defaultValue: "John",
+              },
+              {
+                type: "input",
+                name: "lastName",
+                label: "Last Name",
+                defaultValue: "Doe",
+              },
+              {
+                type: "number",
+                name: "age",
+                label: "Age",
+                defaultValue: 30,
+              },
+              {
+                type: "select",
+                name: "gender",
+                label: "Gender",
+                options: ["Male", "Female", "Other"],
+              },
+              {
+                type: "checkbox",
+                name: "subscribe",
+                label: "Subscribe to Newsletter?",
+                defaultValue: true,
+              },
+              {
+                type: "input",
+                name: "city",
+                label: "City",
+                defaultValue: "New York",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    return (
+      <TooltipProvider>
+        <DetailPage
+          title="Three Column Example"
+          tabs={tabs}
+          onSave={(data) => console.log("Save:", data)}
+          onCancel={() => console.log("Cancelled")}
+        />
+      </TooltipProvider>
+    );
+  },
+};
+
+/* --------------------------------
+   6. Four Column Layout
+-------------------------------- */
+export const FourColumns: Story = {
+  render: () => {
+    const tabs: TabConfig[] = [
+      {
+        id: "layout4",
+        label: "4-Column",
+        sections: [
+          {
+            title: "Four Column Form",
+            columns: 4,
+            fields: [
+              {
+                type: "input",
+                name: "col1",
+                label: "Column 1",
+              },
+              {
+                type: "input",
+                name: "col2",
+                label: "Column 2",
+              },
+              {
+                type: "input",
+                name: "col3",
+                label: "Column 3",
+              },
+              {
+                type: "input",
+                name: "col4",
+                label: "Column 4",
+              },
+              {
+                type: "number",
+                name: "budget",
+                label: "Budget",
+              },
+              {
+                type: "checkbox",
+                name: "approved",
+                label: "Approved?",
+              },
+              {
+                type: "select",
+                name: "priority",
+                label: "Priority",
+                options: ["Low", "Medium", "High"],
+                addable: true,
+              },
+              {
+                type: "custom",
+                name: "customNote",
+                label: "Note",
+                component: (
+                  <div className="text-xs text-muted-foreground">
+                    Custom content
+                  </div>
+                ),
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    return (
+      <TooltipProvider>
+        <DetailPage
+          title="Four Column Example"
+          tabs={tabs}
+          onSave={(data) => console.log("Save:", data)}
           onCancel={() => console.log("Cancelled")}
         />
       </TooltipProvider>

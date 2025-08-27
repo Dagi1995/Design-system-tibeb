@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// components/DetailPage.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -34,15 +33,18 @@ import {
 } from "../atoms/Tooltip";
 import { HelpCircle, ChevronDown, Plus } from "lucide-react";
 
-// Base field type
+// ---------------- Types ----------------
+
+// Base field
 interface BaseField {
   name: string;
   label: string;
   tooltip?: string;
   layout?: { span?: number };
+  collapsible?: boolean;
+  collapsibleLabel?: string;
 }
 
-// Field types
 interface InputField extends BaseField {
   type: "input";
   placeholder?: string;
@@ -117,6 +119,8 @@ interface DetailPageProps {
   initialData?: Record<string, any>;
 }
 
+// ---------------- Component ----------------
+
 export function DetailPage({
   tabs,
   onSave,
@@ -148,166 +152,136 @@ export function DetailPage({
     setIsDialogOpen((prev) => ({ ...prev, [fieldName]: false }));
   };
 
-  const openAddOptionDialog = (fieldName: string) => {
-    setIsDialogOpen((prev) => ({ ...prev, [fieldName]: true }));
-  };
+  // ---------------- Field Renderer ----------------
 
-  // Type guards
-  const isInputField = (field: Field): field is InputField =>
-    field.type === "input";
-  const isNumberField = (field: Field): field is NumberField =>
-    field.type === "number";
-  const isCheckboxField = (field: Field): field is CheckboxField =>
-    field.type === "checkbox";
-  const isSelectField = (field: Field): field is SelectField =>
-    field.type === "select";
-  const isCustomField = (field: Field): field is CustomField =>
-    field.type === "custom";
-
-  const renderField = (field: Field) => {
-    const fieldWithTooltip = (element: React.ReactNode) => (
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          {element}
-          {field.tooltip && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{field.tooltip}</p>
-              </TooltipContent>
-            </Tooltip>
-          )}
-        </div>
+  const renderFieldContent = (field: Field) => {
+    const withTooltip = (element: React.ReactNode) => (
+      <div className="flex flex-col gap-1 w-full">
+        <div className="flex items-center gap-2">{element}</div>
+        {field.tooltip && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{field.tooltip}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
       </div>
     );
 
-    if (isInputField(field)) {
-      return fieldWithTooltip(
-        <div className="flex flex-col">
-          <label className="text-sm font-medium mb-1">
-            {field.label}
-            {field.required && " *"}
-          </label>
-          <Input
-            placeholder={field.placeholder}
-            value={formData[field.name] || field.defaultValue || ""}
-            onChange={(e) => handleInputChange(field.name, e.target.value)}
-            required={field.required}
-            disabled={field.disabled}
-          />
-        </div>
-      );
-    }
-
-    if (isNumberField(field)) {
-      return fieldWithTooltip(
-        <div className="flex flex-col">
-          <label className="text-sm font-medium mb-1">
-            {field.label}
-            {field.required && " *"}
-          </label>
-          <Input
-            type="number"
-            placeholder={field.placeholder}
-            value={formData[field.name] || field.defaultValue || ""}
-            onChange={(e) =>
-              handleInputChange(field.name, parseFloat(e.target.value) || 0)
-            }
-            required={field.required}
-            disabled={field.disabled}
-            min={field.min}
-            max={field.max}
-            step={field.step}
-          />
-        </div>
-      );
-    }
-
-    if (isCheckboxField(field)) {
-      return fieldWithTooltip(
-        <div className="flex items-center gap-2">
-          <Checkbox
-            id={field.name}
-            checked={formData[field.name] || field.defaultValue || false}
-            onCheckedChange={(checked) =>
-              handleInputChange(field.name, checked)
-            }
-            disabled={field.disabled}
-          />
-          <label
-            htmlFor={field.name}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {field.label}
-          </label>
-        </div>
-      );
-    }
-
-    if (isSelectField(field)) {
-      const allOptions = [
-        ...field.options,
-        ...(dynamicOptions[field.name] || []),
-      ];
-
-      const selectElement = fieldWithTooltip(
-        <div className="flex flex-col">
-          <label className="text-sm font-medium mb-1">
-            {field.label}
-            {field.required && " *"}
-          </label>
-          <Select
-            value={formData[field.name] || field.defaultValue || ""}
-            onValueChange={(value) => handleInputChange(field.name, value)}
-            disabled={field.disabled}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select option" />
-            </SelectTrigger>
-            <SelectContent>
-              {allOptions.map((opt) => (
-                <SelectItem key={opt} value={opt}>
-                  {opt}
-                </SelectItem>
-              ))}
-              {field.addable && (
-                <div
-                  className="relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openAddOptionDialog(field.name);
-                  }}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add new option
-                </div>
-              )}
-            </SelectContent>
-          </Select>
-        </div>
-      );
-
-      if (field.addable) {
-        return (
-          <div className="flex flex-col gap-2">
-            {selectElement}
-            <Dialog
-              open={isDialogOpen[field.name]}
-              onOpenChange={(open) =>
-                setIsDialogOpen((prev) => ({ ...prev, [field.name]: open }))
+    switch (field.type) {
+      case "input":
+        return withTooltip(
+          <div className="flex flex-col w-full">
+            <label className="text-sm font-medium mb-1">
+              {field.label}
+              {field.required && " *"}
+            </label>
+            <Input
+              className="w-full"
+              placeholder={field.placeholder}
+              value={formData[field.name] ?? field.defaultValue ?? ""}
+              onChange={(e) => handleInputChange(field.name, e.target.value)}
+              required={field.required}
+              disabled={field.disabled}
+            />
+          </div>
+        );
+      case "number":
+        return withTooltip(
+          <div className="flex flex-col w-full">
+            <label className="text-sm font-medium mb-1">
+              {field.label}
+              {field.required && " *"}
+            </label>
+            <Input
+              className="w-full"
+              type="number"
+              placeholder={field.placeholder}
+              value={formData[field.name] ?? field.defaultValue ?? ""}
+              onChange={(e) =>
+                handleInputChange(field.name, parseFloat(e.target.value) || 0)
               }
+              required={field.required}
+              disabled={field.disabled}
+              min={field.min}
+              max={field.max}
+              step={field.step}
+            />
+          </div>
+        );
+      case "checkbox":
+        return withTooltip(
+          <div className="flex items-center gap-2 w-full">
+            <Checkbox
+              id={field.name}
+              checked={formData[field.name] ?? field.defaultValue ?? false}
+              onCheckedChange={(checked) =>
+                handleInputChange(field.name, checked)
+              }
+              disabled={field.disabled}
+            />
+            <label
+              htmlFor={field.name}
+              className="text-sm font-medium leading-none"
             >
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add New Option</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1">
-                      New Option
-                    </label>
+              {field.label}
+            </label>
+          </div>
+        );
+      case "select":
+        const allOptions = [
+          ...field.options,
+          ...(dynamicOptions[field.name] || []),
+        ];
+        return withTooltip(
+          <div className="flex flex-col w-full">
+            <label className="text-sm font-medium mb-1">{field.label}</label>
+            <Select
+              value={formData[field.name] ?? field.defaultValue ?? ""}
+              onValueChange={(value) => handleInputChange(field.name, value)}
+              disabled={field.disabled}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select option" />
+              </SelectTrigger>
+              <SelectContent>
+                {allOptions.map((opt) => (
+                  <SelectItem key={opt} value={opt}>
+                    {opt}
+                  </SelectItem>
+                ))}
+                {field.addable && (
+                  <div
+                    className="relative flex cursor-default items-center py-1.5 pl-2 pr-8 text-sm hover:bg-accent"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsDialogOpen((prev) => ({
+                        ...prev,
+                        [field.name]: true,
+                      }));
+                    }}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add new option
+                  </div>
+                )}
+              </SelectContent>
+            </Select>
+            {field.addable && (
+              <Dialog
+                open={isDialogOpen[field.name]}
+                onOpenChange={(open) =>
+                  setIsDialogOpen((prev) => ({ ...prev, [field.name]: open }))
+                }
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Option</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
                     <Input
                       placeholder="Enter new option"
                       value={newOptionInputs[field.name] || ""}
@@ -318,34 +292,50 @@ export function DetailPage({
                         }))
                       }
                     />
+                    <Button
+                      onClick={() =>
+                        handleAddOption(
+                          field.name,
+                          newOptionInputs[field.name] || ""
+                        )
+                      }
+                      disabled={!newOptionInputs[field.name]?.trim()}
+                    >
+                      Add Option
+                    </Button>
                   </div>
-                  <Button
-                    onClick={() =>
-                      handleAddOption(
-                        field.name,
-                        newOptionInputs[field.name] || ""
-                      )
-                    }
-                    disabled={!newOptionInputs[field.name]?.trim()}
-                  >
-                    Add Option
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         );
-      }
-
-      return selectElement;
+      case "custom":
+        return (
+          <div key={field.name} className="w-full">
+            {field.component}
+          </div>
+        );
+      default:
+        return null;
     }
-
-    if (isCustomField(field)) {
-      return <div key={field.name}>{field.component}</div>;
-    }
-
-    return null;
   };
+
+  const renderField = (field: Field) =>
+    field.collapsible ? (
+      <Collapsible key={field.name} defaultOpen={false} className="space-y-2">
+        <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1 text-left border rounded-md bg-muted/30">
+          <span className="font-medium">
+            {field.collapsibleLabel || field.label}
+          </span>
+          <ChevronDown className="h-5 w-5 transition-transform data-[state=open]:rotate-180" />
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-2 pl-4">
+          {renderFieldContent(field)}
+        </CollapsibleContent>
+      </Collapsible>
+    ) : (
+      renderFieldContent(field)
+    );
 
   const getGridColsClass = (columns: number = 2) => {
     switch (columns) {
@@ -361,6 +351,29 @@ export function DetailPage({
         return "grid-cols-1 md:grid-cols-2";
     }
   };
+
+  const renderSectionContent = (section: Section) => (
+    <div className={`grid ${getGridColsClass(section.columns)} gap-4`}>
+      {section.fields.map(renderField)}
+
+      {/* ✅ collapsible subgroups with consistent column layout */}
+      {section.collapsibleGroups?.map((group, idx) => (
+        <Collapsible key={idx} className="col-span-full space-y-2">
+          <CollapsibleTrigger className="flex items-center justify-between w-full px-0 py-5 text-left rounded bg-muted/40">
+            <span className="font-medium">{group.title}</span>
+            <ChevronDown className="h-5 w-5 transition-transform data-[state=open]:rotate-180" />
+          </CollapsibleTrigger>
+          <CollapsibleContent
+            className={`mt-2 grid ${getGridColsClass(
+              section.columns
+            )} gap-4 pl-4`}
+          >
+            {group.fields.map(renderField)}
+          </CollapsibleContent>
+        </Collapsible>
+      ))}
+    </div>
+  );
 
   return (
     <TooltipProvider>
@@ -390,7 +403,7 @@ export function DetailPage({
                 {tab.sections.map((section) => (
                   <Card key={section.title}>
                     {section.collapsible ? (
-                      <Collapsible defaultOpen={true}>
+                      <Collapsible defaultOpen>
                         <CardHeader className="pb-3">
                           <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
                             <CardTitle className="text-lg">
@@ -401,49 +414,12 @@ export function DetailPage({
                         </CardHeader>
                         <CardContent>
                           <CollapsibleContent>
-                            <div
-                              className={`grid ${getGridColsClass(
-                                section.columns
-                              )} gap-4`}
-                            >
-                              {section.fields.map(renderField)}
-                            </div>
-
-                            {/* Nested collapsible groups inside section */}
-                            {section.collapsibleGroups?.map((group, i) => (
-                              <Collapsible key={i}>
-                                <CollapsibleTrigger className="font-medium cursor-pointer mt-4 flex items-center justify-between w-full text-left">
-                                  {group.title}
-                                  <ChevronDown className="flex flex-row justify-between h-5 w-5 transition-transform data-[state=open]:rotate-180" />
-                                </CollapsibleTrigger>
-                                <CollapsibleContent className="grid gap-4 mt-2">
-                                  {group.fields.map(renderField)}
-                                </CollapsibleContent>
-                              </Collapsible>
-                            ))}
+                            {renderSectionContent(section)}
                           </CollapsibleContent>
                         </CardContent>
                       </Collapsible>
                     ) : (
-                      <CardContent>
-                        <div
-                          className={`grid ${getGridColsClass(
-                            section.columns
-                          )} gap-4`}
-                        >
-                          {section.fields.map(renderField)}
-                        </div>
-                        {section.collapsibleGroups?.map((group, i) => (
-                          <Collapsible key={i}>
-                            <CollapsibleTrigger className="font-medium cursor-pointer mt-4">
-                              {group.title}
-                            </CollapsibleTrigger>
-                            <CollapsibleContent className="grid gap-4 mt-2">
-                              {group.fields.map(renderField)}
-                            </CollapsibleContent>
-                          </Collapsible>
-                        ))}
-                      </CardContent>
+                      <CardContent>{renderSectionContent(section)}</CardContent>
                     )}
                   </Card>
                 ))}
