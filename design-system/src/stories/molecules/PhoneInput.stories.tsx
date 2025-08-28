@@ -70,7 +70,7 @@ export const WithValue: Story = {
 };
 
 /**
- * Disabled state
+ * Disabled state of phone number input
  */
 export const Disabled: Story = {
   render: (args) => (
