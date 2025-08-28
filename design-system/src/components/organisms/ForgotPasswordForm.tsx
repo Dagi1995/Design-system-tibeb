@@ -40,6 +40,7 @@ export function ForgotPasswordForm() {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     setIsLoading(true);
 
