@@ -26,8 +26,12 @@ export type NavbarItem =
         | "destructive"
         | "secondary"
         | "ghost"
-        | "link";
-      size?: "sm" | "default" | "lg" | "icon";
+        | "mono"
+        | "dashed"
+        | "dim"
+        | "foreground"
+        | "inverse";
+      size?: "sm" | "md" | "lg" | "icon";
       onClick?: () => void;
     }
   | {
@@ -36,7 +40,7 @@ export type NavbarItem =
       icon?: React.ReactNode;
       tooltip?: string;
       variant?: "default" | "outline";
-      size?: "sm" | "default";
+      size?: "sm" | "md";
       items: { label: string; onClick?: () => void }[];
     }
   | { type: "custom"; component: React.ReactNode };
@@ -78,19 +82,11 @@ const Navbar = ({ data, items = [] }: NavbarProps) => {
       <div className="flex items-center gap-4">
         {items.map((item, idx) => {
           switch (item.type) {
-            case "button":
+            case "button": {
               const button = (
                 <Button
-                  variant={
-                    item.variant ||
-                    "default" ||
-                    "outline" ||
-                    "destructive" ||
-                    "secondary" ||
-                    "ghost" ||
-                    "link"
-                  }
-                  size={item.size || "default" || "sm" || "lg" || "icon"}
+                  variant={item.variant ?? "default"}
+                  size={item.size ?? "md"}
                   onClick={item.onClick}
                 >
                   {item.icon || item.label}
@@ -106,12 +102,13 @@ const Navbar = ({ data, items = [] }: NavbarProps) => {
                 );
               }
               return <div key={idx}>{button}</div>;
+            }
 
-            case "dropdown":
+            case "dropdown": {
               const trigger = (
                 <Button
-                  variant={item.variant || "outline"}
-                  size={item.size || "default"}
+                  variant={item.variant ?? "outline"}
+                  size={item.size ?? "md"}
                 >
                   {item.icon || (
                     <div className="flex items-center gap-2">
@@ -147,6 +144,7 @@ const Navbar = ({ data, items = [] }: NavbarProps) => {
                 );
               }
               return <div key={idx}>{menu}</div>;
+            }
 
             case "custom":
               return <div key={idx}>{item.component}</div>;
