@@ -421,23 +421,24 @@ export function DetailPage({
                     ) : (
                       <CardContent>{renderSectionContent(section)}</CardContent>
                     )}
+                    {(onSave || onCancel) && (
+                      <div className="flex justify-end gap-2 pr-4 pt-10">
+                        {onCancel && (
+                          <Button variant="outline" onClick={onCancel}>
+                            Cancel
+                          </Button>
+                        )}
+                        {onSave && (
+                          <Button onClick={() => onSave(formData)}>Save</Button>
+                        )}
+                      </div>
+                    )}
                   </Card>
                 ))}
               </TabsContent>
             ))}
           </div>
         </Tabs>
-
-        {(onSave || onCancel) && (
-          <div className="flex justify-end gap-2 p-6 border-t">
-            {onCancel && (
-              <Button variant="outline" onClick={onCancel}>
-                Cancel
-              </Button>
-            )}
-            {onSave && <Button onClick={() => onSave(formData)}>Save</Button>}
-          </div>
-        )}
       </div>
     </TooltipProvider>
   );

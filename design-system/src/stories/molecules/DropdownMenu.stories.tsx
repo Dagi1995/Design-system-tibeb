@@ -28,7 +28,6 @@ const meta: Meta<typeof DropdownMenu> = {
 };
 
 export default meta;
-
 type Story = StoryObj<typeof DropdownMenu>;
 
 export const Default: Story = {
@@ -41,7 +40,9 @@ export const Default: Story = {
         <DropdownMenuTrigger asChild>
           <Button variant="outline">Open Menu</Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent>
+          {/* Application Section */}
           <DropdownMenuLabel>Application</DropdownMenuLabel>
           <DropdownMenuItem>
             Dashboard
@@ -55,14 +56,20 @@ export const Default: Story = {
             Messages
             <DropdownMenuShortcut>⌘M</DropdownMenuShortcut>
           </DropdownMenuItem>
+
           <DropdownMenuSeparator />
+
+          {/* Checkbox Section */}
           <DropdownMenuCheckboxItem
             checked={showBookmarks}
-            onCheckedChange={setShowBookmarks}
+            onCheckedChange={(checked) => setShowBookmarks(Boolean(checked))}
           >
             Show Bookmarks
           </DropdownMenuCheckboxItem>
+
           <DropdownMenuSeparator />
+
+          {/* Framework Section */}
           <DropdownMenuLabel>Frameworks</DropdownMenuLabel>
           <DropdownMenuRadioGroup
             value={selectedFramework}
@@ -72,7 +79,10 @@ export const Default: Story = {
             <DropdownMenuRadioItem value="nuxt">Nuxt.js</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="remix">Remix</DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
+
           <DropdownMenuSeparator />
+
+          {/* Sub Menu */}
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>More Tools</DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
@@ -80,7 +90,10 @@ export const Default: Story = {
               <DropdownMenuItem>Live Share</DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
+
           <DropdownMenuSeparator />
+
+          {/* Destructive Action */}
           <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
