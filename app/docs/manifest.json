@@ -1,0 +1,220 @@
+{
+  "atoms": [
+    {
+      "name": "Avatar",
+      "route": "/docs/atoms/Avatar"
+    },
+    {
+      "name": "Badge",
+      "route": "/docs/atoms/Badge"
+    },
+    {
+      "name": "Button",
+      "route": "/docs/atoms/button"
+    },
+    {
+      "name": "Checkbox",
+      "route": "/docs/atoms/Checkbox"
+    },
+    {
+      "name": "ErrorMessage",
+      "route": "/docs/atoms/ErrorMessage"
+    },
+    {
+      "name": "FilterTag",
+      "route": "/docs/atoms/FilterTag"
+    },
+    {
+      "name": "Input",
+      "route": "/docs/atoms/Input"
+    },
+    {
+      "name": "InputOTP",
+      "route": "/docs/atoms/InputOTP"
+    },
+    {
+      "name": "Label",
+      "route": "/docs/atoms/Label"
+    },
+    {
+      "name": "Popover",
+      "route": "/docs/atoms/Popover"
+    },
+    {
+      "name": "Progress",
+      "route": "/docs/atoms/Progress"
+    },
+    {
+      "name": "RadioGroup",
+      "route": "/docs/atoms/RadioGroup"
+    },
+    {
+      "name": "ScrollArea",
+      "route": "/docs/atoms/ScrollArea"
+    },
+    {
+      "name": "Select",
+      "route": "/docs/atoms/Select"
+    },
+    {
+      "name": "Separator",
+      "route": "/docs/atoms/Separator"
+    },
+    {
+      "name": "Skeleton",
+      "route": "/docs/atoms/Skeleton"
+    },
+    {
+      "name": "Spinner",
+      "route": "/docs/atoms/Spinner"
+    },
+    {
+      "name": "Switch",
+      "route": "/docs/atoms/Switch"
+    },
+    {
+      "name": "Textarea",
+      "route": "/docs/atoms/Textarea"
+    },
+    {
+      "name": "Toaster",
+      "route": "/docs/atoms/Toast."
+    },
+    {
+      "name": "Toggle",
+      "route": "/docs/atoms/Toggle"
+    },
+    {
+      "name": "Tooltip",
+      "route": "/docs/atoms/Tooltip"
+    },
+    {
+      "name": "Typography",
+      "route": "/docs/atoms/Typography"
+    }
+  ],
+  "molecules": [
+    {
+      "name": "Alert",
+      "route": "/docs/molecules/Alert"
+    },
+    {
+      "name": "Breadcrumb",
+      "route": "/docs/molecules/Breadcrumb"
+    },
+    {
+      "name": "Calendar",
+      "route": "/docs/molecules/Calendar"
+    },
+    {
+      "name": "Card",
+      "route": "/docs/molecules/Card"
+    },
+    {
+      "name": "Charts",
+      "route": "/docs/molecules/ChartContainer"
+    },
+    {
+      "name": "ColorPicker",
+      "route": "/docs/molecules/ColorPicker"
+    },
+    {
+      "name": "CommandDemo",
+      "route": "/docs/molecules/Command"
+    },
+    {
+      "name": "BirthdateInput",
+      "route": "/docs/molecules/DateInput"
+    },
+    {
+      "name": "Dialog",
+      "route": "/docs/molecules/Dialog"
+    },
+    {
+      "name": "DropdownMenu",
+      "route": "/docs/molecules/DropdownMenu"
+    },
+    {
+      "name": "FileUploader",
+      "route": "/docs/molecules/FileUpload"
+    },
+    {
+      "name": "FilterItem",
+      "route": "/docs/molecules/FilterItem"
+    },
+    {
+      "name": "MultiSelector",
+      "route": "/docs/molecules/MultiSelector"
+    },
+    {
+      "name": "NavigationMenu",
+      "route": "/docs/molecules/NavigationMenu"
+    },
+    {
+      "name": "NotificationItem",
+      "route": "/docs/molecules/NotificationItem"
+    },
+    {
+      "name": "SearchInput",
+      "route": "/docs/molecules/SearchInput"
+    },
+    {
+      "name": "Sheet",
+      "route": "/docs/molecules/Sheet"
+    },
+    {
+      "name": "Table",
+      "route": "/docs/molecules/Table"
+    }
+  ],
+  "organisms": [
+    {
+      "name": "AdvancedTable",
+      "route": "/docs/organisms/AdvancedTable"
+    },
+    {
+      "name": "AlertDialog",
+      "route": "/docs/organisms/AlertDialog"
+    },
+    {
+      "name": "DynamicFilterRow",
+      "route": "/docs/organisms/DynamicFilterRow"
+    },
+    {
+      "name": "ForgotPasswordForm",
+      "route": "/docs/organisms/ForgotPasswordForm"
+    },
+    {
+      "name": "ListView",
+      "route": "/docs/organisms/ListView"
+    },
+    {
+      "name": "LoginForm",
+      "route": "/docs/organisms/Login"
+    },
+    {
+      "name": "OtpVerificationForm",
+      "route": "/docs/organisms/OtpVerificationForm"
+    },
+    {
+      "name": "RegisterForm",
+      "route": "/docs/organisms/RegisterForm"
+    },
+    {
+      "name": "ResetPasswordForm",
+      "route": "/docs/organisms/ResetPasswordForm"
+    },
+    {
+      "name": "SidebarWithNavbar",
+      "route": "/docs/organisms/SideBar"
+    },
+    {
+      "name": "TextEditor",
+      "route": "/docs/organisms/TextEditor"
+    },
+    {
+      "name": "TopNavbar",
+      "route": "/docs/organisms/TopNavbar"
+    }
+  ]
+}
