@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import * as React from "react";
@@ -27,7 +28,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "../atoms/Select";
-import { FileUploader } from "../molecules/FileUpload";
 
 // Fix birthday schema validation
 const registerSchema = z
@@ -216,29 +216,7 @@ export function RegisterForm() {
             </div>
           </div>
 
-          {/* File Upload */}
-          <div className="space-y-1">
-            <Label>Profile Picture (optional)</Label>
-            <Controller
-              name="file"
-              control={control}
-              render={({ field }) => (
-                <FileUploader
-                  value={field.value ? [field.value] : []}
-                  onValueChange={(files) => {
-                    field.onChange(files && files.length > 0 ? files[0] : null);
-                  }}
-                  dropzoneOptions={{
-                    accept: { "image/*": [".jpeg", ".jpg", ".png", ".gif"] },
-                    maxFiles: 1,
-                    maxSize: 4 * 1024 * 1024, // 4MB
-                    multiple: false,
-                  }}
-                />
-              )}
-            />
-            <ErrorMessage message={errors.file?.message} />
-          </div>
+         
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
