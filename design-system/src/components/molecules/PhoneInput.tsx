@@ -14,11 +14,7 @@ import {
   CommandList,
 } from "../molecules/Command";
 import { Input } from "../atoms/Input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../atoms/Popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/Popover";
 import { ScrollArea } from "../atoms/ScrollArea";
 import { cn } from "@/lib/utils";
 
@@ -55,7 +51,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
           {...props}
         />
       );
-    },
+    }
   );
 PhoneInput.displayName = "PhoneInput";
 
@@ -113,7 +109,7 @@ const CountrySelect = ({
           <ChevronsUpDown
             className={cn(
               "-mr-2 size-4 opacity-50",
-              disabled ? "hidden" : "opacity-100",
+              disabled ? "hidden" : "opacity-100"
             )}
           />
         </Button>
@@ -127,7 +123,7 @@ const CountrySelect = ({
               setTimeout(() => {
                 if (scrollAreaRef.current) {
                   const viewportElement = scrollAreaRef.current.querySelector(
-                    "[data-radix-scroll-area-viewport]",
+                    "[data-radix-scroll-area-viewport]"
                   );
                   if (viewportElement) {
                     viewportElement.scrollTop = 0;
@@ -151,7 +147,7 @@ const CountrySelect = ({
                       onChange={onChange}
                       onSelectComplete={() => setIsOpen(false)}
                     />
-                  ) : null,
+                  ) : null
                 )}
               </CommandGroup>
             </ScrollArea>
@@ -182,11 +178,15 @@ const CountrySelectOption = ({
 
   return (
     <CommandItem className="gap-2" onSelect={handleSelect}>
-      <FlagComponent country={country} countryName={countryName} />
+      <FlagComponent country={country} countryName={countryName}  />
       <span className="flex-1 text-sm">{countryName}</span>
-      <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
+      <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(
+        country
+      )}`}</span>
       <CheckIcon
-        className={`ml-auto size-4 ${country === selectedCountry ? "opacity-100" : "opacity-0"}`}
+        className={`ml-auto size-6 ${
+          country === selectedCountry ? "opacity-100" : "opacity-0"
+        }`}
       />
     </CommandItem>
   );
@@ -196,8 +196,8 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
   const Flag = flags[country];
 
   return (
-    <span className="flex h-4 w-6 overflow-hidden rounded-sm bg-foreground/20 [&_svg:not([class*='size-'])]:size-full">
-      {Flag && <Flag title={countryName} />}
+    <span >
+      {Flag && <Flag  title={countryName} />}
     </span>
   );
 };
