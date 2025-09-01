@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
+<<<<<<< HEAD:design-system/src/components/organisms/Calendar.tsx
 import * as React from "react";
 import {
   format,
@@ -35,6 +36,16 @@ import {
   TabsList,
   TabsTrigger,
 } from "../atoms/Tabs";
+=======
+import * as React from 'react';
+import { format, addMonths, addWeeks, addDays, isSameDay, isSameMonth, isSameWeek, parseISO, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
+import { ChevronLeft, ChevronRight, MoreVertical, X, Edit2, Trash2, PhoneCall, Users, Book, Video } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '../atoms/Button';
+import { Popover, PopoverContent, PopoverTrigger } from '../atoms/Popover';
+import { Tabs, TabsList, TabsTrigger } from '../atoms/Tabs';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../atoms/Tooltip';
+>>>>>>> 863802e5bb2d3a52741b9f8b2e150bf51e4c2eac:design-system/src/components/organisms/Calander.tsx
 
 type EventColor =
   | "blue"
