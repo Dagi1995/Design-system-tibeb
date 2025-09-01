@@ -87,7 +87,7 @@ type Story = StoryObj<typeof DetailPage>;
 /* --------------------------------
    1. Minimal Example
 -------------------------------- */
-export const Minimal: Story = {
+export const MinimalWithTabs: Story = {
   render: () => {
     const tabs: TabConfig[] = [
       {
@@ -109,6 +109,31 @@ export const Minimal: Story = {
                 name: "isActive",
                 label: "Is Active?",
                 defaultValue: true,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "details",
+        label: "Details",
+        sections: [
+          {
+            title: "More Info",
+            columns: 2,
+            fields: [
+              {
+                type: "number",
+                name: "stock",
+                label: "Stock Qty",
+                defaultValue: 100,
+              },
+              {
+                type: "select",
+                name: "category",
+                addable: true,
+                label: "Category",
+                options: ["Electronics", "Furniture", "Toys"],
               },
             ],
           },

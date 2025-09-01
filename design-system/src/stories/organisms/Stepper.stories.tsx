@@ -25,6 +25,7 @@ import { Badge } from "../../components/atoms/Badge";
 
 const meta: Meta<typeof Stepper> = {
   title: "Design-System/Components/Organisms/Stepper",
+  tags: ["autodocs"],
   component: Stepper,
 };
 
