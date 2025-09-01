@@ -28,15 +28,21 @@ const formSchema = z.object({
   email: z.string().email("Invalid email"),
   role: z.string().min(1, "Role is required"),
   terms: z.boolean().refine((val) => val, { message: "You must accept terms" }),
-  birthDate: z
-    .union([z.date(), z.null()])
-    .refine((val) => val !== null, { message: "Birth date is required" }),
+  birthDate: z.date({ required_error: "Birth date is required" }).nullable(),
   file: z
     .instanceof(FileList)
     .refine((fileList) => fileList.length > 0, { message: "File is required" }),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+// Define the form values type that matches our schema
+type FormValues = {
+  name: string;
+  email: string;
+  role: string;
+  terms: boolean;
+  birthDate: Date | null;
+  file: FileList;
+};
 
 export function RegisterForm() {
   const router = useRouter();
@@ -122,9 +128,9 @@ export function RegisterForm() {
         <Calendar
           mode="single"
           selected={watch("birthDate") ?? undefined}
-          onSelect={(date) =>
-            setValue("birthDate", date ?? null, { shouldValidate: true })
-          }
+          onSelect={(date) => {
+            setValue("birthDate", date || null, { shouldValidate: true });
+          }}
         />
         <ErrorMessage message={errors.birthDate?.message} />
       </div>

@@ -137,7 +137,7 @@ export function OtpVerificationForm() {
 
             <Button
               type="button"
-              variant="link"
+              variant="dashed"
               size="sm"
               disabled={!canResend}
               onClick={resendOtp}
