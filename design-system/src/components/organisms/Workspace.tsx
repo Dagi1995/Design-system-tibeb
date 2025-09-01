@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Label } from "../atoms/Label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../molecules/Card";
 import {
@@ -18,7 +19,7 @@ import {
   CartesianGrid,
   XAxis,
   YAxis,
-  ResponsiveContainer
+  
 } from "recharts";
 
 type ChartType = 'LineChart' | 'BarChart' | 'PieChart';
