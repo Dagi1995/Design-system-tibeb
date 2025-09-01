@@ -35,7 +35,6 @@ import { HelpCircle, ChevronDown, Plus } from "lucide-react";
 
 // ---------------- Types ----------------
 
-// Base field
 interface BaseField {
   name: string;
   label: string;
@@ -248,8 +247,8 @@ export function DetailPage({
                 <SelectValue placeholder="Select option" />
               </SelectTrigger>
               <SelectContent>
-                {allOptions.map((opt) => (
-                  <SelectItem key={opt} value={opt}>
+                {allOptions.map((opt, idx) => (
+                  <SelectItem key={`${field.name}-${opt}-${idx}`} value={opt}>
                     {opt}
                   </SelectItem>
                 ))}
@@ -322,7 +321,11 @@ export function DetailPage({
 
   const renderField = (field: Field) =>
     field.collapsible ? (
-      <Collapsible key={field.name} defaultOpen={false} className="space-y-2">
+      <Collapsible
+        key={`field-${field.name}`}
+        defaultOpen={false}
+        className="space-y-2"
+      >
         <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1 text-left border rounded-md bg-muted/30">
           <span className="font-medium">
             {field.collapsibleLabel || field.label}
@@ -334,7 +337,7 @@ export function DetailPage({
         </CollapsibleContent>
       </Collapsible>
     ) : (
-      renderFieldContent(field)
+      <div key={`field-${field.name}`}>{renderFieldContent(field)}</div>
     );
 
   const getGridColsClass = (columns: number = 2) => {
@@ -354,11 +357,13 @@ export function DetailPage({
 
   const renderSectionContent = (section: Section) => (
     <div className={`grid ${getGridColsClass(section.columns)} gap-4`}>
-      {section.fields.map(renderField)}
+      {section.fields.map((field) => renderField(field))}
 
-      {/* ✅ collapsible subgroups with consistent column layout */}
       {section.collapsibleGroups?.map((group, idx) => (
-        <Collapsible key={idx} className="col-span-full space-y-2">
+        <Collapsible
+          key={`group-${section.title}-${group.title}-${idx}`}
+          className="col-span-full space-y-2"
+        >
           <CollapsibleTrigger className="flex items-center justify-between w-full px-0 py-5 text-left rounded bg-muted/40">
             <span className="font-medium">{group.title}</span>
             <ChevronDown className="h-5 w-5 transition-transform data-[state=open]:rotate-180" />
@@ -368,7 +373,7 @@ export function DetailPage({
               section.columns
             )} gap-4 pl-4`}
           >
-            {group.fields.map(renderField)}
+            {group.fields.map((field) => renderField(field))}
           </CollapsibleContent>
         </Collapsible>
       ))}
@@ -390,7 +395,7 @@ export function DetailPage({
           <div className="px-6">
             <TabsList className="w-full overflow-x-auto">
               {tabs.map((tab) => (
-                <TabsTrigger key={tab.id} value={tab.id}>
+                <TabsTrigger key={`tab-${tab.id}`} value={tab.id}>
                   {tab.label}
                 </TabsTrigger>
               ))}
@@ -399,9 +404,13 @@ export function DetailPage({
 
           <div className="flex-grow overflow-auto p-6">
             {tabs.map((tab) => (
-              <TabsContent key={tab.id} value={tab.id} className="space-y-6">
-                {tab.sections.map((section) => (
-                  <Card key={section.title}>
+              <TabsContent
+                key={`tab-content-${tab.id}`}
+                value={tab.id}
+                className="space-y-6"
+              >
+                {tab.sections.map((section, sIdx) => (
+                  <Card key={`section-${tab.id}-${section.title}-${sIdx}`}>
                     {section.collapsible ? (
                       <Collapsible defaultOpen>
                         <CardHeader className="pb-3">
