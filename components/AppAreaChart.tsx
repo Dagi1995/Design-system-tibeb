@@ -7,7 +7,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/design-system/src/components/molecules/Chart";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { type ChartConfig } from "@/design-system/src/components/molecules/Chart";
 
 const chartConfig = {

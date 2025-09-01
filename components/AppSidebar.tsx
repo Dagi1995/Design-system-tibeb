@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -71,7 +73,19 @@ const items = [
     icon: Settings,
   },
 ];
+
 const AppSidebar = () => {
+  const [docsManifest, setDocsManifest] = React.useState<
+    Record<string, Array<{ name: string; route: string }>>
+  >({});
+
+  React.useEffect(() => {
+    fetch("/docs-manifest.json")
+      .then((res) => res.json())
+      .then((data) => setDocsManifest(data))
+      .catch(() => setDocsManifest({}));
+  }, []);
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -117,30 +131,47 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel className="">
-            About <Separator className="m-3"></Separator>
+          <SidebarGroupLabel>
+            Components <Separator className="m-3" />
           </SidebarGroupLabel>
+
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="#">
-                    <Projector></Projector>
-                    See all Project
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="#">
-                    <Plus />
-                    Add Project
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {(
+                Object.entries(docsManifest || {}) as Array<
+                  [string, Array<{ name: string; route: string }>]
+                >
+              ).map(([category, items]) => (
+                <Collapsible key={category} className="group/collapsible">
+                  <SidebarMenuItem>
+                    {/* Collapsible Trigger */}
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton>
+                        <Projector />
+                        <span>{category}</span>
+                        <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+
+                    {/* Collapsible Content */}
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {items.map((it) => (
+                          <SidebarMenuSubItem key={it.route}>
+                            <SidebarMenuSubButton asChild>
+                              <Link href={it.route}>{it.name}</Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
         <Collapsible defaultOpen className="group/collapsible">
           <SidebarGroup>
             <SidebarGroupLabel asChild className="">
