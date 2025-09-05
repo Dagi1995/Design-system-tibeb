@@ -16,7 +16,8 @@ const meta: Meta<typeof Workspace> = {
             type: "Text",
             name: "Text",
             description: "Text",
-            value: "Text"
+            value: "Text",
+            span: 1, // Explicitly setting span, but will default to full width
           }
         ]
       }
@@ -34,12 +35,14 @@ export const Basic: Story = {
     description: "A simple workspace with text content",
     sections: [
       {
+        columns: 1, // Single column layout
         contents: [
           {
             type: "Text",
             name: "Welcome",
             description: "Welcome message",
-            value: "Welcome to your workspace! This is a simple text component."
+            value: "Welcome to your workspace! This is a simple text component.",
+            span: 1, // Will take full width
           }
         ]
       }
@@ -51,7 +54,6 @@ export const Basic: Story = {
   },
 };
 
-
 // Project Management Workspace
 export const ProjectManagement: Story = {
   args: {
@@ -60,63 +62,50 @@ export const ProjectManagement: Story = {
     sections: [
       {
         title: "Project Overview",
+        columns: 3, // Three-column layout
         contents: [
           {
             type: "Stats",
             name: "Project Status",
-            value: 
-              { label: "Total Projects", value: "18" }
-          
-          },
-          {
-            type: "Column",
-            name: "Column",
-            value: "Column"
-          },
-          {
-            type: "Column",
-            name: "Column",
-            value: "Column"
+            value: { label: "Total Projects", value: "18" },
+            span: 3,
           },
           {
             type: "Stats",
-            name: "Project Status",
-            value: 
-              { label: "Total Projects", value: "18" }
-          
-          },
-          {
-            type: "Column",
-            name: "Column",
-            value: "Column"
+            name: "Active Tasks",
+            value: { label: "Active Tasks", value: "42" },
+            span: 3, 
           },
           {
             type: "Stats",
-            name: "Project Status",
-            value: 
-              { label: "Total Projects", value: "18" }
-          
+            name: "Completed Projects",
+            value: { label: "Completed Projects", value: "12" },
+            span: 3, 
           },
         ]
       },
       {
-        title: "Tasks & Activities",
+        title: "Activities",
+        columns: 2, // Single column for charts
         contents: [
           {
-            type: "QuickList",
-            name: "My Tasks",
-            description: "Your assigned tasks",
-            value: [
-              { name: "Review PR #245", description: "Code review for new feature" },
-              { name: "Update project documentation", description: "Document API changes" },
-              { name: "Meet with design team", description: "Discuss UI improvements" },
-              { name: "Prepare quarterly report", description: "Compile project metrics" }
-            ]
-          },
-          {
-            type: "Column",
-            name: "Column",
-            value: "Column"
+            type: "Chart",
+            name: "Task Completion",
+            description: "Completion rate by team",
+            value: {
+              type: "LineChart",
+              data: [
+                { name: "Design", completed: 75, remaining: 25 },
+                { name: "Development", completed: 60, remaining: 40 },
+                { name: "Testing", completed: 45, remaining: 55 },
+                { name: "Documentation", completed: 30, remaining: 70 }
+              ],
+              config: {
+                completed: { label: "Completed", color: "#10b981" },
+                remaining: { label: "Remaining", color: "#f59e0b" }
+              }
+            },
+            span: 1
           },
           {
             type: "Chart",
@@ -134,12 +123,27 @@ export const ProjectManagement: Story = {
                 completed: { label: "Completed", color: "#10b981" },
                 remaining: { label: "Remaining", color: "#f59e0b" }
               }
-            }
+            },
+            span: 1
           },
+        ]
+      },
+      {
+        title: "Quick List",
+        columns: 3,
+        contents: [
           {
-            type: "Column",
-            name: "Column",
-            value: "Column"
+            type: "QuickList",
+            name: "Links",
+            value: [
+              { name: "Item List", url: "https://example.com" },
+              { name: "Customers", url: "https://example.com" },
+              { name: "Orders", url: "https://example.com" },
+              { name: "Products", url: "https://example.com" },
+              { name: "Categories", url: "https://example.com" },
+              { name: "Suppliers", url: "https://example.com" }
+            ],
+            span: 2, 
           },
           {
             type: "Cards",
@@ -150,8 +154,22 @@ export const ProjectManagement: Story = {
               { content: "Bug #123 resolved in development" },
               { content: "New team member onboarding completed" },
               { content: "Client meeting scheduled for Friday" }
-            ]
-          }
+            ],
+            span: 3, 
+          },
+          {
+            type: "Link",
+            name: "Item Lists",
+            value: [
+              { name: "Ipone 15", status: "Active", url: "https://example.com" },
+              { name: "Ipone 15 Pro", status: "Disabled", url: "https://example.com" },
+              { name: "Ipone 14 Pro Max", status: "Active", url: "https://example.com" },
+              { name: "Ipone 15 Pro Max", status: "Active", url: "https://example.com" },
+              { name: "Ipone 16 Pro Max", status: "Disabled", url: "https://example.com" },
+              { name: "Ipone 17 Pro Max", status: "Active", url: "https://example.com" }
+            ],
+            span: 3, 
+          },
         ]
       }
     ]

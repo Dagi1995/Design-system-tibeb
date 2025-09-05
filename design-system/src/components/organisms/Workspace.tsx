@@ -21,11 +21,12 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
+import { Button } from "../atoms/Button";
 
 // Extended types for better customization
 type ThemeType = 'light' | 'dark' | 'blue' | 'green' | string;
 type SizeType = 'sm' | 'md' | 'lg';
-type WorkspaceType = 'Text' | 'Chart' | 'Link' | 'Shortcut' | 'QuickList' | 'Cards' | 'Column' | 'Stats';
+type WorkspaceType = 'Text' | 'Chart' | 'Link' | 'Shortcut' | 'QuickList' | 'Cards' | 'Stats';
 
 interface WorkspaceTypeConfig {
   type: WorkspaceType;
@@ -129,261 +130,275 @@ export const Workspace: React.FC<Workspace> = ({
         )}
       </div>
 
-      {sections.map((section, sectionIndex) => {
-        // Process column layout
-        const columnGroups: WorkspaceTypeConfig[][] = [];
-        let currentColumn: WorkspaceTypeConfig[] = [];
+      {sections.map((section, sectionIndex) => (
+        <div key={sectionIndex} className="mb-6">
+          {section.title && (
+            <div className="mb-4">
+              <Label className={`text-xl font-semibold ${currentTheme.text}`}>
+                {section.title}
+              </Label>
+              {section.description && (
+                <p className={`text-gray-600 mt-1 ${theme === 'dark' ? 'text-gray-400' : ''}`}>
+                  {section.description}
+                </p>
+              )}
+            </div>
+          )}
 
-        section.contents.forEach(content => {
-          if (content.type === 'Column') {
-            if (currentColumn.length > 0) {
-              columnGroups.push([...currentColumn]);
-              currentColumn = [];
-            }
-          } else {
-            currentColumn.push(content);
-          }
-        });
+          <div className={`grid ${getColumnClasses(section.columns)} ${getGapClasses(section.gap)}`}>
+            {section.contents.map((content, contentIndex) => {
+              const spanClasses = content.span
+                ? `col-span-${Math.min(content.span, section.columns || 3)}`
+                : `col-span-${section.columns || 3}`; // Default to full width
 
-        if (currentColumn.length > 0) {
-          columnGroups.push([...currentColumn]);
-        }
+              return (
+                <div
+                  key={contentIndex}
+                  className={`${spanClasses} ${content.className || ''}`}
+                  style={{
+                    height: content.height,
+                    backgroundColor: content.backgroundColor,
+                    borderRadius: content.borderRadius,
+                  }}
+                >
+                  {content.type === 'Text' && (
+                    <Card className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}>
+                      <CardContent className="p-4">
+                        <Label className={`font-semibold mb-2 ${currentTheme.text}`}>
+                          {content.name}
+                        </Label>
+                        <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
+                          {content.value}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  )}
 
-        return (
-          <div key={sectionIndex} className="mb-8">
-            {section.title && (
-              <div className="mb-4">
-                <Label className={`text-xl font-semibold ${currentTheme.text}`}>
-                  {section.title}
-                </Label>
-                {section.description && (
-                  <p className={`text-gray-600 mt-1 ${theme === 'dark' ? 'text-gray-400' : ''}`}>
-                    {section.description}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div className={`grid ${getColumnClasses(section.columns)} ${getGapClasses(section.gap)}`}>
-              {columnGroups.map((columnContents, columnIndex) => (
-                <div key={columnIndex} className="space-y-6">
-                  {columnContents.map((content, contentIndex) => {
-                    const spanClasses = content.span
-                      ? `col-span-${Math.min(content.span, section.columns || 3)}`
-                      : 'col-span-1';
-
-                    return (
-                      <div
-                        key={contentIndex}
-                        className={`${spanClasses} ${content.className || ''}`}
-                        style={{
-                          height: content.height,
-                          backgroundColor: content.backgroundColor,
-                          borderRadius: content.borderRadius,
-                        }}
-                      >
-                        {content.type === 'Text' && (
-                          <div className={`${currentTheme.cardBg} ${currentTheme.border} rounded-lg p-4 ${currentTheme.shadow}`}>
-                            <Label className={`font-semibold mb-2 ${currentTheme.text}`}>
-                              {content.name}
-                            </Label>
-                            <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
-                              {content.value}
-                            </p>
-                          </div>
-                        )}
-
-                        {content.type === 'Chart' && (
-                          <div
-                            className={`${currentTheme.cardBg} ${currentTheme.border} rounded-lg p-4 ${currentTheme.shadow}`}
-                            style={{ minHeight: content.height || '350px' }}
+                  {content.type === 'Chart' && (
+                    <Card className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}>
+                      <CardHeader>
+                        <CardTitle className={currentTheme.text}>{content.name}</CardTitle>
+                        {content.description && (
+                          <CardDescription
+                            className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
                           >
-                            <Label className={`font-semibold mb-4 block ${currentTheme.text}`}>
-                              {content.name}
-                            </Label>
-                            <div className="h-full">
-                              <ChartContainer config={content.value.config}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                  {content.value.type === 'LineChart' && (
-                                    <LineChart
-                                      data={content.value.data}
-                                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                                    >
-                                      <CartesianGrid strokeDasharray="3 3" />
-                                      <XAxis dataKey="name" />
-                                      <YAxis />
-                                      <ChartTooltip content={<ChartTooltipContent />} />
-                                      <ChartLegend content={<ChartLegendContent />} />
-                                      {Object.keys(content.value.config).map((key) => (
-                                        <Line
-                                          key={key}
-                                          type="monotone"
-                                          dataKey={key}
-                                          stroke={content.value.config[key].color}
-                                          strokeWidth={2}
-                                          dot={{ r: 4 }}
-                                        />
-                                      ))}
-                                    </LineChart>
-                                  )}
-                                  {content.value.type === 'BarChart' && (
-                                    <BarChart
-                                      data={content.value.data}
-                                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                                    >
-                                      <CartesianGrid strokeDasharray="3 3" />
-                                      <XAxis dataKey="name" />
-                                      <YAxis />
-                                      <ChartTooltip content={<ChartTooltipContent />} />
-                                      <ChartLegend content={<ChartLegendContent />} />
-                                      {Object.keys(content.value.config).map((key) => (
-                                        <Bar
-                                          key={key}
-                                          dataKey={key}
-                                          fill={content.value.config[key].color}
-                                        />
-                                      ))}
-                                    </BarChart>
-                                  )}
-                                  {content.value.type === 'PieChart' && (
-                                    <PieChart>
-                                      <ChartTooltip content={<ChartTooltipContent />} />
-                                      <ChartLegend content={<ChartLegendContent />} />
-                                      <Pie
-                                        data={content.value.data}
-                                        dataKey="value"
-                                        nameKey="name"
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={80}
-                                        label
-                                      >
-                                        {content.value.data.map((entry: any, index: number) => (
-                                          <Cell
-                                            key={`cell-${index}`}
-                                            fill={
-                                              content.value.config[entry.name.toLowerCase()]?.color ||
-                                              '#8884d8'
-                                            }
-                                          />
-                                        ))}
-                                      </Pie>
-                                    </PieChart>
-                                  )}
-                                </ResponsiveContainer>
-                              </ChartContainer>
-                            </div>
-                          </div>
+                            {content.description}
+                          </CardDescription>
                         )}
-
-                        {content.type === 'Shortcut' && (
-                          <button
-                            className={`w-full text-left p-4 hover:bg-opacity-80 rounded-lg ${currentTheme.border} ${currentTheme.cardBg} ${currentTheme.shadow}`}
-                          >
-                            <Label className={`font-semibold ${currentTheme.text}`}>
-                              {content.name}
-                            </Label>
-                            {content.description && (
-                              <p className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                                {content.description}
-                              </p>
-                            )}
-                            {Array.isArray(content.value) &&
-                              content.value.map((item: any, index: number) => (
-                                <p
-                                  key={index}
-                                  className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+                      </CardHeader>
+                      <CardContent>
+                        <div style={{ minHeight: content.height || '250px' }}>
+                          <ChartContainer config={content.value.config}>
+                            <ResponsiveContainer width="100%" height="100%">
+                              {content.value.type === 'LineChart' && (
+                                <LineChart
+                                  data={content.value.data}
+                                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                                  width={undefined}
                                 >
-                                  {item.description}
-                                </p>
-                              ))}
-                          </button>
-                        )}
-
-                        {content.type === 'QuickList' && (
-                          <div
-                            className={`${currentTheme.cardBg} ${currentTheme.border} rounded-lg p-4 ${currentTheme.shadow}`}
-                            style={{ minHeight: content.height || '350px' }}
-                          >
-                            <Label className={`font-semibold mb-3 block ${currentTheme.text}`}>
-                              {content.name}
-                            </Label>
-                            <ul className="space-y-2">
-                              {Array.isArray(content.value) &&
-                                content.value.map((item, idx) => (
-                                  <li
-                                    key={idx}
-                                    className={`flex items-center p-2 hover:bg-opacity-80 rounded-md ${
-                                      theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
-                                    }`}
-                                  >
-                                    <span className={`ml-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                                      {typeof item === 'object' ? item.name : item}
-                                    </span>
-                                  </li>
-                                ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {content.type === 'Cards' && (
-                          <Card
-                            className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}
-                            style={{ minHeight: content.height || '350px' }}
-                          >
-                            <CardHeader>
-                              <CardTitle className={currentTheme.text}>{content.name}</CardTitle>
-                              {content.description && (
-                                <CardDescription
-                                  className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
-                                >
-                                  {content.description}
-                                </CardDescription>
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis dataKey="name" />
+                                  <YAxis />
+                                  <ChartTooltip content={<ChartTooltipContent />} />
+                                  <ChartLegend content={<ChartLegendContent />} />
+                                  {Object.keys(content.value.config).map((key) => (
+                                    <Line
+                                      key={key}
+                                      type="monotone"
+                                      dataKey={key}
+                                      stroke={content.value.config[key].color}
+                                      strokeWidth={2}
+                                      dot={{ r: 4 }}
+                                    />
+                                  ))}
+                                </LineChart>
                               )}
-                            </CardHeader>
-                            <CardContent className="space-y-3">
-                              {Array.isArray(content.value) &&
-                                content.value.map((card, index) => (
-                                  <div
-                                    key={index}
-                                    className={`p-3 rounded-md ${
-                                      theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'
-                                    }`}
+                              {content.value.type === 'BarChart' && (
+                                <BarChart
+                                  data={content.value.data}
+                                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                                  width={undefined}
+                                >
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis dataKey="name" />
+                                  <YAxis />
+                                  <ChartTooltip content={<ChartTooltipContent />} />
+                                  <ChartLegend content={<ChartLegendContent />} />
+                                  {Object.keys(content.value.config).map((key) => (
+                                    <Bar
+                                      key={key}
+                                      dataKey={key}
+                                      fill={content.value.config[key].color}
+                                    />
+                                  ))}
+                                </BarChart>
+                              )}
+                              {content.value.type === 'PieChart' && (
+                                <PieChart width={undefined}>
+                                  <ChartTooltip content={<ChartTooltipContent />} />
+                                  <ChartLegend content={<ChartLegendContent />} />
+                                  <Pie
+                                    data={content.value.data}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={80}
+                                    label
                                   >
-                                    {typeof card === 'object' ? card.content : card}
-                                  </div>
-                                ))}
-                            </CardContent>
-                          </Card>
-                        )}
+                                    {content.value.data.map((entry: any, index: number) => (
+                                      <Cell
+                                        key={`cell-${index}`}
+                                        fill={
+                                          content.value.config[entry.name.toLowerCase()]?.color ||
+                                          '#8884d8'
+                                        }
+                                      />
+                                    ))}
+                                  </Pie>
+                                </PieChart>
+                              )}
+                            </ResponsiveContainer>
+                          </ChartContainer>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
 
-                        {content.type === 'Stats' && (
-                          <div
-                            className={`${currentTheme.cardBg} ${currentTheme.border} rounded-lg ${currentTheme.shadow}`}
+                  {content.type === 'Shortcut' && (
+                    <Card className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow} hover:bg-opacity-80 cursor-pointer`}>
+                      <CardContent className="p-4">
+                        <Label className={`font-semibold ${currentTheme.text}`}>
+                          {content.name}
+                        </Label>
+                        {content.description && (
+                          <p className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                            {content.description}
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {content.type === 'QuickList' && (
+                    <Card className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}>
+                      <CardHeader>
+                        <CardTitle className={currentTheme.text}>{content.name}</CardTitle>
+                        {content.description && (
+                          <CardDescription
+                            className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
                           >
-                            <div className="text-center p-4">
-                              <div className="text-2xl font-bold text-blue-500">
-                                {content.value.label}
-                              </div>
-                              <div
-                                className={`text-xl ${
-                                  theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+                            {content.description}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent className="p-4">
+                        <ul className="space-y-2">
+                          {Array.isArray(content.value) &&
+                            content.value.map((item, idx) => (
+                              <li
+                                key={idx}
+                                className={`flex items-center p-2 hover:bg-opacity-80 rounded-md ${
+                                  theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
                                 }`}
                               >
-                                {content.value.value}
-                              </div>
-                            </div>
-                          </div>
+                                <span className={`ml-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  {typeof item === 'object' ? item.name : item}
+                                </span>
+                              </li>
+                            ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {content.type === 'Cards' && (
+                    <Card
+                      className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}
+                      style={{ minHeight: content.height || '350px' }}
+                    >
+                      <CardHeader>
+                        <CardTitle className={currentTheme.text}>{content.name}</CardTitle>
+                        {content.description && (
+                          <CardDescription
+                            className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
+                          >
+                            {content.description}
+                          </CardDescription>
                         )}
-                      </div>
-                    );
-                  })}
+                      </CardHeader>
+                      <CardContent className="space-y-3 p-4">
+                        {Array.isArray(content.value) &&
+                          content.value.map((card, index) => (
+                            <div
+                              key={index}
+                              className={`p-3 rounded-md ${
+                                theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'
+                              }`}
+                            >
+                              {typeof card === 'object' ? card.content : card}
+                            </div>
+                          ))}
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {content.type === 'Stats' && (
+                    <Card className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}>
+                      <CardContent className="text-center p-4">
+                        <div className="text-2xl font-bold text-blue-500">
+                          {content.value.label}
+                        </div>
+                        <div
+                          className={`text-xl ${
+                            theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+                          }`}
+                        >
+                          {content.value.value}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {content.type === 'Link' && (
+                    <Card className={`${currentTheme.cardBg} ${currentTheme.border} ${currentTheme.shadow}`}>
+                      <CardHeader>
+                        <CardTitle className={currentTheme.text}>{content.name}</CardTitle>
+                        {content.description && (
+                          <CardDescription
+                            className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
+                          >
+                            {content.description}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent className="p-4 flex flex-col gap-4">
+                        {content.value.map((link: any, index: number) => (
+                          <a
+                            key={index}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between gap-2 hover:bg-opacity-80 hover:cursor-pointer"
+                          >
+                            <Label className={currentTheme.text}>{link.name}</Label>
+                            <Button size="sm" variant="secondary" className={`text-green-400 ${currentTheme.text}`}>
+                              {link.status}
+                            </Button>
+                          </a>
+                        ))}
+                        <Button variant="outline" onClick={() => console.log('Link clicked')}>
+                          View All
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };
