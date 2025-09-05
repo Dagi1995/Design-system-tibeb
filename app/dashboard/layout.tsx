@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/design-system/src/components/atoms/Sonner";
+import AppSidebar from "@/components/AppSidebar";
+import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
 import { SidebarProvider } from "@/design-system/src/components/organisms/SideBar";
 import { cookies } from "next/headers";
@@ -26,14 +28,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  // Sidebar is open if cookie value is "true", closed otherwise
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
+  const cookieStore = await cookies()
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
+ 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en " suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
       >
         <ThemeProvider
           attribute="class"
@@ -41,9 +42,13 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider defaultOpen={defaultOpen}>
+          <SidebarProvider defaultOpen ={defaultOpen}>
             <Toaster />
-            <div className="flex flex-1 w-full">{children}</div>
+            <AppSidebar></AppSidebar>
+            <main className="w-full">
+              <Navbar></Navbar>
+              <div className="px-4">{children}</div>
+            </main>
           </SidebarProvider>
         </ThemeProvider>
       </body>

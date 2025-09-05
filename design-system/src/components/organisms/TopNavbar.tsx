@@ -9,15 +9,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../molecules/DropdownMenu";
-import { SidebarTrigger } from "../organisms/SideBar";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { SidebarTrigger } from "./SideBar";
+import { ChevronDown, ChevronsUpDown } from "lucide-react";
 
 export type NavbarItem =
   | { type: "sidebar" }
   | { type: "title"; label: string }
   | {
       type: "button";
-      label?: string;
+      label?: React.ReactNode;
       icon?: React.ReactNode;
       tooltip?: string;
       variant?:
@@ -36,11 +36,11 @@ export type NavbarItem =
     }
   | {
       type: "dropdown";
-      label?: string;
+      label?: React.ReactNode;
       icon?: React.ReactNode;
       tooltip?: string;
       variant?: "default" | "outline";
-      size?: "sm" | "md";
+      size?: "sm" | "md" | "lg";
       items: { label: string; onClick?: () => void }[];
     }
   | { type: "custom"; component: React.ReactNode };
@@ -58,7 +58,7 @@ const Navbar = ({ data, items = [] }: NavbarProps) => {
         {items.map((item, idx) => {
           switch (item.type) {
             case "sidebar":
-              return <SidebarTrigger key={idx} className="w-10" />;
+              return <SidebarTrigger key={idx} size="lg" />;
             case "title":
               return (
                 <h1 key={idx} className="text-xl font-black">
@@ -105,18 +105,22 @@ const Navbar = ({ data, items = [] }: NavbarProps) => {
             }
 
             case "dropdown": {
+              const buttonSize = item.size ?? "md";
+
               const trigger = (
-                <Button
-                  variant={item.variant ?? "outline"}
-                  size={item.size ?? "md"}
-                >
+                <Button variant={item.variant ?? "outline"} size={buttonSize}>
                   {item.icon || (
                     <div className="flex items-center gap-2">
                       {item.label}
-                      <div className="flex flex-col">
-                        <ChevronUp className="h-2 w-2" />
-                        <ChevronDown className="h-2 w-2" />
-                      </div>
+                      <ChevronsUpDown
+                        className={
+                          buttonSize === "sm"
+                            ? "h-4 w-4"
+                            : buttonSize === "md"
+                            ? "h-5 w-5"
+                            : "h-6 w-6"
+                        }
+                      />
                     </div>
                   )}
                 </Button>
@@ -125,9 +129,22 @@ const Navbar = ({ data, items = [] }: NavbarProps) => {
               const menu = (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
+                  <DropdownMenuContent
+                    align="start"
+                    className={
+                      buttonSize === "sm"
+                        ? "min-w-[160px]"
+                        : buttonSize === "md"
+                        ? "min-w-[200px]"
+                        : "min-w-[240px]"
+                    }
+                  >
                     {item.items.map((i, iIdx) => (
-                      <DropdownMenuItem key={iIdx} onClick={i.onClick}>
+                      <DropdownMenuItem
+                        key={iIdx}
+                        onClick={i.onClick}
+                        className={buttonSize === "lg" ? "px-4 py-3" : ""}
+                      >
                         {i.label}
                       </DropdownMenuItem>
                     ))}
