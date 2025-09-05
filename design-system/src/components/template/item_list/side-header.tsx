@@ -28,9 +28,9 @@ export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
   const data = {
     user: {
-      name: "shadcn",
+      name: "tibeb",
       email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
+      avatar: "/avatars/tibeb.jpg",
     },
   };
 
