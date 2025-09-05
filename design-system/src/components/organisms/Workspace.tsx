@@ -190,74 +190,76 @@ export const Workspace: React.FC<Workspace> = ({
                         <div style={{ minHeight: content.height || '250px' }}>
                           <ChartContainer config={content.value.config}>
                             <ResponsiveContainer width="100%" height="100%">
-                              {content.value.type === 'LineChart' && (
-                                <LineChart
-                                  data={content.value.data}
-                                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                                  width={undefined}
-                                >
-                                  <CartesianGrid strokeDasharray="3 3" />
-                                  <XAxis dataKey="name" />
-                                  <YAxis />
-                                  <ChartTooltip content={<ChartTooltipContent />} />
-                                  <ChartLegend content={<ChartLegendContent />} />
-                                  {Object.keys(content.value.config).map((key) => (
-                                    <Line
-                                      key={key}
-                                      type="monotone"
-                                      dataKey={key}
-                                      stroke={content.value.config[key].color}
-                                      strokeWidth={2}
-                                      dot={{ r: 4 }}
-                                    />
-                                  ))}
-                                </LineChart>
-                              )}
-                              {content.value.type === 'BarChart' && (
-                                <BarChart
-                                  data={content.value.data}
-                                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                                  width={undefined}
-                                >
-                                  <CartesianGrid strokeDasharray="3 3" />
-                                  <XAxis dataKey="name" />
-                                  <YAxis />
-                                  <ChartTooltip content={<ChartTooltipContent />} />
-                                  <ChartLegend content={<ChartLegendContent />} />
-                                  {Object.keys(content.value.config).map((key) => (
-                                    <Bar
-                                      key={key}
-                                      dataKey={key}
-                                      fill={content.value.config[key].color}
-                                    />
-                                  ))}
-                                </BarChart>
-                              )}
-                              {content.value.type === 'PieChart' && (
-                                <PieChart width={undefined}>
-                                  <ChartTooltip content={<ChartTooltipContent />} />
-                                  <ChartLegend content={<ChartLegendContent />} />
-                                  <Pie
+                              <>
+                                {content.value.type === 'LineChart' && (
+                                  <LineChart
                                     data={content.value.data}
-                                    dataKey="value"
-                                    nameKey="name"
-                                    cx="50%"
-                                    cy="50%"
-                                    outerRadius={80}
-                                    label
+                                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                                    width={undefined}
                                   >
-                                    {content.value.data.map((entry: any, index: number) => (
-                                      <Cell
-                                        key={`cell-${index}`}
-                                        fill={
-                                          content.value.config[entry.name.toLowerCase()]?.color ||
-                                          '#8884d8'
-                                        }
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <ChartLegend content={<ChartLegendContent />} />
+                                    {Object.keys(content.value.config).map((key) => (
+                                      <Line
+                                        key={key}
+                                        type="monotone"
+                                        dataKey={key}
+                                        stroke={content.value.config[key].color}
+                                        strokeWidth={2}
+                                        dot={{ r: 4 }}
                                       />
                                     ))}
-                                  </Pie>
-                                </PieChart>
-                              )}
+                                  </LineChart>
+                                )}
+                                {content.value.type === 'BarChart' && (
+                                  <BarChart
+                                    data={content.value.data}
+                                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                                    width={undefined}
+                                  >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <ChartLegend content={<ChartLegendContent />} />
+                                    {Object.keys(content.value.config).map((key) => (
+                                      <Bar
+                                        key={key}
+                                        dataKey={key}
+                                        fill={content.value.config[key].color}
+                                      />
+                                    ))}
+                                  </BarChart>
+                                )}
+                                {content.value.type === 'PieChart' && (
+                                  <PieChart width={undefined}>
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <ChartLegend content={<ChartLegendContent />} />
+                                    <Pie
+                                      data={content.value.data}
+                                      dataKey="value"
+                                      nameKey="name"
+                                      cx="50%"
+                                      cy="50%"
+                                      outerRadius={80}
+                                      label
+                                    >
+                                      {content.value.data.map((entry: any, index: number) => (
+                                        <Cell
+                                          key={`cell-${index}`}
+                                          fill={
+                                            content.value.config[entry.name.toLowerCase()]?.color ||
+                                            '#8884d8'
+                                          }
+                                        />
+                                      ))}
+                                    </Pie>
+                                  </PieChart>
+                                )}
+                              </>
                             </ResponsiveContainer>
                           </ChartContainer>
                         </div>
