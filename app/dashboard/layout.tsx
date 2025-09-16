@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "@/design-system/src/components/atoms/Sonner";
 import AppSidebar from "@/components/AppSidebar";
 import Navbar from "@/components/Navbar";
@@ -8,15 +6,8 @@ import { ThemeProvider } from "@/components/provider/ThemeProvider";
 import { SidebarProvider } from "@/design-system/src/components/organisms/SideBar";
 import { cookies } from "next/headers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { inter } from "@/lib/fonts";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,13 +19,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies()
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
- 
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
-    <html lang="en " suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
+      {/* ✅ MUST apply `inter.variable` (or `inter.className`) here */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
+        className={`${inter.variable} font-sans antialiased min-h-screen flex`}
       >
         <ThemeProvider
           attribute="class"
@@ -42,12 +34,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider defaultOpen ={defaultOpen}>
+          <SidebarProvider defaultOpen={defaultOpen}>
             <Toaster />
-            <AppSidebar></AppSidebar>
-            <main className="w-full">
-              <Navbar></Navbar>
-              <div className="px-4">{children}</div>
+            <AppSidebar />
+            <main className="w-full flex flex-col">
+              <Navbar />
+              <div className="px-4 flex-1">{children}</div>
             </main>
           </SidebarProvider>
         </ThemeProvider>

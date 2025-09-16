@@ -28,143 +28,135 @@ import {
   SidebarSeparator,
 } from "@/design-system/src/components/organisms/SideBar";
 import {
-  Calendar,
+  Ticket,
+  LayoutDashboard,
+  Users,
+  Settings,
+  BarChart,
   ChevronDown,
   ChevronUp,
-  Home,
-  Inbox,
   Plus,
-  Projector,
-  Search,
-  Settings,
-  User2,
   Workflow,
+  User2,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+// Modern font
+import { Poppins } from "next/font/google";
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-poppins",
+});
+
 const items = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calender",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Setting",
-    url: "#",
-    icon: Settings,
-  },
+  { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Tickets", url: "/tickets", icon: Ticket },
+  { title: "Analytics", url: "/analytics", icon: BarChart },
+  { title: "Agents", url: "/agents", icon: Users },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
+
 const AppSidebar = () => {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className={`${poppins.variable} font-sans`}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href="/">
-                <Image
-                  src="/public/image.png"
-                  alt="logo"
-                  width={20}
-                  height={20}
-                ></Image>
-                <span>Tibeb</span>
+            <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
+              <Link href="/" className="flex items-center gap-4">
+                <Image src="/image.png" alt="logo" width={28} height={28} />
+                <span className="text-2xl font-semibold">TicketSys</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarSeparator></SidebarSeparator>
-      <SidebarContent className=" font-">
+
+      <SidebarSeparator />
+
+      <SidebarContent>
+        {/* Main navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel>
-            Application
-            <Separator className="m-3"></Separator>
+          <SidebarGroupLabel className="!text-sm !px-4 !py-2 text-gray-500 uppercase tracking-wider">
+            Main
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon></item.icon>
+                  <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
+                    <Link href={item.url} className="flex items-center gap-4">
+                      <item.icon className="w-6 h-6 text-gray-600" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
-                  {item.title === "Inbox" && (
-                    <SidebarMenuBadge>24</SidebarMenuBadge>
+                  {item.title === "Tickets" && (
+                    <SidebarMenuBadge className="!text-sm">24</SidebarMenuBadge>
                   )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Ticket actions */}
         <SidebarGroup>
-          <SidebarGroupLabel className="">
-            About <Separator className="m-3"></Separator>
+          <SidebarGroupLabel className="!text-sm !px-4 !py-2 text-gray-500 uppercase tracking-wider">
+            Tickets
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="#">
-                    <Projector></Projector>
-                    See all Project
+                <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
+                  <Link href="/tickets" className="flex items-center gap-4">
+                    <Ticket className="w-6 h-6 text-gray-600" /> All Tickets
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="#">
-                    <Plus />
-                    Add Project
+                <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
+                  <Link href="/tickets/new" className="flex items-center gap-4">
+                    <Plus className="w-6 h-6 text-gray-600" /> Create Ticket
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Collapsible example for workflows */}
         <Collapsible defaultOpen className="group/collapsible">
           <SidebarGroup>
-            <SidebarGroupLabel asChild className="">
-              <CollapsibleTrigger>
-                Collapsible
-                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+            <SidebarGroupLabel asChild>
+              <CollapsibleTrigger className="flex items-center justify-between w-full !px-4 !py-3 !text-lg">
+                Workflows
+                <ChevronDown className="ml-auto w-5 h-5 transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <Projector></Projector>
-                        See all Project
+                    <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
+                      <Link
+                        href="/workflows/active"
+                        className="flex items-center gap-4"
+                      >
+                        <Workflow className="w-6 h-6 text-gray-600" /> Active
+                        Workflows
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link href="#">
-                        <Plus />
-                        Add Project
+                    <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
+                      <Link
+                        href="/workflows/new"
+                        className="flex items-center gap-4"
+                      >
+                        <Plus className="w-6 h-6 text-gray-600" /> Add Workflow
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -172,57 +164,30 @@ const AppSidebar = () => {
               </SidebarGroupContent>
             </CollapsibleContent>
           </SidebarGroup>
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex justify-between">
-              Nested Items <Separator className="absolute ml-20"></Separator>
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link href="#">
-                      <Projector></Projector>
-                      See all Project
-                    </Link>
-                  </SidebarMenuButton>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton asChild>
-                        <Link href="#">
-                          <Workflow></Workflow>
-                          My project
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton asChild>
-                        <Link href="#">
-                          <Plus></Plus>
-                          Add project
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
         </Collapsible>
       </SidebarContent>
+
+      {/* Footer - Profile */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 />
-                  Jhon Doe<ChevronUp className="ml-auto"></ChevronUp>
+                <SidebarMenuButton className="flex items-center gap-4 !text-lg !px-4 !py-3">
+                  <User2 className="w-6 h-6 text-gray-600" /> John Doe
+                  <ChevronUp className="ml-auto w-5 h-5" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Account</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Sign out</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="!text-lg !px-4 !py-3">
+                <DropdownMenuItem className="!text-lg">
+                  Account
+                </DropdownMenuItem>
+                <DropdownMenuItem className="!text-lg">
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem className="!text-lg">
+                  Sign out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>

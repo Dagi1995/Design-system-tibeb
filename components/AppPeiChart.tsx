@@ -19,52 +19,32 @@ import {
   ChartTooltipContent,
 } from "@/design-system/src/components/molecules/Chart";
 
-export const description = "A donut chart with text";
-
+// Sample ticket data (replace with API/db later)
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  { status: "Open", tickets: 18, fill: "var(--color-red-500)" },
+  { status: "In Progress", tickets: 12, fill: "var(--color-yellow-500)" },
+  { status: "Closed", tickets: 30, fill: "var(--color-green-500)" },
 ];
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  tickets: {
+    label: "Tickets",
   },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
+  Open: { label: "Open", color: "var(--color-red-500)" },
+  "In Progress": { label: "In Progress", color: "var(--color-yellow-500)" },
+  Closed: { label: "Closed", color: "var(--color-green-500)" },
 } satisfies ChartConfig;
 
-export function AppPeiChart() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+export function AppPieChartTickets() {
+  const totalTickets = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.tickets, 0);
   }, []);
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>TOtal Visitors</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Ticket Status</CardTitle>
+        <CardDescription>Current Month</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -78,8 +58,8 @@ export function AppPeiChart() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="tickets"
+              nameKey="status"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -98,14 +78,14 @@ export function AppPeiChart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalTickets}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Tickets
                         </tspan>
                       </text>
                     );
@@ -118,10 +98,10 @@ export function AppPeiChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Trending up by 8% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          Showing ticket distribution by status
         </div>
       </CardFooter>
     </Card>

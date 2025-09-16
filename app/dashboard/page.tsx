@@ -1,28 +1,40 @@
 import AppAreaChart from "@/components/AppAreaChart";
 import AppBarChart from "@/components/AppBarChart";
-import { AppPeiChart } from "@/components/AppPeiChart";
+import { AppPieChartTickets } from "@/components/AppPeiChart";
+import StatsCards from "@/components/StatsCard";
 import { TextEditor } from "@/design-system/src/components/organisms/TextEditor";
+import data from "./data.json";
+import { DataTable } from "@/components/table";
 
 export default function Home() {
   return (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4">
+      <div className="bg-primary-foreground p-4 grid grid-cols-1 lg:grid-cols-1 2xl:grid-cols-1 ">
+        <StatsCards />
+      </div>
+      <div className="">
         <div className="bg-primary-foreground p-4 rounded-lg lg:col-span-2 xl:col-span-1 2xl:col-span-2">
           <AppBarChart></AppBarChart>
         </div>
+
         <div className="bg-primary-foreground p-4 rounded-lg">
-          <TextEditor placeholder="Start typing here..." />
+          <AppPieChartTickets></AppPieChartTickets>{" "}
         </div>
-        <div className="bg-primary-foreground p-4 rounded-lg ">Test1</div>
+
         <div className="bg-primary-foreground p-4 rounded-lg">
-          <AppPeiChart></AppPeiChart>{" "}
+          <DataTable
+            data={data.map((item) => ({
+              ...item,
+              priority: item.priority as "High" | "Critical" | "Medium" | "Low",
+              status: item.status as
+                | "In Progress"
+                | "Open"
+                | "Resolved"
+                | "Closed",
+            }))}
+          />
         </div>
-        <div className="bg-primary-foreground p-4 rounded-lg lg:col-span-2 xl:col-span-1 2xl:col-span-2">
-          <AppAreaChart></AppAreaChart>
-        </div>
-        <div className="bg-primary-foreground p-4 rounded-lg">Test1</div>
       </div>
-      <div className="flex flex-col items-center justify-center min-h-screen p-4"></div>
     </div>
   );
 }

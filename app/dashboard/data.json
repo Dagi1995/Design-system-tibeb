@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1001,
+    "title": "Login page not loading correctly",
+    "description": "Users reporting that the login page fails to load properly on mobile devices",
+    "priority": "High",
+    "status": "In Progress",
+    "assignee": "Emily Whalen",
+    "createdAt": "2024-01-15T09:30:00Z",
+    "dueDate": "2024-01-22T17:00:00Z"
+  },
+  {
+    "id": 1002,
+    "title": "Database connection timeout",
+    "description": "Production database experiencing intermittent connection timeouts during peak hours",
+    "priority": "Critical",
+    "status": "Open",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2024-01-14T14:20:00Z",
+    "dueDate": "2024-01-16T12:00:00Z"
+  },
+  {
+    "id": 1003,
+    "title": "Update user profile page UI",
+    "description": "Redesign user profile page to match new design system standards",
+    "priority": "Medium",
+    "status": "Open",
+    "assignee": "Unassigned",
+    "createdAt": "2024-01-13T11:15:00Z",
+    "dueDate": "2024-01-25T18:00:00Z"
+  },
+  {
+    "id": 1004,
+    "title": "Email notifications not sending",
+    "description": "Users not receiving password reset and verification emails",
+    "priority": "High",
+    "status": "In Progress",
+    "assignee": "Eddie Lake",
+    "createdAt": "2024-01-12T16:45:00Z",
+    "dueDate": "2024-01-19T15:00:00Z"
+  },
+  {
+    "id": 1005,
+    "title": "Mobile app crash on iOS 17",
+    "description": "App crashes immediately after launch on devices running iOS 17.2",
+    "priority": "Critical",
+    "status": "Open",
+    "assignee": "Emily Whalen",
+    "createdAt": "2024-01-12T10:30:00Z",
+    "dueDate": "2024-01-15T23:59:00Z"
+  },
+  {
+    "id": 1006,
+    "title": "Add dark mode support",
+    "description": "Implement dark theme throughout the application",
+    "priority": "Medium",
+    "status": "Resolved",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2024-01-11T13:20:00Z",
+    "dueDate": "2024-01-18T17:00:00Z"
+  },
+  {
+    "id": 1007,
+    "title": "Payment processing failed for international cards",
+    "description": "International credit card transactions failing with error code 502",
+    "priority": "High",
+    "status": "In Progress",
+    "assignee": "Eddie Lake",
+    "createdAt": "2024-01-10T15:10:00Z",
+    "dueDate": "2024-01-17T14:00:00Z"
+  },
+  {
+    "id": 1008,
+    "title": "Slow dashboard loading times",
+    "description": "User dashboard taking more than 8 seconds to load complete data",
+    "priority": "Medium",
+    "status": "Open",
+    "assignee": "Unassigned",
+    "createdAt": "2024-01-09T09:45:00Z",
+    "dueDate": "2024-01-23T16:00:00Z"
+  },
+  {
+    "id": 1009,
+    "title": "Broken image links in blog posts",
+    "description": "Several blog posts showing broken image links after CDN migration",
+    "priority": "Low",
+    "status": "Resolved",
+    "assignee": "Emily Whalen",
+    "createdAt": "2024-01-08T11:30:00Z",
+    "dueDate": "2024-01-12T13:00:00Z"
+  },
+  {
+    "id": 1010,
+    "title": "API rate limiting too restrictive",
+    "description": "Customers reporting API rate limits are too low for their use cases",
+    "priority": "Medium",
+    "status": "Open",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2024-01-07T14:15:00Z",
+    "dueDate": "2024-01-21T11:00:00Z"
+  },
+  {
+    "id": 1011,
+    "title": "Password strength meter not working",
+    "description": "Password strength indicator always shows 'weak' regardless of input",
+    "priority": "Low",
+    "status": "In Progress",
+    "assignee": "Eddie Lake",
+    "createdAt": "2024-01-06T16:20:00Z",
+    "dueDate": "2024-01-13T10:00:00Z"
+  },
+  {
+    "id": 1012,
+    "title": "Missing translation strings",
+    "description": "Several pages showing missing translation keys in French and Spanish locales",
+    "priority": "Medium",
+    "status": "Resolved",
+    "assignee": "Emily Whalen",
+    "createdAt": "2024-01-05T10:40:00Z",
+    "dueDate": "2024-01-12T15:00:00Z"
+  },
+  {
+    "id": 1013,
+    "title": "Search functionality returning incorrect results",
+    "description": "Search feature returning unrelated results for specific queries",
+    "priority": "High",
+    "status": "Open",
+    "assignee": "Unassigned",
+    "createdAt": "2024-01-04T13:25:00Z",
+    "dueDate": "2024-01-18T14:00:00Z"
+  },
+  {
+    "id": 1014,
+    "title": "User avatar upload failing for large files",
+    "description": "Avatar upload fails silently for images larger than 2MB",
+    "priority": "Medium",
+    "status": "In Progress",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2024-01-03T15:50:00Z",
+    "dueDate": "2024-01-10T12:00:00Z"
+  },
+  {
+    "id": 1015,
+    "title": "Browser compatibility issues with Safari",
+    "description": "Layout breaks and JavaScript errors in Safari 16+",
+    "priority": "High",
+    "status": "Resolved",
+    "assignee": "Eddie Lake",
+    "createdAt": "2024-01-02T09:15:00Z",
+    "dueDate": "2024-01-09T16:00:00Z"
+  },
+  {
+    "id": 1016,
+    "title": "Two-factor authentication not working",
+    "description": "2FA codes not being accepted even when entered correctly",
+    "priority": "Critical",
+    "status": "Open",
+    "assignee": "Emily Whalen",
+    "createdAt": "2024-01-01T11:30:00Z",
+    "dueDate": "2024-01-03T23:59:00Z"
+  },
+  {
+    "id": 1017,
+    "title": "Notification preferences not saving",
+    "description": "User notification settings revert to default after page refresh",
+    "priority": "Medium",
+    "status": "In Progress",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2023-12-31T14:45:00Z",
+    "dueDate": "2024-01-07T13:00:00Z"
+  },
+  {
+    "id": 1018,
+    "title": "Broken social media sharing links",
+    "description": "Facebook and Twitter sharing buttons not generating proper previews",
+    "priority": "Low",
+    "status": "Resolved",
+    "assignee": "Eddie Lake",
+    "createdAt": "2023-12-30T16:20:00Z",
+    "dueDate": "2024-01-06T11:00:00Z"
+  },
+  {
+    "id": 1019,
+    "title": "Order confirmation emails missing attachments",
+    "description": "PDF invoices not attached to order confirmation emails",
+    "priority": "High",
+    "status": "Open",
+    "assignee": "Unassigned",
+    "createdAt": "2023-12-29T10:10:00Z",
+    "dueDate": "2024-01-05T17:00:00Z"
+  },
+  {
+    "id": 1020,
+    "title": "Performance optimization for large datasets",
+    "description": "Reports page slow when loading more than 10,000 records",
+    "priority": "Medium",
+    "status": "In Progress",
+    "assignee": "Emily Whalen",
+    "createdAt": "2023-12-28T13:35:00Z",
+    "dueDate": "2024-01-15T14:00:00Z"
+  },
+  {
+    "id": 1021,
+    "title": "Incorrect currency conversion rates",
+    "description": "Currency conversion showing outdated exchange rates",
+    "priority": "High",
+    "status": "Resolved",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2023-12-27T15:00:00Z",
+    "dueDate": "2024-01-03T12:00:00Z"
+  },
+  {
+    "id": 1022,
+    "title": "Mobile menu not closing on click outside",
+    "description": "Hamburger menu remains open when clicking outside on mobile view",
+    "priority": "Low",
+    "status": "Open",
+    "assignee": "Eddie Lake",
+    "createdAt": "2023-12-26T09:25:00Z",
+    "dueDate": "2024-01-09T10:00:00Z"
+  },
+  {
+    "id": 1023,
+    "title": "Data export feature timing out",
+    "description": "CSV export fails for datasets larger than 50,000 rows",
+    "priority": "Medium",
+    "status": "In Progress",
+    "assignee": "Emily Whalen",
+    "createdAt": "2023-12-25T11:40:00Z",
+    "dueDate": "2024-01-08T15:00:00Z"
+  },
+  {
+    "id": 1024,
+    "title": "Broken links in documentation",
+    "description": "Several internal links in API documentation return 404 errors",
+    "priority": "Low",
+    "status": "Resolved",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2023-12-24T14:55:00Z",
+    "dueDate": "2023-12-29T16:00:00Z"
+  },
+  {
+    "id": 1025,
+    "title": "User session timeout too short",
+    "description": "Users getting logged out after 15 minutes of inactivity",
+    "priority": "Medium",
+    "status": "Open",
+    "assignee": "Unassigned",
+    "createdAt": "2023-12-23T16:30:00Z",
+    "dueDate": "2024-01-06T14:00:00Z"
+  },
+  {
+    "id": 1026,
+    "title": "Calendar widget showing wrong dates",
+    "description": "Date picker showing incorrect month navigation in some timezones",
+    "priority": "High",
+    "status": "In Progress",
+    "assignee": "Eddie Lake",
+    "createdAt": "2023-12-22T10:05:00Z",
+    "dueDate": "2023-12-29T11:00:00Z"
+  },
+  {
+    "id": 1027,
+    "title": "Missing error validation on forms",
+    "description": "Contact form not showing validation errors for required fields",
+    "priority": "Medium",
+    "status": "Resolved",
+    "assignee": "Emily Whalen",
+    "createdAt": "2023-12-21T13:20:00Z",
+    "dueDate": "2023-12-28T13:00:00Z"
+  },
+  {
+    "id": 1028,
+    "title": "API documentation outdated",
+    "description": "Several new endpoints missing from public API documentation",
+    "priority": "Low",
+    "status": "Open",
+    "assignee": "Jamik Tashpulatov",
+    "createdAt": "2023-12-20T15:45:00Z",
+    "dueDate": "2024-01-10T10:00:00Z"
+  },
+  {
+    "id": 1029,
+    "title": "Push notifications not working on Android",
+    "description": "Android users not receiving push notifications for new messages",
+    "priority": "High",
+    "status": "In Progress",
+    "assignee": "Eddie Lake",
+    "createdAt": "2023-12-19T09:10:00Z",
+    "dueDate": "2023-12-26T17:00:00Z"
+  },
+  {
+    "id": 1030,
+    "title": "Accessibility issues with screen readers",
+    "description": "Several ARIA labels missing and focus management issues",
+    "priority": "Medium",
+    "status": "Resolved",
+    "assignee": "Emily Whalen",
+    "createdAt": "2023-12-18T11:35:00Z",
+    "dueDate": "2023-12-22T15:00:00Z"
+  }
+]

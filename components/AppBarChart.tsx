@@ -10,29 +10,37 @@ import {
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { type ChartConfig } from "@/design-system/src/components/molecules/Chart";
 
+// Chart configuration for different ticket statuses
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#2563eb",
+  open: {
+    label: "Open Tickets",
+    color: "#ef4444", // red
   },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
+  inProgress: {
+    label: "In Progress",
+    color: "#facc15", // yellow
+  },
+  closed: {
+    label: "Closed Tickets",
+    color: "#22c55e", // green
   },
 } satisfies ChartConfig;
+
+// Sample ticket data (replace with API/database data)
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "January", open: 20, inProgress: 15, closed: 30 },
+  { month: "February", open: 18, inProgress: 12, closed: 25 },
+  { month: "March", open: 25, inProgress: 10, closed: 28 },
+  { month: "April", open: 10, inProgress: 20, closed: 35 },
+  { month: "May", open: 22, inProgress: 18, closed: 32 },
+  { month: "June", open: 15, inProgress: 12, closed: 40 },
 ];
+
 const AppBarChart = () => {
   return (
     <div>
-      <h1 className="font-bold ml-4 mb-4">Total Revenue</h1>
-      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <h1 className="font-bold ml-4 mb-4">Tickets Overview (Monthly)</h1>
+      <ChartContainer config={chartConfig} className="min-h-[250px] w-full">
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />
           <XAxis
@@ -46,8 +54,9 @@ const AppBarChart = () => {
           <ChartTooltip content={<ChartTooltipContent />} />
           <ChartLegend content={<ChartLegendContent />} />
 
-          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-          <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+          <Bar dataKey="open" fill="var(--color-open)" radius={4} />
+          <Bar dataKey="inProgress" fill="var(--color-inProgress)" radius={4} />
+          <Bar dataKey="closed" fill="var(--color-closed)" radius={4} />
         </BarChart>
       </ChartContainer>
     </div>
