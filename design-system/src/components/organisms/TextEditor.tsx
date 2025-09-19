@@ -111,7 +111,7 @@ export function TextEditor({
     content,
     editorProps: {
       attributes: {
-        class: `prose max-w-none focus:outline-none min-h-[200px] p-4 ${className}`,
+        class: `prose max-w-none focus:outline-none min-h-[200px] p-4 dark:prose-invert ${className}`,
         placeholder,
       },
     },
@@ -128,12 +128,14 @@ export function TextEditor({
   };
 
   if (!editor) {
-    return <div className="border rounded-md bg-white p-4 min-h-[200px]" />;
+    return (
+      <div className="border rounded-md bg-white dark:bg-gray-800 p-4 min-h-[200px]" />
+    );
   }
 
   return (
     <div className="space-y-2">
-      <div className="border rounded-md bg-white">
+      <div className="border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700">
         <MenuBar editor={editor} />
         <EditorContent editor={editor} />
       </div>
@@ -212,9 +214,9 @@ function MenuBar({ editor }: MenuBarProps) {
   const toggleHeaderRow = () => editor.chain().focus().toggleHeaderRow().run();
 
   return (
-    <div className="border-b">
+    <div className="border-b dark:border-gray-700">
       {/* Top Toolbar Row */}
-      <div className="flex items-center gap-1 p-2 border-b">
+      <div className="flex items-center gap-1 p-2 border-b dark:border-gray-700">
         {/* Format Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -223,13 +225,20 @@ function MenuBar({ editor }: MenuBarProps) {
               <ChevronDown className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => setHeading("paragraph")}>
+          <DropdownMenuContent className="dark:bg-gray-800 dark:border-gray-700">
+            <DropdownMenuItem
+              onClick={() => setHeading("paragraph")}
+              className="dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+            >
               <Pilcrow className="w-4 h-4 mr-2" />
               Paragraph
             </DropdownMenuItem>
             {([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => (
-              <DropdownMenuItem key={level} onClick={() => setHeading(level)}>
+              <DropdownMenuItem
+                key={level}
+                onClick={() => setHeading(level)}
+                className="dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+              >
                 {level === 1 && <Heading1 className="w-4 h-4 mr-2" />}
                 {level === 2 && <Heading2 className="w-4 h-4 mr-2" />}
                 {level === 3 && <Heading3 className="w-4 h-4 mr-2" />}
@@ -251,11 +260,14 @@ function MenuBar({ editor }: MenuBarProps) {
                 size="sm"
                 onClick={() => editor.chain().focus().toggleBold().run()}
                 active={editor.isActive("bold")}
+                className="dark:hover:bg-gray-700"
               >
                 <Bold className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Bold</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Bold
+            </TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -265,11 +277,14 @@ function MenuBar({ editor }: MenuBarProps) {
                 size="sm"
                 onClick={() => editor.chain().focus().toggleItalic().run()}
                 active={editor.isActive("italic")}
+                className="dark:hover:bg-gray-700"
               >
                 <Italic className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Italic</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Italic
+            </TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -279,15 +294,18 @@ function MenuBar({ editor }: MenuBarProps) {
                 size="sm"
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 active={editor.isActive("strike")}
+                className="dark:hover:bg-gray-700"
               >
                 <Strikethrough className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Strikethrough</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Strikethrough
+            </TooltipContent>
           </Tooltip>
         </div>
 
-        <div className="border-l h-6 mx-2" />
+        <div className="border-l h-6 mx-2 dark:border-gray-700" />
 
         {/* Text alignment */}
         <div className="flex items-center gap-1">
@@ -300,11 +318,14 @@ function MenuBar({ editor }: MenuBarProps) {
                   editor.chain().focus().setTextAlign("left").run()
                 }
                 active={editor.isActive({ textAlign: "left" })}
+                className="dark:hover:bg-gray-700"
               >
                 <AlignLeft className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Align left</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Align left
+            </TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -316,11 +337,14 @@ function MenuBar({ editor }: MenuBarProps) {
                   editor.chain().focus().setTextAlign("center").run()
                 }
                 active={editor.isActive({ textAlign: "center" })}
+                className="dark:hover:bg-gray-700"
               >
                 <AlignCenter className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Align center</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Align center
+            </TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -332,11 +356,14 @@ function MenuBar({ editor }: MenuBarProps) {
                   editor.chain().focus().setTextAlign("right").run()
                 }
                 active={editor.isActive({ textAlign: "right" })}
+                className="dark:hover:bg-gray-700"
               >
                 <AlignRight className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Align right</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Align right
+            </TooltipContent>
           </Tooltip>
         </div>
       </div>
@@ -351,11 +378,14 @@ function MenuBar({ editor }: MenuBarProps) {
               size="sm"
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               active={editor.isActive("bulletList")}
+              className="dark:hover:bg-gray-700"
             >
               <List className="w-4 h-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Bullet list</TooltipContent>
+          <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            Bullet list
+          </TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -365,14 +395,17 @@ function MenuBar({ editor }: MenuBarProps) {
               size="sm"
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               active={editor.isActive("orderedList")}
+              className="dark:hover:bg-gray-700"
             >
               <ListOrdered className="w-4 h-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Numbered list</TooltipContent>
+          <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            Numbered list
+          </TooltipContent>
         </Tooltip>
 
-        <div className="border-l h-6 mx-2" />
+        <div className="border-l h-6 mx-2 dark:border-gray-700" />
 
         {/* Blockquote */}
         <Tooltip>
@@ -382,11 +415,14 @@ function MenuBar({ editor }: MenuBarProps) {
               size="sm"
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               active={editor.isActive("blockquote")}
+              className="dark:hover:bg-gray-700"
             >
               <Quote className="w-4 h-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Blockquote</TooltipContent>
+          <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            Blockquote
+          </TooltipContent>
         </Tooltip>
 
         {/* Code block */}
@@ -398,18 +434,22 @@ function MenuBar({ editor }: MenuBarProps) {
                   variant="ghost"
                   size="sm"
                   active={editor.isActive("codeBlock")}
+                  className="dark:hover:bg-gray-700"
                 >
                   <Code className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
-            <TooltipContent>Code block</TooltipContent>
+            <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+              Code block
+            </TooltipContent>
           </Tooltip>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="dark:bg-gray-800 dark:border-gray-700">
             {codeLanguages.map((lang) => (
               <DropdownMenuItem
                 key={lang.value}
                 onClick={() => insertCodeBlock(lang.value)}
+                className="dark:hover:bg-gray-700 dark:focus:bg-gray-700"
               >
                 {lang.label}
               </DropdownMenuItem>
@@ -431,44 +471,82 @@ function MenuBar({ editor }: MenuBarProps) {
                   .run()
               }
               active={editor.isActive("table")}
+              className="dark:hover:bg-gray-700"
             >
               <TableIcon className="w-4 h-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Insert table</TooltipContent>
+          <TooltipContent className="dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            Insert table
+          </TooltipContent>
         </Tooltip>
 
         {/* Table controls (shown when in table) */}
         {selectionInTable && (
-          <div className="flex items-center gap-1 ml-2 pl-2 border-l">
-            <Button variant="ghost" size="sm" onClick={addColumnBefore}>
+          <div className="flex items-center gap-1 ml-2 pl-2 border-l dark:border-gray-700">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={addColumnBefore}
+              className="dark:hover:bg-gray-700"
+            >
               +Col ←
             </Button>
-            <Button variant="ghost" size="sm" onClick={addColumnAfter}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={addColumnAfter}
+              className="dark:hover:bg-gray-700"
+            >
               +Col →
             </Button>
-            <Button variant="ghost" size="sm" onClick={deleteColumn}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={deleteColumn}
+              className="dark:hover:bg-gray-700"
+            >
               -Col
             </Button>
 
-            <Button variant="ghost" size="sm" onClick={addRowBefore}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={addRowBefore}
+              className="dark:hover:bg-gray-700"
+            >
               +Row ↑
             </Button>
-            <Button variant="ghost" size="sm" onClick={addRowAfter}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={addRowAfter}
+              className="dark:hover:bg-gray-700"
+            >
               +Row ↓
             </Button>
-            <Button variant="ghost" size="sm" onClick={deleteRow}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={deleteRow}
+              className="dark:hover:bg-gray-700"
+            >
               -Row
             </Button>
 
-            <Button variant="ghost" size="sm" onClick={toggleHeaderRow}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleHeaderRow}
+              className="dark:hover:bg-gray-700"
+            >
               Toggle Header
             </Button>
 
             <Button
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:bg-red-50"
+              className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:text-red-400"
               onClick={deleteTable}
             >
               Delete Table
@@ -477,12 +555,13 @@ function MenuBar({ editor }: MenuBarProps) {
         )}
       </div>
 
-      {/* Editor styles */}
+      {/* Editor styles with dark mode support */}
       <style jsx global>{`
         .ProseMirror {
           min-height: 200px;
           padding: 1rem;
           outline: none;
+          color: inherit;
         }
 
         .ProseMirror:focus {
@@ -547,11 +626,21 @@ function MenuBar({ editor }: MenuBarProps) {
           font-size: 0.9em;
         }
 
+        .dark .ProseMirror code {
+          background: #374151;
+          color: #e5e7eb;
+        }
+
         .ProseMirror blockquote {
           border-left: 3px solid #94a3b8;
           padding-left: 1rem;
           margin: 0.5rem 0;
           color: #64748b;
+        }
+
+        .dark .ProseMirror blockquote {
+          border-left-color: #4b5563;
+          color: #9ca3af;
         }
 
         .ProseMirror table {
@@ -566,9 +655,18 @@ function MenuBar({ editor }: MenuBarProps) {
           padding: 0.5rem;
         }
 
+        .dark .ProseMirror th,
+        .dark .ProseMirror td {
+          border: 1px solid #374151;
+        }
+
         .ProseMirror th {
           background-color: #f1f5f9;
           font-weight: bold;
+        }
+
+        .dark .ProseMirror th {
+          background-color: #374151;
         }
 
         .ProseMirror ul,

@@ -18,7 +18,7 @@ interface BirthdateInputProps {
 }
 
 export function BirthdateInput({
-  label = "Birthdate",
+  label = "",
   placeholder = "Pick a date",
   description,
   onChange,

@@ -1,16 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
-'use client';
+"use client";
 
+import { useEffect, useRef } from "react";
 import {
   formatBytes,
   useFileUpload,
   type FileMetadata,
   type FileWithPreview,
-} from '@/hooks/use-file-upload';
-import { Alert, AlertContent, AlertDescription, AlertIcon, AlertTitle } from '../molecules/Alert';
-import { Button } from '../atoms/Button';
-import { FileIcon, PlusIcon, TriangleAlert, XIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "@/hooks/use-file-upload";
+import {
+  Alert,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from "../molecules/Alert";
+import { Button } from "../atoms/Button";
+import { FileIcon, PlusIcon, TriangleAlert, XIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FileUploadCompactProps {
   maxFiles?: number;
@@ -24,34 +31,54 @@ interface FileUploadCompactProps {
 export default function FileUploadCompact({
   maxFiles = 3,
   maxSize = 2 * 1024 * 1024, // 2MB
-  accept = 'image/*',
+  accept = "image/*",
   multiple = true,
   className,
   onFilesChange,
 }: FileUploadCompactProps) {
   const [
     { files, isDragging, errors },
-    { removeFile, handleDragEnter, handleDragLeave, handleDragOver, handleDrop, openFileDialog, getInputProps },
+    {
+      removeFile,
+      handleDragEnter,
+      handleDragLeave,
+      handleDragOver,
+      handleDrop,
+      openFileDialog,
+      getInputProps,
+    },
   ] = useFileUpload({
     maxFiles,
     maxSize,
     accept,
     multiple,
-    onFilesChange,
   });
 
-  const isImage = (file: File | FileMetadata) => {
-    const type = file instanceof File ? file.type : file.type;
-    return type.startsWith('image/');
-  };
+  // ✅ Track previous files to prevent infinite update loops
+  const prevFilesRef = useRef<FileWithPreview[]>([]);
+
+  useEffect(() => {
+    if (
+      onFilesChange &&
+      (prevFilesRef.current.length !== files.length ||
+        prevFilesRef.current.some((f, i) => f.id !== files[i]?.id))
+    ) {
+      prevFilesRef.current = files;
+      onFilesChange(files);
+    }
+  }, [files, onFilesChange]);
+
+  const isImage = (file: File | FileMetadata) => file.type.startsWith("image/");
 
   return (
-    <div className={cn('w-full max-w-lg', className)}>
-      {/* Compact Upload Area */}
+    <div className={cn("w-full", className)}>
+      {/* Upload Area */}
       <div
         className={cn(
-          'flex items-center gap-3 rounded-lg border border-border border-dashed p-4 transition-colors',
-          isDragging ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-muted-foreground/50',
+          "flex items-center gap-3 rounded-lg border border-border border-dashed p-4 transition-colors min-h-[100px]",
+          isDragging
+            ? "border-primary bg-primary/5"
+            : "border-muted-foreground/25 hover:border-muted-foreground/50"
         )}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -61,31 +88,40 @@ export default function FileUploadCompact({
         <input {...getInputProps()} className="sr-only" />
 
         {/* Upload Button */}
-        <Button onClick={openFileDialog} size="sm" className={cn(isDragging && 'animate-bounce')}>
+        <Button
+          onClick={openFileDialog}
+          size="sm"
+          className={cn(isDragging && "animate-bounce")}
+        >
           <PlusIcon className="h-4 w-4" />
           Add files
         </Button>
 
         {/* File Previews */}
-        <div className="flex flex-1 items-center gap-2">
+        <div className="flex flex-1 flex-wrap items-center gap-2">
           {files.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Drop files here or click to browse (max {maxFiles} files)</p>
+            <p className="text-sm text-muted-foreground">
+              Drop files here or click to browse (max {maxFiles} files)
+            </p>
           ) : (
             files.map((fileItem) => (
               <div key={fileItem.id} className="group shrink-0">
-                {/* File Preview */}
                 <div className="relative">
                   {isImage(fileItem.file) && fileItem.preview ? (
                     <img
                       src={fileItem.preview}
                       alt={fileItem.file.name}
                       className="h-12 w-12 rounded-lg border object-cover"
-                      title={`${fileItem.file.name} (${formatBytes(fileItem.file.size)})`}
+                      title={`${fileItem.file.name} (${formatBytes(
+                        fileItem.file.size
+                      )})`}
                     />
                   ) : (
                     <div
                       className="flex h-12 w-12 items-center justify-center rounded-lg border bg-muted"
-                      title={`${fileItem.file.name} (${formatBytes(fileItem.file.size)})`}
+                      title={`${fileItem.file.name} (${formatBytes(
+                        fileItem.file.size
+                      )})`}
                     >
                       <FileIcon className="h-5 w-5 text-muted-foreground" />
                     </div>

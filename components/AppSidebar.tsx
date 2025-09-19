@@ -118,7 +118,10 @@ const AppSidebar = () => {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="!text-lg !px-4 !py-3">
-                  <Link href="/tickets/new" className="flex items-center gap-4">
+                  <Link
+                    href="/dashboard/tickets/new"
+                    className="flex items-center gap-4"
+                  >
                     <Plus className="w-6 h-6 text-gray-600" /> Create Ticket
                   </Link>
                 </SidebarMenuButton>

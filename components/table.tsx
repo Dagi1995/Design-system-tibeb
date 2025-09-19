@@ -264,7 +264,7 @@ function StatusBadge({ status }: { status: string }) {
       case "In Progress":
         return "outline";
       case "Open":
-        return "destructive";
+        return "success";
       default:
         return "outline";
     }
@@ -730,7 +730,6 @@ function FilterPopover({
 
 // ------||---- main component ----------
 
-
 export function DataTable({
   data: initialData,
 }: {
@@ -1001,7 +1000,7 @@ export function DataTable({
                   </TableRow>
                 ))}
 
-                <TableRow className="bg-muted/30">
+                <TableRow className="bg-muted/30 [&>th]:py-3">
                   {table.getVisibleFlatColumns().map((column) => (
                     <TableHead key={column.id}>
                       {column.getCanFilter() ? (
@@ -1019,7 +1018,7 @@ export function DataTable({
                 </TableRow>
               </TableHeader>
 
-              <TableBody className="**:data-[slot=table-cell]:first:w-8 **:data-[slot=table-cell]:first:px-0 ">
+              <TableBody className="**:data-[slot=table-cell]:first:w-8 **:data-[slot=table-cell]:first:px-0 [&_td]:py-4">
                 {table.getRowModel().rows?.length ? (
                   <SortableContext
                     items={dataIds}
@@ -1033,7 +1032,7 @@ export function DataTable({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="h-24 text-center"
+                      className="h-24 text-center "
                     >
                       No tickets found.
                     </TableCell>

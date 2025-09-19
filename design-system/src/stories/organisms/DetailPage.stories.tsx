@@ -36,6 +36,38 @@ interface SelectField extends BaseField {
   addable?: boolean;
 }
 
+interface TextEditorField extends BaseField {
+  type: "textEditor";
+  defaultValue?: string;
+  required?: boolean;
+  showSubmitButton?: boolean;
+  submitButtonText?: string;
+  placeholder?: string;
+}
+
+interface FileUploadField extends BaseField {
+  type: "fileUpload";
+  accept?: string;
+  multiple?: boolean;
+  required?: boolean;
+  maxFiles?: number;
+  maxSize?: number;
+}
+
+interface PhoneField extends BaseField {
+  type: "phone";
+  defaultValue?: string;
+  required?: boolean;
+  placeholder?: string;
+}
+
+interface DateField extends BaseField {
+  type: "date";
+  defaultValue?: Date;
+  required?: boolean;
+  description?: string;
+}
+
 interface CustomField extends BaseField {
   type: "custom";
   component: React.ReactNode;
@@ -46,6 +78,10 @@ type Field =
   | NumberField
   | CheckboxField
   | SelectField
+  | TextEditorField
+  | FileUploadField
+  | PhoneField
+  | DateField
   | CustomField;
 
 interface CollapsibleGroup {
@@ -332,6 +368,7 @@ export const WithCustomComponent: Story = {
     );
   },
 };
+
 /* --------------------------------
    5. Three Column Layout
 -------------------------------- */
@@ -472,6 +509,308 @@ export const FourColumns: Story = {
       <TooltipProvider>
         <DetailPage
           title="Four Column Example"
+          tabs={tabs}
+          onSave={(data) => console.log("Save:", data)}
+          onCancel={() => console.log("Cancelled")}
+        />
+      </TooltipProvider>
+    );
+  },
+};
+
+/* --------------------------------
+   7. Complete Example with All Field Types
+-------------------------------- */
+export const CompleteWithAllFieldTypes: Story = {
+  render: () => {
+    const tabs: TabConfig[] = [
+      {
+        id: "basic",
+        label: "Basic Info",
+        sections: [
+          {
+            title: "Personal Information",
+            columns: 2,
+            fields: [
+              {
+                type: "input",
+                name: "firstName",
+                label: "First Name",
+                defaultValue: "John",
+                required: true,
+              },
+              {
+                type: "input",
+                name: "lastName",
+                label: "Last Name",
+                defaultValue: "Doe",
+                required: true,
+              },
+              {
+                type: "phone",
+                name: "phoneNumber",
+                label: "Phone Number",
+                placeholder: "Enter phone number",
+                required: true,
+              },
+              {
+                type: "date",
+                name: "duedate",
+                label: "Duedate",
+                description: "Select your date",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "content",
+        label: "Content",
+        sections: [
+          {
+            title: "Rich Content",
+            columns: 1,
+            fields: [
+              {
+                type: "textEditor",
+                name: "description",
+                label: "Description",
+                placeholder: "Write a detailed description...",
+                showSubmitButton: false,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "media",
+        label: "Media",
+        sections: [
+          {
+            title: "Files & Media",
+            columns: 1,
+            fields: [
+              {
+                type: "fileUpload",
+                name: "documents",
+                label: "Upload Documents",
+                accept: "image/*,.pdf,.doc,.docx",
+                multiple: true,
+                maxFiles: 5,
+                maxSize: 5 * 1024 * 1024, // 5MB
+              },
+              {
+                type: "fileUpload",
+                name: "profilePicture",
+                label: "Profile Picture",
+                accept: "image/*",
+                multiple: false,
+                maxFiles: 1,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "settings",
+        label: "Settings",
+        sections: [
+          {
+            title: "Preferences",
+            columns: 2,
+            fields: [
+              {
+                type: "select",
+                name: "language",
+                label: "Language",
+                options: ["English", "Spanish", "French", "German"],
+                defaultValue: "English",
+              },
+              {
+                type: "select",
+                name: "timezone",
+                label: "Timezone",
+                options: ["EST", "PST", "CST", "MST"],
+                addable: true,
+              },
+              {
+                type: "checkbox",
+                name: "notifications",
+                label: "Enable Notifications",
+                defaultValue: true,
+              },
+              {
+                type: "checkbox",
+                name: "newsletter",
+                label: "Subscribe to Newsletter",
+                defaultValue: false,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    return (
+      <TooltipProvider>
+        <DetailPage
+          title="Complete User Profile"
+          tabs={tabs}
+          onSave={(data) => console.log("Save:", data)}
+          onCancel={() => console.log("Cancelled")}
+        />
+      </TooltipProvider>
+    );
+  },
+};
+
+/* --------------------------------
+   8. Advanced Form with Mixed Field Types
+-------------------------------- */
+export const AdvancedFormWithMixedFields: Story = {
+  render: () => {
+    const tabs: TabConfig[] = [
+      {
+        id: "product",
+        label: "Product",
+        sections: [
+          {
+            title: "Product Details",
+            columns: 2,
+            collapsible: true,
+            fields: [
+              {
+                type: "input",
+                name: "productName",
+                label: "Product Name",
+                required: true,
+              },
+              {
+                type: "select",
+                name: "category",
+                label: "Category",
+                options: ["Electronics", "Clothing", "Home", "Books"],
+                addable: true,
+              },
+              {
+                type: "number",
+                name: "price",
+                label: "Price",
+                min: 0,
+                step: 0.01,
+              },
+              {
+                type: "number",
+                name: "quantity",
+                label: "Quantity",
+                min: 0,
+              },
+            ],
+            collapsibleGroups: [
+              {
+                title: "Advanced Product Settings",
+                fields: [
+                  {
+                    type: "checkbox",
+                    name: "isFeatured",
+                    label: "Featured Product",
+                  },
+                  {
+                    type: "checkbox",
+                    name: "inStock",
+                    label: "In Stock",
+                    defaultValue: true,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: "Product Description",
+            columns: 1,
+            fields: [
+              {
+                type: "textEditor",
+                name: "description",
+                label: "Product Description",
+                showSubmitButton: true,
+                submitButtonText: "Save Description",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "media",
+        label: "Media",
+        sections: [
+          {
+            title: "Product Images",
+            columns: 1,
+            fields: [
+              {
+                type: "fileUpload",
+                name: "productImages",
+                label: "Upload Product Images",
+                accept: "image/*",
+                multiple: true,
+                maxFiles: 10,
+                maxSize: 10 * 1024 * 1024, // 10MB
+              },
+            ],
+          },
+          {
+            title: "Product Videos",
+            columns: 1,
+            fields: [
+              {
+                type: "fileUpload",
+                name: "productVideos",
+                label: "Upload Product Videos",
+                accept: "video/*",
+                multiple: true,
+                maxFiles: 3,
+                maxSize: 50 * 1024 * 1024, // 50MB
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "contact",
+        label: "Contact",
+        sections: [
+          {
+            title: "Contact Information",
+            columns: 2,
+            fields: [
+              {
+                type: "phone",
+                name: "supportPhone",
+                label: "Support Phone",
+                required: true,
+              },
+              {
+                type: "input",
+                name: "supportEmail",
+                label: "Support Email",
+              },
+              {
+                type: "date",
+                name: "releaseDate",
+                label: "Product Release Date",
+                description: "When will this product be available?",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    return (
+      <TooltipProvider>
+        <DetailPage
+          title="Product Management"
           tabs={tabs}
           onSave={(data) => console.log("Save:", data)}
           onCancel={() => console.log("Cancelled")}
