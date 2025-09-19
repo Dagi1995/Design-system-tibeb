@@ -26,13 +26,13 @@ export default function Home() {
         <div className="bg-primary-foreground p-4 rounded-lg">
           <DataTable
             data={data.map((item) => ({
-              ...item,
-              priority: item.priority as "High" | "Critical" | "Medium" | "Low",
-              status: item.status as
-                | "In Progress"
-                | "Open"
-                | "Resolved"
-                | "Closed",
+              id: item.id,
+              fullName: item.requester,
+              email: item.email,
+              category: item.category,
+              createdAt: item.dueDate || "", // or provide a default/placeholder if needed
+              phoneNumber: item.phone,
+              dueDate: item.dueDate,
             }))}
           />
         </div>

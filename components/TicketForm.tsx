@@ -12,7 +12,11 @@ import {
 } from "@/design-system/src/components/molecules/Card";
 import { Button } from "@/design-system/src/components/atoms/Button";
 
-export function TicketForm() {
+export function TicketForm({
+  onTicketSubmit,
+}: {
+  onTicketSubmit?: (ticketData: any) => void;
+}) {
   const detailPageRef = useRef<{ getFormData: () => Record<string, any> }>(
     null
   );
@@ -65,6 +69,25 @@ export function TicketForm() {
                 "Account",
                 "Feature Request",
                 "Other",
+                "Database",
+                "Profile",
+                "Queue Management",
+                "Letter Management",
+                "Chat",
+                "Learning Letter",
+                "Letter Promotion",
+                "Protection",
+                "Digital Cloud",
+                "Open Spatial",
+                "Evaluation Manager",
+                "Analysis And Name",
+                "Form Manager",
+                "Computer Manager",
+                "Vision Management",
+                "Asset Management",
+                "Building Management",
+                "Appointments",
+                "My choice Model",
               ],
               placeholder: "Select category",
             },
@@ -141,7 +164,6 @@ export function TicketForm() {
   const handleSave = () => {
     if (detailPageRef.current) {
       const formData = detailPageRef.current.getFormData();
-      console.log("Ticket data:", formData);
 
       // Validate required fields
       const requiredFields = [
@@ -153,7 +175,6 @@ export function TicketForm() {
         "subcategory",
         "description",
         "dueDate",
-        "subcategory",
       ];
 
       const missingFields = requiredFields.filter((field) => !formData[field]);
@@ -161,6 +182,26 @@ export function TicketForm() {
       if (missingFields.length > 0) {
         toast.error(`Please fill in all required fields`);
         return;
+      }
+
+      // Combine category and subcategory into one field
+      const combinedCategory = formData.subcategory
+        ? `${formData.category} - ${formData.subcategory}`
+        : formData.category;
+
+      // Add auto-generated fields to the formData
+      formData.id = Date.now();
+      formData.createdAt = new Date().toISOString();
+      formData.category = combinedCategory;
+
+      // Remove the separate subcategory field since it's now combined
+      delete formData.subcategory;
+
+      console.log("Ticket data:", formData);
+
+      // Call the callback function if provided
+      if (onTicketSubmit) {
+        onTicketSubmit(formData);
       }
 
       toast.success("Ticket submitted successfully!");

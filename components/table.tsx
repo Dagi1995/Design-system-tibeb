@@ -41,6 +41,7 @@ import {
   IconClock,
   IconAlertTriangle,
   IconCheck,
+  IconCategory,
 } from "@tabler/icons-react";
 import {
   ColumnDef,
@@ -121,16 +122,16 @@ import {
   PopoverTrigger,
 } from "@/design-system/src/components/atoms/Popover";
 import { Calendar } from "@/design-system/src/components/molecules/Calendar";
+import Link from "next/link";
 
 export const schema = z.object({
   id: z.number(),
-  title: z.string(),
-  description: z.string(),
-  priority: z.enum(["Low", "Medium", "High", "Critical"]),
-  status: z.enum(["Open", "In Progress", "Resolved", "Closed"]),
-  assignee: z.string(),
-  createdAt: z.string(),
+  fullName: z.string(),
+  email: z.string(),
+  phoneNumber: z.string().optional(),
   dueDate: z.string().optional(),
+  category: z.string(),
+  createdAt: z.string(),
 });
 
 // ---------- filter types ----------
@@ -165,43 +166,42 @@ const filterOperators: FilterOption[] = [
 // available fields for tickets
 const filterFields: FilterOption[] = [
   { label: "ID", value: "id", type: "text" },
-  { label: "Title", value: "title", type: "text" },
-  { label: "Description", value: "description", type: "text" },
+  { label: "Requester", value: "fullName", type: "text" },
+  { label: "Email", value: "email", type: "text" },
+  { label: "Phone", value: "phoneNumber", type: "text" },
+  { label: "Due Date", value: "dueDate", type: "date" },
   {
-    label: "Priority",
-    value: "priority",
+    label: "Category",
+    value: "category",
     type: "select",
     options: [
-      { label: "Low", value: "Low" },
-      { label: "Medium", value: "Medium" },
-      { label: "High", value: "High" },
-      { label: "Critical", value: "Critical" },
-    ],
-  },
-  {
-    label: "Status",
-    value: "status",
-    type: "select",
-    options: [
-      { label: "Open", value: "Open" },
-      { label: "In Progress", value: "In Progress" },
-      { label: "Resolved", value: "Resolved" },
-      { label: "Closed", value: "Closed" },
-    ],
-  },
-  {
-    label: "Assignee",
-    value: "assignee",
-    type: "select",
-    options: [
-      { label: "Unassigned", value: "Unassigned" },
-      { label: "Eddie Lake", value: "Eddie Lake" },
-      { label: "Jamik Tashpulatov", value: "Jamik Tashpulatov" },
-      { label: "Emily Whalen", value: "Emily Whalen" },
+      { label: "Technical Support", value: "Technical Support" },
+      { label: "Billing", value: "Billing" },
+      { label: "Account", value: "Account" },
+      { label: "Feature Request", value: "Feature Request" },
+      { label: "Other", value: "Other" },
+      { label: "Database", value: "Database" },
+      { label: "Profile", value: "Profile" },
+      { label: "Queue Management", value: "Queue Management" },
+      { label: "Letter Management", value: "Letter Management" },
+      { label: "Chat", value: "Chat" },
+      { label: "Learning Letter", value: "Learning Letter" },
+      { label: "Letter Promotion", value: "Letter Promotion" },
+      { label: "Protection", value: "Protection" },
+      { label: "Digital Cloud", value: "Digital Cloud" },
+      { label: "Open Spatial", value: "Open Spatial" },
+      { label: "Evaluation Manager", value: "Evaluation Manager" },
+      { label: "Analysis And Name", value: "Analysis And Name" },
+      { label: "Form Manager", value: "Form Manager" },
+      { label: "Computer Manager", value: "Computer Manager" },
+      { label: "Vision Management", value: "Vision Management" },
+      { label: "Asset Management", value: "Asset Management" },
+      { label: "Building Management", value: "Building Management" },
+      { label: "Appointments", value: "Appointments" },
+      { label: "My choice Model", value: "My choice Model" },
     ],
   },
   { label: "Created At", value: "createdAt", type: "date" },
-  { label: "Due Date", value: "dueDate", type: "date" },
 ];
 
 // ---------- drag handle ----------
@@ -221,10 +221,10 @@ function DragHandle({ id }: { id: number }) {
   );
 }
 
-// ---------- Priority Badge ----------
-function PriorityBadge({ priority }: { priority: string }) {
+// ---------- Category Badge ----------
+function CategoryBadge({ category }: { category: string }) {
   const getVariant = () => {
-    switch (priority) {
+    switch (category) {
       case "Critical":
         return "destructive";
       case "High":
@@ -238,54 +238,15 @@ function PriorityBadge({ priority }: { priority: string }) {
     }
   };
 
-  const getIcon = () => {
-    if (priority === "Critical" || priority === "High") {
-      return <IconAlertTriangle className="h-3 w-3 mr-1" />;
-    }
-    return null;
-  };
-
   return (
     <Badge variant={getVariant()} size={"md"} className="text-base font-medium">
-      {getIcon()}
-      {priority}
+      <IconCategory className="h-3 w-3 mr-1" />
+      {category}
     </Badge>
   );
 }
 
-// ---------- Status Badge ----------
-function StatusBadge({ status }: { status: string }) {
-  const getVariant = () => {
-    switch (status) {
-      case "Closed":
-        return "default";
-      case "Resolved":
-        return "secondary";
-      case "In Progress":
-        return "outline";
-      case "Open":
-        return "success";
-      default:
-        return "outline";
-    }
-  };
-
-  const getIcon = () => {
-    if (status === "Closed" || status === "Resolved") {
-      return <IconCheck className="h-3 w-3 mr-1" />;
-    }
-    return <IconLoader className="h-3 w-3 mr-1" />;
-  };
-
-  return (
-    <Badge variant={getVariant()} size={"md"} className="text-base font-medium">
-      {getIcon()}
-      {status}
-    </Badge>
-  );
-}
-
-// ---------- Advanced Filters row ----------
+// ---------- Filter Row ----------
 function FilterRow({
   filter,
   onChange,
@@ -536,67 +497,59 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     filterFn: hybridFilterFn,
   },
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: "fullName",
+    header: "Requester",
     cell: ({ row }) => (
-      <TableCellViewer
-        item={row.original}
-        className="text-lg font-medium text-foreground"
-      />
+      <div className="flex items-center gap-2">
+        <IconUser className="h-6 w-6 text-muted-foreground" />
+        <span className="text-lg font-medium">{row.original.fullName}</span>
+      </div>
     ),
     filterFn: hybridFilterFn,
     enableHiding: false,
   },
   {
-    accessorKey: "priority",
-    header: "Priority",
-    cell: ({ row }) => <PriorityBadge priority={row.original.priority} />,
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => (
+      <div className="text-lg text-muted-foreground">{row.original.email}</div>
+    ),
     filterFn: hybridFilterFn,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <StatusBadge status={row.original.status} />,
+    accessorKey: "phoneNumber",
+    header: "Phone",
+    cell: ({ row }) => (
+      <div className="text-lg text-muted-foreground">
+        {row.original.phoneNumber || "-"}
+      </div>
+    ),
     filterFn: hybridFilterFn,
   },
   {
-    accessorKey: "assignee",
-    header: "Assigned To",
-    cell: ({ row }) => {
-      const isAssigned = row.original.assignee !== "Unassigned";
-
-      if (isAssigned) {
-        return (
-          <div className="flex items-center gap-2">
-            <IconUser className="h-6 w-6 text-muted-foreground" />
-            <span className="text-lg font-medium">{row.original.assignee}</span>
-          </div>
-        );
-      }
-
-      return (
-        <Select>
-          <SelectTrigger
-            className="w-32 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-            size="sm"
-          >
-            <SelectValue placeholder="Assign" />
-          </SelectTrigger>
-          <SelectContent align="end">
-            <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-            <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
-            <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-          </SelectContent>
-        </Select>
-      );
-    },
+    accessorKey: "dueDate",
+    header: "Due Date",
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2 text-lg text-muted-foreground">
+        <IconClock className="h-6 w-6" />
+        {row.original.dueDate
+          ? format(new Date(row.original.dueDate), "MMM dd, yyyy")
+          : "-"}
+      </div>
+    ),
+    filterFn: hybridFilterFn,
+  },
+  {
+    accessorKey: "category",
+    header: "Category",
+    cell: ({ row }) => <CategoryBadge category={row.original.category} />,
     filterFn: hybridFilterFn,
   },
   {
     accessorKey: "createdAt",
     header: "Created At",
     cell: ({ row }) => (
-      <div className="flex items-center gap-2 text-lg  text-muted-foreground">
+      <div className="flex items-center gap-2 text-lg text-muted-foreground">
         <IconClock className="h-6 w-6" />
         {format(new Date(row.original.createdAt), "MMM dd, yyyy")}
       </div>
@@ -612,7 +565,6 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           size="icon"
           className="h-8 w-8"
           onClick={() => {
-            // View action
             toast.info(`Viewing ticket #${row.original.id}`);
           }}
         >
@@ -877,35 +829,43 @@ export function DataTable({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="default">Default</SelectItem>
-            <SelectItem value="priority:desc">
-              Priority (High to Low)
-            </SelectItem>
-            <SelectItem value="priority:asc">Priority (Low to High)</SelectItem>
-            <SelectItem value="createdAt:desc">Newest First</SelectItem>
-            <SelectItem value="createdAt:asc">Oldest First</SelectItem>
-            <SelectItem value="title:asc">Title (A → Z)</SelectItem>
-            <SelectItem value="title:desc">Title (Z → A)</SelectItem>
+            <SelectItem value="id:desc">Newest First</SelectItem>
+            <SelectItem value="id:asc">Oldest First</SelectItem>
+            <SelectItem value="fullName:asc">Requester (A → Z)</SelectItem>
+            <SelectItem value="fullName:desc">Requester (Z → A)</SelectItem>
+            <SelectItem value="dueDate:asc">Due Date (Soonest)</SelectItem>
+            <SelectItem value="dueDate:desc">Due Date (Latest)</SelectItem>
+            <SelectItem value="category:asc">Category (A → Z)</SelectItem>
+            <SelectItem value="category:desc">Category (Z → A)</SelectItem>
           </SelectContent>
         </Select>
 
-        <TabsList className="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
+        <TabsList className="hidden @4xl/main:flex">
           <TabsTrigger value="tickets">All Tickets</TabsTrigger>
-          <TabsTrigger value="open">
-            Open{" "}
-            <Badge variant="secondary">
-              {data.filter((t) => t.status === "Open").length}
+          <TabsTrigger value="recent">
+            Recent
+            <Badge variant="secondary" className="ml-2">
+              {
+                data.filter(
+                  (t) =>
+                    new Date(t.createdAt) >
+                    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                ).length
+              }
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="in-progress">
-            In Progress{" "}
-            <Badge variant="secondary">
-              {data.filter((t) => t.status === "In Progress").length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="resolved">
-            Resolved{" "}
-            <Badge variant="secondary">
-              {data.filter((t) => t.status === "Resolved").length}
+          <TabsTrigger value="due-soon">
+            Due Soon
+            <Badge variant="secondary" className="ml-2">
+              {
+                data.filter(
+                  (t) =>
+                    t.dueDate &&
+                    new Date(t.dueDate) > new Date() &&
+                    new Date(t.dueDate) <
+                      new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+                ).length
+              }
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -964,9 +924,11 @@ export function DataTable({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button size="lg">
-            <IconPlus />
-            <span className="hidden lg:inline">New Ticket</span>
+          <Button size="lg" asChild>
+            <Link href="/dashboard/tickets/new">
+              <IconPlus />
+              <span className="hidden lg:inline">New Ticket</span>
+            </Link>
           </Button>
         </div>
       </div>
@@ -1018,7 +980,7 @@ export function DataTable({
                 </TableRow>
               </TableHeader>
 
-              <TableBody className="**:data-[slot=table-cell]:first:w-8 **:data-[slot=table-cell]:first:px-0 [&_td]:py-4">
+              <TableBody className="[&_td]:py-4">
                 {table.getRowModel().rows?.length ? (
                   <SortableContext
                     items={dataIds}
@@ -1122,40 +1084,43 @@ export function DataTable({
         </div>
       </TabsContent>
 
-      <TabsContent value="open" className="flex flex-col px-4 lg:px-6">
+      <TabsContent value="recent" className="flex flex-col px-4 lg:px-6">
+        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed flex items-center justify-center">
+          <div className="text-muted-foreground text-center">
+            <IconClock className="h-12 w-12 mx-auto mb-4" />
+            <p>Recent tickets view</p>
+            <p className="text-sm">
+              Showing{" "}
+              {
+                data.filter(
+                  (t) =>
+                    new Date(t.createdAt) >
+                    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                ).length
+              }{" "}
+              recent tickets
+            </p>
+          </div>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="due-soon" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed flex items-center justify-center">
           <div className="text-muted-foreground text-center">
             <IconAlertTriangle className="h-12 w-12 mx-auto mb-4" />
-            <p>Open tickets view</p>
+            <p>Due Soon tickets view</p>
             <p className="text-sm">
-              Showing {data.filter((t) => t.status === "Open").length} open
-              tickets
-            </p>
-          </div>
-        </div>
-      </TabsContent>
-
-      <TabsContent value="in-progress" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed flex items-center justify-center">
-          <div className="text-muted-foreground text-center">
-            <IconLoader className="h-12 w-12 mx-auto mb-4" />
-            <p>In Progress tickets view</p>
-            <p className="text-sm">
-              Showing {data.filter((t) => t.status === "In Progress").length}{" "}
-              in-progress tickets
-            </p>
-          </div>
-        </div>
-      </TabsContent>
-
-      <TabsContent value="resolved" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed flex items-center justify-center">
-          <div className="text-muted-foreground text-center">
-            <IconCheck className="h-12 w-12 mx-auto mb-4" />
-            <p>Resolved tickets view</p>
-            <p className="text-sm">
-              Showing {data.filter((t) => t.status === "Resolved").length}{" "}
-              resolved tickets
+              Showing{" "}
+              {
+                data.filter(
+                  (t) =>
+                    t.dueDate &&
+                    new Date(t.dueDate) > new Date() &&
+                    new Date(t.dueDate) <
+                      new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+                ).length
+              }{" "}
+              due soon tickets
             </p>
           </div>
         </div>
@@ -1203,12 +1168,12 @@ function TableCellViewer({
             className ?? ""
           }`}
         >
-          {item.title}
+          {item.fullName}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="text-base">
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.title}</DrawerTitle>
+          <DrawerTitle>{item.fullName}</DrawerTitle>
           <DrawerDescription>
             Ticket #{item.id} • Created{" "}
             {format(new Date(item.createdAt), "MMM dd, yyyy")}
@@ -1260,78 +1225,72 @@ function TableCellViewer({
                   Resolution rate: 65% <IconTrendingUp className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
-                  Ticket performance overview for the last 6 months. This ticket
-                  is part of our ongoing effort to improve customer support.
+                  Ticket performance overview for the last 6 months.
                 </div>
               </div>
               <Separator />
             </>
           )}
           <form className="flex flex-col gap-4 text-base">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="title">Title</Label>
-              <Input id="title" defaultValue={item.title} />
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="description">Description</Label>
-              <Input id="description" defaultValue={item.description} />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="fullName">Requester</Label>
+                <Input id="fullName" defaultValue={item.fullName} />
+              </div>
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" defaultValue={item.email} />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="priority">Priority</Label>
-                <Select defaultValue={item.priority}>
-                  <SelectTrigger id="priority" className="w-full">
-                    <SelectValue placeholder="Select priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Low">Low</SelectItem>
-                    <SelectItem value="Medium">Medium</SelectItem>
-                    <SelectItem value="High">High</SelectItem>
-                    <SelectItem value="Critical">Critical</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="phone">Phone</Label>
+                <Input id="phone" defaultValue={item.phoneNumber || ""} />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select status" />
+                <Label htmlFor="category">Category</Label>
+                <Select defaultValue={item.category}>
+                  <SelectTrigger id="category" className="w-full">
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Open">Open</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Resolved">Resolved</SelectItem>
-                    <SelectItem value="Closed">Closed</SelectItem>
+                    {filterFields
+                      .find((f) => f.value === "category")
+                      ?.options?.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="assignee">Assignee</Label>
-              <Select defaultValue={item.assignee}>
-                <SelectTrigger id="assignee" className="w-full">
-                  <SelectValue placeholder="Select assignee" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Unassigned">Unassigned</SelectItem>
-                  <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                  <SelectItem value="Jamik Tashpulatov">
-                    Jamik Tashpulatov
-                  </SelectItem>
-                  <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {item.dueDate && (
+            <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="dueDate">Due Date</Label>
+                <Label htmlFor="createdAt">Created At</Label>
                 <Input
-                  id="dueDate"
-                  defaultValue={format(new Date(item.dueDate), "MMM dd, yyyy")}
+                  id="createdAt"
+                  defaultValue={format(
+                    new Date(item.createdAt),
+                    "MMM dd, yyyy"
+                  )}
                   readOnly
                 />
               </div>
-            )}
+              {item.dueDate && (
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="dueDate">Due Date</Label>
+                  <Input
+                    id="dueDate"
+                    defaultValue={format(
+                      new Date(item.dueDate),
+                      "MMM dd, yyyy"
+                    )}
+                    readOnly
+                  />
+                </div>
+              )}
+            </div>
           </form>
         </div>
         <DrawerFooter>
