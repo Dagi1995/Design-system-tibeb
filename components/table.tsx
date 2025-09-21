@@ -27,20 +27,16 @@ import {
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
-  IconCircleCheckFilled,
   IconDotsVertical,
   IconGripVertical,
   IconLayoutColumns,
-  IconLoader,
   IconPlus,
-  IconTrendingUp,
   IconFilter,
   IconX,
   IconEye,
   IconUser,
   IconClock,
   IconAlertTriangle,
-  IconCheck,
   IconCategory,
 } from "@tabler/icons-react";
 import {
@@ -59,31 +55,15 @@ import {
   VisibilityState,
   FilterFn,
 } from "@tanstack/react-table";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { toast } from "sonner";
 import { z } from "zod";
 import { format } from "date-fns";
 
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/design-system/src/components/atoms/Badge";
 import { Button } from "@/design-system/src/components/atoms/Button";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/design-system/src/components/molecules/Chart";
+
 import { Checkbox } from "@/design-system/src/components/atoms/Checkbox";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/design-system/src/components/molecules/drawer";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -101,7 +81,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/design-system/src/components/atoms/Select";
-import { Separator } from "@/design-system/src/components/atoms/Separator";
 import {
   Table,
   TableBody,
@@ -1126,180 +1105,5 @@ export function DataTable({
         </div>
       </TabsContent>
     </Tabs>
-  );
-}
-
-// ---------- chart + drawer ----------
-const chartData = [
-  { month: "January", tickets: 186, resolved: 80 },
-  { month: "February", tickets: 305, resolved: 200 },
-  { month: "March", tickets: 237, resolved: 120 },
-  { month: "April", tickets: 73, resolved: 190 },
-  { month: "May", tickets: 209, resolved: 130 },
-  { month: "June", tickets: 214, resolved: 140 },
-];
-
-const chartConfig = {
-  tickets: {
-    label: "Tickets Created",
-    color: "var(--primary)",
-  },
-  resolved: {
-    label: "Tickets Resolved",
-    color: "var(--green)",
-  },
-} satisfies ChartConfig;
-
-function TableCellViewer({
-  item,
-  className,
-}: {
-  item: z.infer<typeof schema>;
-  className?: string;
-}) {
-  const isMobile = useIsMobile();
-
-  return (
-    <Drawer direction={isMobile ? "bottom" : "right"}>
-      <DrawerTrigger asChild>
-        <Button
-          variant="ghost"
-          className={`text-foreground w-fit px-0 text-left text-sm font-medium hover:underline ${
-            className ?? ""
-          }`}
-        >
-          {item.fullName}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent className="text-base">
-        <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.fullName}</DrawerTitle>
-          <DrawerDescription>
-            Ticket #{item.id} • Created{" "}
-            {format(new Date(item.createdAt), "MMM dd, yyyy")}
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-base">
-          {!isMobile && (
-            <>
-              <ChartContainer config={chartConfig}>
-                <AreaChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{ left: 0, right: 10 }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => (value as string).slice(0, 3)}
-                    hide
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="dot" />}
-                  />
-                  <Area
-                    dataKey="resolved"
-                    type="natural"
-                    fill="var(--color-resolved)"
-                    fillOpacity={0.6}
-                    stroke="var(--color-resolved)"
-                    stackId="a"
-                  />
-                  <Area
-                    dataKey="tickets"
-                    type="natural"
-                    fill="var(--color-tickets)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-tickets)"
-                    stackId="a"
-                  />
-                </AreaChart>
-              </ChartContainer>
-              <Separator />
-              <div className="grid gap-2">
-                <div className="flex gap-2 leading-none font-medium">
-                  Resolution rate: 65% <IconTrendingUp className="size-4" />
-                </div>
-                <div className="text-muted-foreground">
-                  Ticket performance overview for the last 6 months.
-                </div>
-              </div>
-              <Separator />
-            </>
-          )}
-          <form className="flex flex-col gap-4 text-base">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="fullName">Requester</Label>
-                <Input id="fullName" defaultValue={item.fullName} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" defaultValue={item.email} />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="phone">Phone</Label>
-                <Input id="phone" defaultValue={item.phoneNumber || ""} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="category">Category</Label>
-                <Select defaultValue={item.category}>
-                  <SelectTrigger id="category" className="w-full">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {filterFields
-                      .find((f) => f.value === "category")
-                      ?.options?.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="createdAt">Created At</Label>
-                <Input
-                  id="createdAt"
-                  defaultValue={format(
-                    new Date(item.createdAt),
-                    "MMM dd, yyyy"
-                  )}
-                  readOnly
-                />
-              </div>
-              {item.dueDate && (
-                <div className="flex flex-col gap-3">
-                  <Label htmlFor="dueDate">Due Date</Label>
-                  <Input
-                    id="dueDate"
-                    defaultValue={format(
-                      new Date(item.dueDate),
-                      "MMM dd, yyyy"
-                    )}
-                    readOnly
-                  />
-                </div>
-              )}
-            </div>
-          </form>
-        </div>
-        <DrawerFooter>
-          <Button>Save Changes</Button>
-          <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
   );
 }

@@ -27,11 +27,11 @@ export default function Home() {
           <DataTable
             data={data.map((item) => ({
               id: item.id,
-              fullName: item.requester,
+              fullName: item.fullName,
               email: item.email,
               category: item.category,
               createdAt: item.dueDate || "", // or provide a default/placeholder if needed
-              phoneNumber: item.phone,
+              phoneNumber: item.phoneNumber,
               dueDate: item.dueDate,
             }))}
           />
